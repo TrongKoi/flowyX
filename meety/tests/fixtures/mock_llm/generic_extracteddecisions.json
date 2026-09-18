@@ -1,0 +1,13 @@
+{
+  "decisions": [
+    {
+      "statement": "Nhóm thống nhất tiếp tục theo kế hoạch đã bàn trong cuộc họp",
+      "decided_by": null,
+      "quote": "Ok mọi người mình bắt đầu nhé. Hôm nay có hai việc chính, một là review lại spri",
+      "evidence_segment_ids": [
+        "s_0001"
+      ],
+      "supersedes_hint": null
+    }
+  ]
+}

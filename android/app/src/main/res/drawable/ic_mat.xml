@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Con mat: GIU de hien mat khau. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="1.8" android:fillColor="#00000000"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M1,12s4,-7 11,-7 11,7 11,7 -4,7 -11,7 -11,-7 -11,-7z" />
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="1.8" android:fillColor="#00000000"
+        android:pathData="M12,12m-3,0a3,3 0 1,0 6,0a3,3 0 1,0 -6,0" />
+</vector>

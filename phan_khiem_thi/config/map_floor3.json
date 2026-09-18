@@ -1,0 +1,203 @@
+{
+  "floor": "RMIT toa nha 2, tang 3 (BAN DO MAU - phai do lai bang thuoc)",
+  "origin_note": "Goc (0,0) = chan tuong trai, ngay cua thang may. Truc x doc hanh lang chinh.",
+  "_note_toa_do": "Nut nam giua hanh lang. Ma va bien nam TREN TUONG, lech khoi tim hanh lang khoang 0.9m - dung nhu thuc te.",
+  "_note_signs": "BIEN CHU SAN CO cua toa nha - khong dan gi them. Phu nga re va cau thang, la noi khong co so phong de doc. Nhieu tam CO THE ghi giong nhau; Localizer go nhap nhang bang vi tri, va TU CHOI khi khong du chac. Truong 'text' phai la chu IN THAT tren bien - di khao sat va chep dung, dau muc gi cung duoc vi he thong tu bo dau.",
+  "signs": {
+    "exit-thang-may": {
+      "x": 1.0,
+      "y": 0.9,
+      "theta": -90,
+      "text": "LOI THOAT",
+      "text_h": 0.09,
+      "at": "Tuong canh sanh thang may"
+    },
+    "exit-cau-thang": {
+      "x": 8.0,
+      "y": 0.9,
+      "theta": -90,
+      "text": "LOI THOAT",
+      "text_h": 0.09,
+      "at": "Tuong canh chan cau thang bo"
+    },
+    "exit-nga-re-dong": {
+      "x": 18.5,
+      "y": -0.9,
+      "theta": 90,
+      "text": "LOI THOAT",
+      "text_h": 0.09,
+      "at": "Tuong nga re hanh lang dong"
+    },
+    "tang-3": {
+      "x": 1.2,
+      "y": 0.9,
+      "theta": -90,
+      "text": "TANG 3",
+      "text_h": 0.12,
+      "at": "Bien so tang o sanh thang may"
+    }
+  },
+  "markers": {
+    "10": {
+      "x": 1.0,
+      "y": 0.9,
+      "theta": -90,
+      "at": "Tuong canh sanh thang may"
+    },
+    "13": {
+      "x": 8.0,
+      "y": 0.9,
+      "theta": -90,
+      "at": "Tuong canh chan cau thang bo"
+    },
+    "11": {
+      "x": 18.5,
+      "y": -0.9,
+      "theta": 90,
+      "at": "Tuong nga re hanh lang dong"
+    },
+    "12": {
+      "x": 19.4,
+      "y": 12.0,
+      "theta": 180,
+      "at": "Tuong nga re phia nam"
+    }
+  },
+  "rooms": {
+    "3.12": {
+      "x": 24.0,
+      "y": 12.9,
+      "theta": -90
+    },
+    "3.14": {
+      "x": 29.5,
+      "y": 12.9,
+      "theta": -90
+    },
+    "3.16": {
+      "x": 35.0,
+      "y": 12.9,
+      "theta": -90
+    }
+  },
+  "nodes": [
+    {
+      "id": "A",
+      "x": 0.0,
+      "y": 0.0,
+      "name": "Thang máy tầng 3",
+      "landmark": "Nút bấm thang máy bên phải, cao ngang ngực"
+    },
+    {
+      "id": "S",
+      "x": 8.0,
+      "y": 0.0,
+      "name": "Chân cầu thang bộ",
+      "landmark": "Tay vịn kim loại bên trái"
+    },
+    {
+      "id": "B",
+      "x": 18.5,
+      "y": 0.0,
+      "name": "Ngã rẽ hành lang đông",
+      "landmark": "Cột vuông ở góc, sờ được bên phải"
+    },
+    {
+      "id": "C",
+      "x": 18.5,
+      "y": 12.0,
+      "name": "Ngã rẽ phía nam",
+      "landmark": "Đổi từ thảm sang gạch, cảm nhận được dưới chân"
+    },
+    {
+      "id": "R12",
+      "x": 24.0,
+      "y": 12.0,
+      "name": "Phòng 3.12",
+      "landmark": "Biển số phòng chữ nổi bên phải cửa"
+    },
+    {
+      "id": "R14",
+      "x": 29.5,
+      "y": 12.0,
+      "name": "Phòng 3.14",
+      "landmark": "Biển số phòng chữ nổi bên phải cửa"
+    },
+    {
+      "id": "R16",
+      "x": 35.0,
+      "y": 12.0,
+      "name": "Phòng 3.16",
+      "landmark": "Biển số phòng chữ nổi bên phải cửa"
+    },
+    {
+      "id": "EX1",
+      "x": -4.0,
+      "y": 0.0,
+      "name": "Lối thoát hiểm phía tây",
+      "landmark": "Cửa đẩy có thanh ngang, đẩy ra để mở"
+    },
+    {
+      "id": "EX2",
+      "x": 40.0,
+      "y": 12.0,
+      "name": "Lối thoát hiểm phía đông",
+      "landmark": "Cửa đẩy có thanh ngang, đẩy ra để mở"
+    }
+  ],
+  "edges": [
+    {
+      "from": "A",
+      "to": "S",
+      "hazard": null,
+      "surface": "tham",
+      "is_lift": false
+    },
+    {
+      "from": "S",
+      "to": "B",
+      "hazard": "Cầu thang xuống bên trái, không có lan can phía hành lang",
+      "surface": "tham"
+    },
+    {
+      "from": "B",
+      "to": "C",
+      "hazard": null,
+      "surface": "gach"
+    },
+    {
+      "from": "C",
+      "to": "R12",
+      "hazard": null,
+      "surface": "gach"
+    },
+    {
+      "from": "R12",
+      "to": "R14",
+      "hazard": null,
+      "surface": "gach"
+    },
+    {
+      "from": "R14",
+      "to": "R16",
+      "hazard": null,
+      "surface": "gach"
+    },
+    {
+      "from": "A",
+      "to": "EX1",
+      "hazard": "Bậc hụt một bậc ngay trước cửa thoát hiểm",
+      "surface": "gach"
+    },
+    {
+      "from": "R16",
+      "to": "EX2",
+      "hazard": null,
+      "surface": "gach"
+    }
+  ],
+  "exits": [
+    "EX1",
+    "EX2"
+  ]
+}

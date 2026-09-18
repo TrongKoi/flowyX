@@ -1,0 +1,21 @@
+floor RMIT toa nha 2, tang 3
+origin chan tuong trai, ngay cua thang may
+ground 0
+
+node A 0.0 0.0 Thang may tang 3 | Nut bam ben phai, cao ngang nguc
+node S 8.0 0.0 Chan cau thang bo | Tay vin kim loai ben trai
+node B 18.5 0.0 Nga re hanh lang dong | Cot vuong o goc, so duoc
+node C 18.5 12.0 Nga re phia nam | Doi tu tham sang gach
+
+marker 10 1.0 0.9 -90
+marker 13 8.0 0.9 -90
+marker 11 18.5 -0.9 90
+
+room 3.12 22.0 12.9 -90
+
+edge A S # tham
+edge S B ! Cau thang xuong ben trai, khong co lan can # tham
+edge B C # gach
+node R12 22.0 12.0 Phong 3.12 | Bien so phong chu noi ben phai cua
+edge C R12 # gach
+exit A

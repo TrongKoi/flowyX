@@ -1,0 +1,601 @@
+{
+  "minutes_id": "min_mtg_20260722_sprint24_v1",
+  "meeting_id": "mtg_20260722_sprint24",
+  "version": 1,
+  "generated_at": "2026-08-07T20:11:09.383182Z",
+  "pipeline": {
+    "asr_provider": "groq/whisper-large-v3",
+    "llm_provider": "mock/mock",
+    "prompt_versions": {
+      "extract": "extract.vi.v1.2",
+      "reconcile": "reconcile.vi.v1.1",
+      "compose": "compose.vi.v1.0"
+    },
+    "total_llm_requests": 2,
+    "total_tokens_estimate": 3636,
+    "cost_usd": 0.0
+  },
+  "meta": {
+    "meeting_title": "Sprint 23 Review & Chốt release v2.4",
+    "date": "2026-07-22",
+    "duration_minutes": 5,
+    "meeting_type": "planning",
+    "language": "vi",
+    "attendees": [
+      {
+        "person_id": "p_001",
+        "display_name": "Hùng",
+        "speaker_label": "SPEAKER_00",
+        "role": "Product Lead",
+        "talk_time_pct": 39.4,
+        "identification_method": "vocative"
+      },
+      {
+        "person_id": "p_002",
+        "display_name": "Tuấn",
+        "speaker_label": "SPEAKER_01",
+        "role": "Backend Engineer",
+        "talk_time_pct": 19.5,
+        "identification_method": "vocative"
+      },
+      {
+        "person_id": "p_003",
+        "display_name": "Lan",
+        "speaker_label": "SPEAKER_02",
+        "role": "QA Lead",
+        "talk_time_pct": 26.7,
+        "identification_method": "vocative"
+      },
+      {
+        "person_id": "p_004",
+        "display_name": "Minh",
+        "speaker_label": "SPEAKER_03",
+        "role": "Mobile Engineer",
+        "talk_time_pct": 14.4,
+        "identification_method": "attendee_list_elimination"
+      }
+    ]
+  },
+  "executive_summary": {
+    "tldr": [
+      "Release version 2.4 được lùi từ 26/07 sang thứ ba ngày 28/07 do QA chưa hoàn tất kiểm thử.",
+      "API thanh toán đã deploy lên staging; module export báo cáo còn vướng query chậm 8 giây.",
+      "Crash rate bản beta giảm từ 4.1% xuống 2.3% so với sprint trước.",
+      "Môi trường staging lỗi đang chặn kiểm thử social login và chưa có người phụ trách.",
+      "Việc migrate dữ liệu khách hàng enterprise được hoãn sang cuộc họp tuần sau."
+    ],
+    "paragraphs": [
+      "Cuộc họp tập trung vào hai nội dung: rà soát tiến độ sprint 23 và chốt thời điểm phát hành version 2.4. Về phía backend, API thanh toán đã được merge và deploy lên môi trường staging, trong khi module export báo cáo vẫn bị chặn bởi vấn đề hiệu năng với thời gian truy vấn khoảng 8 giây trên dữ liệu một năm. Về phía QA, khoảng 70% test case đã hoàn thành và crash rate bản beta giảm còn 2.3% so với 4.1% ở sprint trước.",
+      "Kế hoạch phát hành ban đầu được đề xuất vào cuối tuần này nhằm kịp campaign marketing đầu tháng 8. Sau khi QA nêu rằng còn 30% test case chưa hoàn thành và cảnh báo nguy cơ phải rollback, cùng ý kiến của backend về khả năng timeout khi export báo cáo, cuộc họp thống nhất lùi lịch phát hành sang thứ ba ngày 28/07."
+    ]
+  },
+  "chapters": [
+    {
+      "title": "Cập nhật tiến độ backend",
+      "start_ms": 4000,
+      "end_ms": 74000,
+      "summary": "API thanh toán đã hoàn thành và deploy staging. Module export báo cáo bị chặn do query chậm 8 giây, hướng xử lý dự kiến là thêm index và cache.",
+      "consensus_level": "aligned"
+    },
+    {
+      "title": "Cập nhật tiến độ QA",
+      "start_ms": 75000,
+      "end_ms": 137000,
+      "summary": "Đã test 70% test case, crash rate giảm còn 2.3%. Luồng social login chưa test được do môi trường staging lỗi.",
+      "consensus_level": "aligned"
+    },
+    {
+      "title": "Chốt ngày release v2.4",
+      "start_ms": 138000,
+      "end_ms": 217000,
+      "summary": "Đề xuất release cuối tuần này bị QA và backend phản đối vì rủi ro chất lượng. Kết luận lùi sang thứ ba ngày 28/07.",
+      "consensus_level": "debated"
+    },
+    {
+      "title": "Phân công và các vấn đề còn treo",
+      "start_ms": 218000,
+      "end_ms": 275000,
+      "summary": "Phân công kiểm thử social login và submit store. Vấn đề migrate dữ liệu enterprise được hoãn sang cuộc họp tuần sau.",
+      "consensus_level": "unresolved"
+    }
+  ],
+  "discussion_points": [
+    {
+      "evidence_segment_ids": [
+        "s_0003"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 26000,
+      "point": "API thanh toán đã merge và deploy lên staging thành công",
+      "speakers": [
+        "Tuấn"
+      ]
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0003",
+        "s_0004"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 26000,
+      "point": "Module export báo cáo đang bị chặn do query chạy chậm, mất khoảng 8 giây với dữ liệu một năm",
+      "speakers": [
+        "Tuấn"
+      ]
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0008",
+        "s_0009"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 81000,
+      "point": "QA đã hoàn thành khoảng 70% test case; luồng đăng nhập social chưa test được do môi trường staging lỗi",
+      "speakers": [
+        "Lan"
+      ]
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0011"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 123000,
+      "point": "Bản RC của mobile đã build xong, chỉ chờ backend ổn định để submit lên store",
+      "speakers": [
+        "Minh"
+      ]
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0014"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 165000,
+      "point": "QA phản đối kế hoạch release cuối tuần vì còn 30% test case và luồng social login chưa kiểm thử",
+      "speakers": [
+        "Lan"
+      ]
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0016"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 195000,
+      "point": "Backend đồng tình lùi lịch vì query chậm chưa fix sẽ khiến chức năng export bị timeout",
+      "speakers": [
+        "Tuấn"
+      ]
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0021"
+      ],
+      "confidence": "low",
+      "timestamp_ms": 250000,
+      "point": "Quy trình review của Apple mất khoảng 2 ngày, cần tính vào lịch submit store",
+      "speakers": [
+        "Minh"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "evidence_segment_ids": [
+        "s_0012"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 138000,
+      "id": "d_001",
+      "statement": "Chốt release version 2.4 vào cuối tuần này để kịp campaign marketing đầu tháng 8",
+      "status": "rejected",
+      "decided_by": "Hùng",
+      "decided_by_person_id": "p_001",
+      "rationale": null,
+      "alternatives_considered": [],
+      "objections": [],
+      "supersedes": null,
+      "superseded_by": "d_002",
+      "target_date": "2026-07-26",
+      "quote": "Vậy mình chốt release version 2.4 vào cuối tuần này nhé",
+      "display_hint": "history_only",
+      "review_state": "ai_generated"
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0014",
+        "s_0015",
+        "s_0016",
+        "s_0017"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 165000,
+      "id": "d_002",
+      "statement": "Lùi release version 2.4 sang thứ 3 tuần sau",
+      "status": "decided",
+      "decided_by": "Hùng",
+      "decided_by_person_id": "p_001",
+      "rationale": null,
+      "alternatives_considered": [
+        "Giữ nguyên lịch release cuối tuần này",
+        "Chốt release version 2.4 vào cuối tuần này để kịp campaign marketing đầu tháng 8"
+      ],
+      "objections": [
+        {
+          "by": null,
+          "person_id": null,
+          "reason": "Lan: còn 30% test case và social login chưa test xong",
+          "evidence_segment_ids": []
+        },
+        {
+          "by": null,
+          "person_id": null,
+          "reason": "Tuấn: query chậm chưa fix sẽ gây timeout khi export",
+          "evidence_segment_ids": []
+        }
+      ],
+      "supersedes": "d_001",
+      "superseded_by": null,
+      "target_date": "2026-07-28",
+      "quote": "Vậy mình lùi release sang thứ 3 tuần sau đi.",
+      "display_hint": null,
+      "review_state": "ai_generated"
+    }
+  ],
+  "action_items": [
+    {
+      "evidence_segment_ids": [
+        "s_0004",
+        "s_0006"
+      ],
+      "confidence": "medium",
+      "timestamp_ms": 45000,
+      "id": "a_001",
+      "task": "Optimize query của module export báo cáo bằng cách thêm index và cache",
+      "assignee": "Tuấn",
+      "assignee_raw": "anh Tuấn",
+      "assignee_person_id": "p_002",
+      "due_date": null,
+      "due_raw": null,
+      "due_resolution_rule": "NOT_MENTIONED",
+      "commitment_strength": "tentative",
+      "priority": "high",
+      "status": "open",
+      "depends_on": [],
+      "related_decision_id": null,
+      "carried_over_from": null,
+      "quote": "Để anh xem lại rồi báo em sau nhé.",
+      "needs_review": true,
+      "review_state": "ai_generated"
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0009",
+        "s_0010"
+      ],
+      "confidence": "low",
+      "timestamp_ms": 100000,
+      "id": "a_002",
+      "task": "Fix môi trường staging đang bị lỗi khiến QA không test được luồng social login",
+      "assignee": null,
+      "assignee_raw": null,
+      "assignee_person_id": null,
+      "due_date": null,
+      "due_raw": null,
+      "due_resolution_rule": "NOT_MENTIONED",
+      "commitment_strength": "firm",
+      "priority": "high",
+      "status": "open",
+      "depends_on": [],
+      "related_decision_id": null,
+      "carried_over_from": null,
+      "quote": "Cái đó phải fix gấp, không là block hết cả team.",
+      "needs_review": true,
+      "review_state": "ai_generated"
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0013",
+        "s_0022"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 153000,
+      "id": "a_003",
+      "task": "Submit bản RC của ứng dụng mobile lên store",
+      "assignee": "Minh",
+      "assignee_raw": "em (Minh)",
+      "assignee_person_id": "p_004",
+      "due_date": "2026-07-24",
+      "due_raw": "trước thứ 6",
+      "due_resolution_rule": "THIS_WEEK_WEEKDAY_SMART(friday)",
+      "commitment_strength": "firm",
+      "priority": "high",
+      "status": "open",
+      "depends_on": [],
+      "related_decision_id": "d_001",
+      "carried_over_from": null,
+      "quote": "Em nhận phần submit store. Em sẽ làm xong trước thứ 6.",
+      "needs_review": true,
+      "review_state": "ai_generated"
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0018",
+        "s_0019"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 218000,
+      "id": "a_004",
+      "task": "Hoàn thành kiểm thử luồng đăng nhập bằng social",
+      "assignee": "Lan",
+      "assignee_raw": "chị Lan",
+      "assignee_person_id": "p_003",
+      "due_date": "2026-07-26",
+      "due_raw": "trước Chủ nhật",
+      "due_resolution_rule": "THIS_WEEK_WEEKDAY_SMART(sunday)",
+      "commitment_strength": "firm",
+      "priority": "high",
+      "status": "open",
+      "depends_on": [],
+      "related_decision_id": null,
+      "carried_over_from": null,
+      "quote": "Ừ được, chị sẽ xong trước Chủ nhật.",
+      "needs_review": false,
+      "review_state": "ai_generated"
+    }
+  ],
+  "risks": [
+    {
+      "evidence_segment_ids": [
+        "s_0004",
+        "s_0005"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 45000,
+      "id": "r_001",
+      "risk": "Query export chậm 8 giây có thể gây trải nghiệm kém cho người dùng",
+      "severity": "medium",
+      "raised_by": "Tuấn",
+      "raised_by_person_id": "p_002",
+      "mitigation": "Thêm index và cache",
+      "status": "mitigated"
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0009"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 100000,
+      "id": "r_002",
+      "risk": "Môi trường staging lỗi từ thứ 2 đang chặn tiến độ kiểm thử",
+      "severity": "high",
+      "raised_by": "Lan",
+      "raised_by_person_id": "p_003",
+      "mitigation": null,
+      "status": "open"
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0015"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 181000,
+      "id": "r_003",
+      "risk": "Release khi chưa kiểm thử đầy đủ có nguy cơ phải rollback như lần trước",
+      "severity": "high",
+      "raised_by": "Lan",
+      "raised_by_person_id": "p_003",
+      "mitigation": "Lùi ngày release để hoàn tất kiểm thử",
+      "status": "mitigated"
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0021",
+        "s_0022"
+      ],
+      "confidence": "low",
+      "timestamp_ms": 250000,
+      "id": "r_004",
+      "risk": "Thời gian review của Apple khoảng 2 ngày có thể ảnh hưởng lịch phát hành",
+      "severity": "medium",
+      "raised_by": "Minh",
+      "raised_by_person_id": "p_004",
+      "mitigation": "Submit ngay khi có bản build cuối",
+      "status": "mitigated"
+    }
+  ],
+  "metrics": [
+    {
+      "evidence_segment_ids": [
+        "s_0004"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 45000,
+      "id": "m_001",
+      "label": "Thời gian chạy query export",
+      "value_raw": "8 giây",
+      "value_normalized": 8.0,
+      "unit": "second",
+      "period": "với data 1 năm",
+      "trend": null
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0008"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 81000,
+      "id": "m_002",
+      "label": "Tiến độ test case sprint 23",
+      "value_raw": "70%",
+      "value_normalized": 70.0,
+      "unit": "percent",
+      "period": "sprint 23",
+      "trend": null
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0008"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 81000,
+      "id": "m_003",
+      "label": "Crash rate bản beta",
+      "value_raw": "2.3%",
+      "value_normalized": 2.3,
+      "unit": "percent",
+      "period": "hiện tại",
+      "trend": null
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0008"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 81000,
+      "id": "m_004",
+      "label": "Crash rate sprint trước",
+      "value_raw": "4.1%",
+      "value_normalized": 4.1,
+      "unit": "percent",
+      "period": "sprint 22",
+      "trend": null
+    },
+    {
+      "evidence_segment_ids": [
+        "s_0014"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 165000,
+      "id": "m_005",
+      "label": "Test case còn lại",
+      "value_raw": "30%",
+      "value_normalized": 30.0,
+      "unit": "percent",
+      "period": "tại thời điểm họp",
+      "trend": null
+    }
+  ],
+  "open_questions": [
+    {
+      "evidence_segment_ids": [
+        "s_0020"
+      ],
+      "confidence": "high",
+      "timestamp_ms": 235000,
+      "id": "q_001",
+      "question": "Có cần migrate dữ liệu cũ của các khách hàng enterprise hay không?",
+      "asked_by": "Hùng",
+      "deferred_to": null
+    }
+  ],
+  "next_meeting": {
+    "when_raw": "tuần sau",
+    "when_date": null,
+    "resolution_rule": "TOO_VAGUE(whole_week)",
+    "proposed_agenda": [
+      "Có cần migrate dữ liệu cũ của các khách hàng enterprise hay không?"
+    ],
+    "evidence_segment_ids": [
+      "s_0020"
+    ]
+  },
+  "quality_report": {
+    "overall_confidence": "low",
+    "needs_human_review": true,
+    "warnings": [
+      {
+        "code": "AMBIGUOUS_ASSIGNEE",
+        "message": "Công việc không được giao cho ai trong cuộc họp. Cần xác định người phụ trách.",
+        "affected_items": [
+          "a_002"
+        ],
+        "severity": "high"
+      },
+      {
+        "code": "SUPERSEDED_DEPENDENCY",
+        "message": "Cam kết được đưa ra khi quyết định d_001 còn hiệu lực, sau đó bị d_002 thay thế. Mốc 2026-07-24 có thể cần điều chỉnh.",
+        "affected_items": [
+          "a_003",
+          "d_001",
+          "d_002"
+        ],
+        "severity": "medium"
+      },
+      {
+        "code": "TRANSCRIPT_GAPS",
+        "message": "Segment s_0021 có đoạn không nghe rõ ở đầu câu; nội dung về thời gian review của Apple độ tin cậy thấp.",
+        "affected_items": [],
+        "severity": "low"
+      },
+      {
+        "code": "LOW_COMMITMENT_STRENGTH",
+        "message": "Công việc \"Optimize query của module export báo cáo bằng cách thêm inde\" mới ở mức cam kết dự kiến, chưa phải cam kết chắc chắn.",
+        "affected_items": [
+          "a_001"
+        ],
+        "severity": "medium"
+      }
+    ]
+  },
+  "validation": {
+    "validated_at": "2026-08-07T20:11:09.385174Z",
+    "validator_version": "1.0.0",
+    "schema_valid": true,
+    "checks": {
+      "evidence_ids_exist": {
+        "passed": true,
+        "checked": 23,
+        "failed": 0,
+        "detail": "Mọi evidence_segment_ids phải trỏ tới segment có thật"
+      },
+      "quotes_match_transcript": {
+        "passed": true,
+        "checked": 6,
+        "failed": 0,
+        "detail": "Độ khớp thấp nhất: 100%"
+      },
+      "assignees_in_attendees": {
+        "passed": true,
+        "checked": 3,
+        "failed": 0,
+        "detail": "Assignee phải nằm trong danh sách người tham dự"
+      },
+      "dates_within_valid_range": {
+        "passed": true,
+        "checked": 2,
+        "failed": 0,
+        "detail": "due_date phải có due_raw làm nguồn và nằm trong tương lai hợp lý"
+      },
+      "supersession_integrity": {
+        "passed": true,
+        "checked": 1,
+        "failed": 0,
+        "detail": "Quan hệ thay thế phải nhất quán hai chiều và đúng chiều thời gian"
+      },
+      "numbers_are_grounded": {
+        "passed": true,
+        "checked": 5,
+        "failed": 0,
+        "detail": "Mọi con số trong chỉ số phải xuất hiện nguyên vẹn trong transcript"
+      },
+      "prose_entities_known": {
+        "passed": true,
+        "checked": 15,
+        "failed": 0,
+        "detail": "Tên riêng giữa câu phải truy được về transcript"
+      },
+      "evidence_quality": {
+        "passed": true,
+        "checked": 6,
+        "failed": 0,
+        "detail": "Quyết định và công việc không được chỉ dựa trên segment kém tin cậy"
+      }
+    },
+    "grounding_score": 1.0,
+    "items_rejected": [],
+    "items_downgraded": [],
+    "llm_judge_invoked": false
+  }
+}

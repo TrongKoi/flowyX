@@ -1,0 +1,17 @@
+# Android Studio / Gradle
+*.iml
+.gradle/
+local.properties
+.idea/
+build/
+captures/
+.externalNativeBuild/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Ket qua chay thu
+runs/
+android/build-thu-cong/

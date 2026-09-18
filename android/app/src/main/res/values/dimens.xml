@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="le_man_hinh">16dp</dimen>
+    <dimen name="dem_the">16dp</dimen>
+    <dimen name="khoang_khoi">12dp</dimen>
+    <dimen name="bo_goc_the">20dp</dimen>
+    <dimen name="dong_ho">150dp</dimen>
+    <dimen name="chu_cau_hoi">22sp</dimen>
+    <dimen name="chu_buoc_hien_tai">24sp</dimen>
+
+</resources>

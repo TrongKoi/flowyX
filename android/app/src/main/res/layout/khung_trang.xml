@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    KHUNG TRANG - bo xuong chung cho cac tab dung TrangCoTab.
+
+    Thanh tren (v4): logo | [nut hanh dong cua trang, neu co] | CAI DAT.
+    Icon Cai dat co mat o MOI tab, cung mot vi tri - khong phai nho tab
+    nao co, tab nao khong.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nen"
+    android:orientation="vertical">
+
+    <include layout="@layout/khoi_thanh_logo" />
+
+    <ScrollView
+        android:id="@+id/cuon_trang"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/noi_dung"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/le_man_hinh"
+            android:paddingEnd="@dimen/le_man_hinh"
+            android:paddingBottom="96dp" />
+    </ScrollView>
+
+    <include layout="@layout/khoi_tab_duoi" />
+</LinearLayout>

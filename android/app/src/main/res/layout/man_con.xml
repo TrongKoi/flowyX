@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    MAN HINH CON DUNG CHUNG (v4): thanh tieu de co mui ten quay lai, noi
+    dung cuon, va mot nut chinh co dinh o day (tuy chon).
+
+    Dung cho: Go roi, Viet nhat ky, Tao/sua ke hoach.
+    Khong co thanh tab: day la man hinh LAM MOT VIEC, xong thi quay lai.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nen"
+    android:orientation="vertical">
+
+    <include layout="@layout/khoi_thanh_con" />
+
+    <ScrollView
+        android:id="@+id/cuon_con"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/noi_dung_con"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/le_man_hinh"
+            android:paddingTop="4dp"
+            android:paddingEnd="@dimen/le_man_hinh"
+            android:paddingBottom="@dimen/le_man_hinh" />
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/nut_duoi_con"
+        style="@style/Flowy.NutChinh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/le_man_hinh"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:visibility="gone" />
+</LinearLayout>

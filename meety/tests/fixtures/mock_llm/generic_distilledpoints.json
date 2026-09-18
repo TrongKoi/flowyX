@@ -1,0 +1,18 @@
+{
+  "points": [
+    {
+      "text": "Nhóm điểm lại tiến độ sprint và các việc còn tồn.",
+      "topic": "Tiến độ",
+      "evidence_segment_ids": [
+        "s_0001"
+      ]
+    },
+    {
+      "text": "Có trao đổi về việc phân công và mốc thời gian.",
+      "topic": "Phân công",
+      "evidence_segment_ids": [
+        "s_0002"
+      ]
+    }
+  ]
+}

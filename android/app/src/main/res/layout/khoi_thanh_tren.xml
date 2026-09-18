@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Thanh tren: ten app, trang thai noi, nut Cai dat. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- Logo thay cho ten app viet bang chu thuong: nhom yeu cau
+             logo co mat o moi trang, va no la moc co dinh o goc tren
+             ben trai tren ca ba man hinh. -->
+        <include layout="@layout/khoi_logo" />
+
+        <!-- Trang thai: mot dong nho. KHONG doc len - xem MainActivity.datTrangThai. -->
+        <TextView
+            android:id="@+id/trang_thai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:accessibilityLiveRegion="polite"
+            android:textColor="@color/chu_phu"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/nut_cai_dat"
+        style="@style/Flowy.NutIcon"
+        android:contentDescription="@string/cai_dat"
+        android:src="@drawable/ic_cai_dat" />
+</LinearLayout>

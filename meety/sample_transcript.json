@@ -1,0 +1,432 @@
+{
+  "transcript_id": "tr_20260722_v1",
+  "meeting_id": "mtg_20260722_sprint24",
+  "version": 1,
+  "meta": {
+    "title": "Sprint 23 Review & Chốt release v2.4",
+    "meeting_date": "2026-07-22",
+    "timezone": "Asia/Ho_Chi_Minh",
+    "meeting_type": "planning",
+    "duration_ms": 275000,
+    "glossary": [
+      "deploy",
+      "staging",
+      "backlog",
+      "sprint",
+      "release",
+      "API",
+      "index",
+      "cache",
+      "QA",
+      "RC",
+      "timeout",
+      "rollback",
+      "campaign",
+      "store",
+      "build",
+      "merge",
+      "submit"
+    ]
+  },
+  "provider": {
+    "asr": "groq/whisper-large-v3",
+    "diarization": "gemini-flash/textual-v1"
+  },
+  "language_profile": {
+    "primary": "vi",
+    "secondary": [
+      "en"
+    ],
+    "code_switching": true
+  },
+  "quality": {
+    "avg_logprob_mean": -0.2914,
+    "low_confidence_segment_count": 1,
+    "estimated_snr_db": 21.4,
+    "speech_ratio": 0.87,
+    "overall_score": 0.82
+  },
+  "speakers": [
+    {
+      "label": "SPEAKER_00",
+      "person_id": "p_001",
+      "display_name": "Hùng",
+      "role": "Product Lead",
+      "identification_method": "vocative",
+      "identification_confidence": 0.91,
+      "talk_time_ms": 102500,
+      "talk_time_pct": 39.4,
+      "evidence_for_identification": [
+        "s_0014"
+      ]
+    },
+    {
+      "label": "SPEAKER_01",
+      "person_id": "p_002",
+      "display_name": "Tuấn",
+      "role": "Backend Engineer",
+      "identification_method": "vocative",
+      "identification_confidence": 0.94,
+      "talk_time_ms": 50800,
+      "talk_time_pct": 19.5,
+      "evidence_for_identification": [
+        "s_0002"
+      ]
+    },
+    {
+      "label": "SPEAKER_02",
+      "person_id": "p_003",
+      "display_name": "Lan",
+      "role": "QA Lead",
+      "identification_method": "vocative",
+      "identification_confidence": 0.93,
+      "talk_time_ms": 69500,
+      "talk_time_pct": 26.7,
+      "evidence_for_identification": [
+        "s_0007",
+        "s_0018"
+      ]
+    },
+    {
+      "label": "SPEAKER_03",
+      "person_id": "p_004",
+      "display_name": "Minh",
+      "role": "Mobile Engineer",
+      "identification_method": "attendee_list_elimination",
+      "identification_confidence": 0.72,
+      "talk_time_ms": 37500,
+      "talk_time_pct": 14.4,
+      "evidence_for_identification": []
+    }
+  ],
+  "segments": [
+    {
+      "id": "s_0001",
+      "index": 1,
+      "speaker_label": "SPEAKER_00",
+      "person_id": "p_001",
+      "start_ms": 4000,
+      "end_ms": 18400,
+      "text": "Ok mọi người mình bắt đầu nhé. Hôm nay có hai việc chính, một là review lại sprint 23, hai là chốt cái release date cho version 2.4.",
+      "lang": "mixed",
+      "asr_confidence": 0.89,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0002",
+      "index": 2,
+      "speaker_label": "SPEAKER_00",
+      "person_id": "p_001",
+      "start_ms": 19000,
+      "end_ms": 25600,
+      "text": "Anh Tuấn cập nhật giúp em phần backend trước đi.",
+      "lang": "mixed",
+      "asr_confidence": 0.92,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0003",
+      "index": 3,
+      "speaker_label": "SPEAKER_01",
+      "person_id": "p_002",
+      "start_ms": 26000,
+      "end_ms": 44800,
+      "text": "Ừ, phần API thanh toán thì anh merge xong hôm qua rồi, đã deploy lên staging. Còn cái module export báo cáo thì đang stuck ở chỗ query chậm.",
+      "lang": "mixed",
+      "asr_confidence": 0.87,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0004",
+      "index": 4,
+      "speaker_label": "SPEAKER_01",
+      "person_id": "p_002",
+      "start_ms": 45000,
+      "end_ms": 52500,
+      "text": "Query hiện tại mất khoảng 8 giây với data một năm, hơi lâu.",
+      "lang": "mixed",
+      "asr_confidence": 0.9,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0005",
+      "index": 5,
+      "speaker_label": "SPEAKER_00",
+      "person_id": "p_001",
+      "start_ms": 53000,
+      "end_ms": 61500,
+      "text": "8 giây thì không acceptable rồi. Có cách nào optimize không anh?",
+      "lang": "mixed",
+      "asr_confidence": 0.91,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0006",
+      "index": 6,
+      "speaker_label": "SPEAKER_01",
+      "person_id": "p_002",
+      "start_ms": 62000,
+      "end_ms": 74000,
+      "text": "Có, anh nghĩ là thêm index với cache lại là được. Để anh xem lại rồi báo em sau nhé.",
+      "lang": "mixed",
+      "asr_confidence": 0.91,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0007",
+      "index": 7,
+      "speaker_label": "SPEAKER_00",
+      "person_id": "p_001",
+      "start_ms": 75000,
+      "end_ms": 80500,
+      "text": "Ok. Chị Lan bên QA thì sao ạ?",
+      "lang": "mixed",
+      "asr_confidence": 0.93,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0008",
+      "index": 8,
+      "speaker_label": "SPEAKER_02",
+      "person_id": "p_003",
+      "start_ms": 81000,
+      "end_ms": 99500,
+      "text": "Bên chị test được khoảng 70% test case rồi. Crash rate trên bản beta đang là 2.3%, giảm so với sprint trước là 4.1%.",
+      "lang": "mixed",
+      "asr_confidence": 0.88,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0009",
+      "index": 9,
+      "speaker_label": "SPEAKER_02",
+      "person_id": "p_003",
+      "start_ms": 100000,
+      "end_ms": 114500,
+      "text": "Nhưng còn cái luồng đăng nhập bằng social thì chị chưa test được, vì môi trường staging bị lỗi từ thứ 2.",
+      "lang": "mixed",
+      "asr_confidence": 0.89,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0010",
+      "index": 10,
+      "speaker_label": "SPEAKER_00",
+      "person_id": "p_001",
+      "start_ms": 115000,
+      "end_ms": 122500,
+      "text": "Cái đó phải fix gấp, không là block hết cả team.",
+      "lang": "mixed",
+      "asr_confidence": 0.9,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0011",
+      "index": 11,
+      "speaker_label": "SPEAKER_03",
+      "person_id": "p_004",
+      "start_ms": 123000,
+      "end_ms": 137500,
+      "text": "Em confirm là bên mobile build xong bản RC rồi, chỉ chờ backend ổn định là em submit lên store được.",
+      "lang": "mixed",
+      "asr_confidence": 0.86,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0012",
+      "index": 12,
+      "speaker_label": "SPEAKER_00",
+      "person_id": "p_001",
+      "start_ms": 138000,
+      "end_ms": 152500,
+      "text": "Ngon. Vậy mình chốt release version 2.4 vào cuối tuần này nhé, để kịp cái campaign marketing đầu tháng 8.",
+      "lang": "mixed",
+      "asr_confidence": 0.9,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0013",
+      "index": 13,
+      "speaker_label": "SPEAKER_03",
+      "person_id": "p_004",
+      "start_ms": 153000,
+      "end_ms": 164500,
+      "text": "Ok anh, em nhận phần submit store. Em sẽ làm xong trước thứ 6.",
+      "lang": "mixed",
+      "asr_confidence": 0.89,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0014",
+      "index": 14,
+      "speaker_label": "SPEAKER_02",
+      "person_id": "p_003",
+      "start_ms": 165000,
+      "end_ms": 180500,
+      "text": "Khoan anh Hùng ơi, cuối tuần này thì chị không kịp đâu. Còn 30% test case với cả cái social login chưa đụng vào được.",
+      "lang": "mixed",
+      "asr_confidence": 0.87,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0015",
+      "index": 15,
+      "speaker_label": "SPEAKER_02",
+      "person_id": "p_003",
+      "start_ms": 181000,
+      "end_ms": 194500,
+      "text": "Mà release mà chưa test kỹ thì rủi ro cao lắm, lần trước mình đã bị rollback một lần rồi.",
+      "lang": "mixed",
+      "asr_confidence": 0.88,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0016",
+      "index": 16,
+      "speaker_label": "SPEAKER_01",
+      "person_id": "p_002",
+      "start_ms": 195000,
+      "end_ms": 207500,
+      "text": "Anh cũng nghĩ vậy. Cái query chậm kia mà không fix thì user export báo cáo sẽ bị timeout.",
+      "lang": "mixed",
+      "asr_confidence": 0.89,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0017",
+      "index": 17,
+      "speaker_label": "SPEAKER_00",
+      "person_id": "p_001",
+      "start_ms": 208000,
+      "end_ms": 217500,
+      "text": "Ừ... thôi được rồi. Vậy mình lùi release sang thứ 3 tuần sau đi.",
+      "lang": "mixed",
+      "asr_confidence": 0.88,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0018",
+      "index": 18,
+      "speaker_label": "SPEAKER_00",
+      "person_id": "p_001",
+      "start_ms": 218000,
+      "end_ms": 226500,
+      "text": "Chị Lan cố gắng test xong phần social login trước cuối tuần này giúp em nhé.",
+      "lang": "mixed",
+      "asr_confidence": 0.91,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0019",
+      "index": 19,
+      "speaker_label": "SPEAKER_02",
+      "person_id": "p_003",
+      "start_ms": 227000,
+      "end_ms": 234500,
+      "text": "Ừ được, chị sẽ xong trước Chủ nhật.",
+      "lang": "mixed",
+      "asr_confidence": 0.92,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0020",
+      "index": 20,
+      "speaker_label": "SPEAKER_00",
+      "person_id": "p_001",
+      "start_ms": 235000,
+      "end_ms": 249500,
+      "text": "Còn vụ migrate data cũ của mấy khách hàng enterprise thì mình chưa quyết được, cái đó để bàn sau, tuần sau họp lại.",
+      "lang": "mixed",
+      "asr_confidence": 0.87,
+      "is_overlapped": false,
+      "is_low_quality": false
+    },
+    {
+      "id": "s_0021",
+      "index": 21,
+      "speaker_label": "SPEAKER_03",
+      "person_id": "p_004",
+      "start_ms": 250000,
+      "end_ms": 261500,
+      "text": "Anh ơi cái... [không nghe rõ] ...deadline submit store thì Apple review mất 2 ngày đấy ạ.",
+      "lang": "mixed",
+      "asr_confidence": 0.42,
+      "is_overlapped": true,
+      "is_low_quality": true
+    },
+    {
+      "id": "s_0022",
+      "index": 22,
+      "speaker_label": "SPEAKER_00",
+      "person_id": "p_001",
+      "start_ms": 262000,
+      "end_ms": 275000,
+      "text": "Ừ anh biết, vậy em submit ngay khi có bản build cuối nhé. Ok mình kết thúc ở đây.",
+      "lang": "mixed",
+      "asr_confidence": 0.9,
+      "is_overlapped": false,
+      "is_low_quality": false
+    }
+  ],
+  "chunks": [
+    {
+      "chunk_id": "c_01",
+      "segment_ids": [
+        "s_0001",
+        "s_0002",
+        "s_0003",
+        "s_0004",
+        "s_0005",
+        "s_0006",
+        "s_0007",
+        "s_0008",
+        "s_0009",
+        "s_0010",
+        "s_0011"
+      ],
+      "start_ms": 4000,
+      "end_ms": 137500,
+      "token_estimate": 1180
+    },
+    {
+      "chunk_id": "c_02",
+      "segment_ids": [
+        "s_0010",
+        "s_0011",
+        "s_0012",
+        "s_0013",
+        "s_0014",
+        "s_0015",
+        "s_0016",
+        "s_0017",
+        "s_0018",
+        "s_0019",
+        "s_0020",
+        "s_0021",
+        "s_0022"
+      ],
+      "start_ms": 115000,
+      "end_ms": 275000,
+      "token_estimate": 1340
+    }
+  ]
+}

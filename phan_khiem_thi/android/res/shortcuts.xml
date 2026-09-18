@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Loi tat khi cham giu bieu tuong app.
+
+  Voi TalkBack: cham dup roi giu, TalkBack se doc danh sach loi tat.
+  It dung hon o Cai dat nhanh nhung khong ton gi de them, va la cach
+  quen thuoc voi nguoi da dung Android lau.
+-->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="bat-dau"
+        android:enabled="true"
+        android:shortcutShortLabel="@string/shortcut_start_short"
+        android:shortcutLongLabel="@string/shortcut_start">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="vn.adc2026.wayfinding"
+            android:targetClass="vn.adc2026.wayfinding.MainActivity" />
+    </shortcut>
+</shortcuts>

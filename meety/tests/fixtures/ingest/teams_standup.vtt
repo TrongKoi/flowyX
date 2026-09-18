@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00:02.140 --> 00:00:09.820
+<v Trần Thị Lan>Chào cả nhà, mình bắt đầu standup nhé. Hôm nay ngắn thôi, mỗi người ba mươi giây.</v>
+
+00:00:10.400 --> 00:00:21.960
+<v Nguyễn Văn Tuấn>Hôm qua em fix xong cái bug timeout ở API báo cáo. Hôm nay em làm tiếp phần cache cho endpoint search.</v>
+
+00:00:22.500 --> 00:00:29.180
+<v Nguyễn Văn Tuấn>Không có blocker gì ạ.</v>
+
+00:00:29.900 --> 00:00:41.330
+<v Phạm Minh>Em đang chờ bản build từ CI, chắc trưa nay xong. Chiều em submit lên TestFlight.</v>
+
+00:00:42.000 --> 00:00:53.470
+<v Trần Thị Lan>Ok, vậy chiều nay mình có bản để test. Anh Tuấn nhớ ping em khi cache xong nhé.</v>

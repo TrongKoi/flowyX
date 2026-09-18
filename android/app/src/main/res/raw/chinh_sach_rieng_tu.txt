@@ -1,0 +1,113 @@
+Cập nhật lần cuối: 18/09/2026
+Phiên bản: 5.0
+
+# Tóm tắt trong sáu dòng
+
+- Flowy chạy hoàn toàn trên máy bạn. Không có tài khoản trên máy chủ, không có đồng bộ đám mây.
+- Chúng tôi không thu thập dữ liệu cá nhân của bạn, vì không có nơi nào để nhận.
+- Nhật ký và cảm xúc được mã hoá AES-256 bằng khoá nằm trong kho khoá phần cứng của máy.
+- Không có quảng cáo, không có bộ đo lường hành vi, không có thư viện theo dõi của bên thứ ba.
+- Chúng tôi không bán, không chia sẻ, không dùng dữ liệu của bạn để huấn luyện mô hình.
+- Bạn xoá được tất cả bằng một thao tác, và xoá là xoá thật.
+
+Phần còn lại giải thích chi tiết từng điểm.
+
+# 1. Ai chịu trách nhiệm
+
+Đội ngũ Flowy (dự án ADC 2026) là bên phát hành ứng dụng. Theo cách gọi của GDPR, với gần như toàn bộ dữ liệu trong ứng dụng, bạn vừa là chủ thể dữ liệu vừa là người nắm giữ dữ liệu — dữ liệu không rời khỏi thiết bị của bạn, nên chúng tôi không ở vị trí "bên kiểm soát dữ liệu" đối với chúng.
+
+Liên hệ về quyền riêng tư: flowy.adc2026@gmail.com
+
+# 2. Dữ liệu ứng dụng lưu, và lưu ở đâu
+
+Tất cả các mục dưới đây nằm trong bộ nhớ riêng của ứng dụng trên thiết bị, khu vực mà hệ điều hành Android chỉ cho phép chính Flowy đọc.
+
+## Hồ sơ tài khoản
+
+Họ tên, địa chỉ Gmail, số điện thoại (không bắt buộc). Mật khẩu KHÔNG được lưu: chúng tôi chỉ lưu giá trị băm PBKDF2-HMAC-SHA256 với 210.000 vòng lặp và muối ngẫu nhiên riêng cho từng tài khoản, theo khuyến nghị OWASP 2023. Từ giá trị băm không suy ngược ra mật khẩu.
+
+Mã khôi phục cũng chỉ được lưu ở dạng băm, theo cùng cách.
+
+## Kế hoạch, lịch, biên bản họp
+
+Tiêu đề, thời gian, mức ưu tiên, ghi chú, trạng thái hoàn thành. Lưu dạng thường trong cơ sở dữ liệu SQLite của ứng dụng.
+
+## Nhật ký và cảm xúc
+
+Được mã hoá AES-256-GCM trước khi ghi xuống đĩa. Khoá mã hoá sinh ra và nằm lại trong Android Keystore — trên phần lớn máy hiện nay, khoá nằm trong vùng phần cứng tách biệt và không trích xuất ra được, kể cả khi máy đã root. Khoá không rời khỏi máy, không có bản sao nào ở nơi khác, và chúng tôi không có nó.
+
+Đây là dữ liệu riêng tư nhất trong ứng dụng, nên nó được đối xử khác phần còn lại.
+
+## Thời lượng tập trung và tiến độ
+
+Số phiên tập trung, độ dài, số việc đã xong theo ngày. Dùng để vẽ chuỗi ngày và thống kê trong ứng dụng.
+
+## Tuỳ chọn giao diện
+
+Ngôn ngữ, phông chữ, cỡ chữ, mức rung. Lưu trong SharedPreferences.
+
+# 3. Dữ liệu ứng dụng KHÔNG thu thập
+
+- Không mã định danh quảng cáo, không dấu vân tay thiết bị.
+- Không vị trí, không danh bạ, không ảnh, không lịch sử duyệt web.
+- Không nhật ký sự cố tự động gửi đi, không bộ đo lường hành vi.
+- Không SDK quảng cáo, không SDK phân tích của bên thứ ba.
+
+Danh sách quyền ứng dụng xin là bằng chứng kiểm chứng được: Internet, trạng thái mạng, rung, ghi âm (nhận dạng giọng nói chạy trên máy), thông báo, báo thức chính xác, khởi động lại. Không có quyền nào cho camera, vị trí hay danh bạ.
+
+# 4. Kết nối mạng
+
+Ứng dụng chỉ mở kết nối mạng trong một trường hợp: chế độ "phiên có laptop" thử nghiệm, khi bạn tự nhập địa chỉ máy tính của mình trong mạng LAN nội bộ. Gói tin khi đó đi thẳng từ điện thoại tới máy tính của bạn, không qua máy chủ nào của chúng tôi, và không mang nội dung nhật ký hay cảm xúc.
+
+Nếu bạn không bật chế độ đó, Flowy không gửi và không nhận bất cứ gói tin nào.
+
+# 5. Nhận dạng giọng nói
+
+Khi bạn dùng nút micro, ứng dụng gọi bộ nhận dạng giọng nói của hệ điều hành và yêu cầu chế độ chạy trên máy. Nếu máy bạn không có gói ngoại tuyến cho ngôn ngữ đang dùng, Android có thể chuyển sang xử lý trên máy chủ của nhà sản xuất — đó là hành vi của hệ điều hành, nằm ngoài tầm với của Flowy. Ứng dụng báo cho bạn trong Cài đặt khi phát hiện tình trạng này; muốn chắc chắn, hãy tải gói ngoại tuyến hoặc gõ tay thay vì nói.
+
+# 6. Dữ liệu sức khoẻ
+
+Khi bạn chủ động bật kết nối Health Connect, Flowy xin quyền đọc một số chỉ số bạn chọn — chẳng hạn giấc ngủ và vận động — để hiển thị bên cạnh số liệu tập trung của bạn.
+
+Nguyên tắc chúng tôi áp dụng:
+
+- Chỉ đọc, không ghi ngược vào hồ sơ sức khoẻ của bạn.
+- Chỉ đọc đúng loại chỉ số bạn đã tích chọn, không hơn.
+- Dữ liệu đọc về nằm trong bảng riêng, mã hoá cùng cơ chế với nhật ký.
+- Không truyền ra khỏi máy trong bất kỳ trường hợp nào.
+- Tắt kết nối trong Cài đặt sẽ xoá toàn bộ dữ liệu sức khoẻ đã đọc, ngay lập tức.
+
+Về HIPAA: HIPAA của Hoa Kỳ áp dụng cho các đơn vị được điều chỉnh (cơ sở y tế, hãng bảo hiểm và đối tác của họ). Flowy không phải một trong số đó, và dữ liệu bạn tự ghi vào một ứng dụng cá nhân không phải "thông tin sức khoẻ được bảo vệ" theo nghĩa của luật này. Tuy vậy, chúng tôi áp dụng các biện pháp kỹ thuật tương đương mức HIPAA yêu cầu — mã hoá khi lưu trữ, kiểm soát truy cập, tối thiểu hoá dữ liệu — vì đó là cách đúng để đối xử với loại thông tin này, bất kể luật có bắt hay không.
+
+Về GDPR: dữ liệu sức khoẻ thuộc nhóm dữ liệu nhạy cảm theo Điều 9. Cơ sở pháp lý duy nhất chúng tôi dựa vào là sự đồng ý rõ ràng của bạn, thể hiện bằng thao tác bật kết nối, và bạn rút lại bất cứ lúc nào bằng cách tắt nó.
+
+# 7. Quyền của bạn
+
+Theo GDPR (Liên minh châu Âu), Nghị định 13/2023/NĐ-CP (Việt Nam) và các luật tương đương, bạn có quyền truy cập, sửa, xoá, hạn chế xử lý và mang dữ liệu đi nơi khác.
+
+Trong Flowy, những quyền này không cần đơn từ, vì dữ liệu nằm trong tay bạn:
+
+- Truy cập và sửa: mở ứng dụng.
+- Xoá: Cài đặt → Tài khoản → Xoá tài khoản. Thao tác này xoá cơ sở dữ liệu, các tệp tuỳ chọn và khoá mã hoá trong Keystore. Không hoàn tác được.
+- Mang đi: chức năng xuất dữ liệu ra tệp trong Cài đặt.
+- Phản đối xử lý: gỡ ứng dụng.
+
+Chúng tôi không thể thực hiện các quyền này thay bạn, vì chúng tôi không giữ bản sao nào.
+
+# 8. Trẻ em
+
+Ứng dụng dành cho người từ 16 tuổi trở lên, hoặc từ 13 tuổi khi có sự đồng ý của cha mẹ hoặc người giám hộ. Chúng tôi không thu thập dữ liệu của trẻ em — chúng tôi không thu thập dữ liệu của ai cả.
+
+# 9. Rủi ro bạn nên biết
+
+Bảo mật của Flowy dựa trên bảo mật của thiết bị. Nếu máy bạn không đặt khoá màn hình, hoặc bị root và có phần mềm độc hại chạy với quyền cao nhất, các lớp bảo vệ của ứng dụng có thể bị vượt qua. Hãy đặt khoá màn hình và cập nhật hệ điều hành.
+
+Bản sao lưu tự động của Android đã được TẮT cho ứng dụng này (allowBackup="false"), nên dữ liệu Flowy không lọt vào bản sao lưu đám mây của Google hay của nhà sản xuất máy.
+
+# 10. Thay đổi chính sách
+
+Khi chính sách thay đổi, ngày ở đầu tài liệu được cập nhật và ứng dụng hiển thị thông báo ở lần mở kế tiếp. Với thay đổi ảnh hưởng đến cách xử lý dữ liệu, chúng tôi hỏi lại sự đồng ý của bạn trước khi áp dụng.
+
+# 11. Liên hệ
+
+flowy.adc2026@gmail.com — chúng tôi trả lời trong vòng 30 ngày.

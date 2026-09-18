@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Khong dung AppCompat/Material Components - du an khong keo androidx
+    (xem frontend/build.gradle.kts). Theme.Material co san tu API 21.
+
+    Hai ban: sang o day, toi o values-night. Chi THEO MAY - khong co nut
+    doi trong app (xem ghi chu dau values-night/colors.xml).
+-->
+<resources>
+    <style name="FlowyGoc" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/nen</item>
+        <item name="android:colorBackground">@color/nen</item>
+        <item name="android:colorAccent">@color/nhan</item>
+        <item name="android:colorPrimary">@color/nen</item>
+        <item name="android:colorPrimaryDark">@color/nen</item>
+        <item name="android:statusBarColor">@color/nen</item>
+        <item name="android:navigationBarColor">@color/nen</item>
+        <item name="android:textColorPrimary">@color/chu</item>
+        <item name="android:textColorSecondary">@color/chu_phu</item>
+        <item name="android:alertDialogTheme">@style/FlowyHopThoai</item>
+        <item name="android:datePickerDialogTheme">@style/FlowyHopThoai</item>
+        <item name="android:timePickerDialogTheme">@style/FlowyHopThoai</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <!-- Goc cua cac style Flowy.* - ten co dau cham ngam ke thua ten dung
+         truoc no, nen "Flowy" phai ton tai, neu khong aapt2 bao loi. -->
+    <style name="Flowy" />
+
+    <style name="Flowy.The">
+        <item name="android:background">@drawable/nen_the</item>
+        <item name="android:padding">@dimen/dem_the</item>
+        <item name="android:layout_marginTop">@dimen/khoang_khoi</item>
+    </style>
+
+    <style name="Flowy.NhanKhoi">
+        <item name="android:textColor">@color/chu_phu</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Flowy.NutChinh">
+        <item name="android:background">@drawable/nut_chinh</item>
+        <item name="android:textColor">@color/chu_tren_nhan</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="Flowy.NutPhu">
+        <item name="android:background">@drawable/nut_phu</item>
+        <item name="android:textColor">@color/chu</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="Flowy.NutChu">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textColor">@color/chu_lien_ket</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:minWidth">48dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
+
+    <style name="Flowy.Chip">
+        <item name="android:background">@drawable/chip</item>
+        <item name="android:textColor">@color/chu</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="Flowy.ONhap">
+        <item name="android:background">@drawable/o_nhap</item>
+        <item name="android:textColor">@color/chu</item>
+        <item name="android:textColorHint">@color/chu_phu</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:minHeight">52dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+    <!-- ============================================================
+         THANH TAB DUOI
+         ============================================================ -->
+
+
+
+
+    <style name="Flowy.Tab">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="Flowy.TabIcon">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
+    <style name="Flowy.TabChu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/tab_chon</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
+    <!-- Nut icon tren thanh tieu de: 48dp vung cham, icon 24dp. -->
+    <style name="Flowy.NutIcon">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:tint">@color/chu</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <!-- Hop thoai he thong. Nut chu dung chu_lien_ket: mau nhan vang cu tren
+         nen trang chi ~1.4:1. Font o tang nay nam o values-v26. -->
+    <style name="FlowyHopThoaiGoc" parent="@android:style/Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/chu_lien_ket</item>
+        <item name="android:colorBackground">@color/the_2</item>
+        <item name="android:textColorPrimary">@color/chu</item>
+        <item name="android:textColorSecondary">@color/chu_phu</item>
+    </style>
+
+    <!-- Theme dung trong manifest. Android 7: bang FlowyGoc (font ap bang
+         GiaoDien.apFont). Android 8+: values-v26 them Lexend o tang theme. -->
+    <style name="Theme.Wayfinding" parent="FlowyGoc" />
+    <style name="FlowyHopThoai" parent="FlowyHopThoaiGoc" />
+
+    <!-- Nguoi dung TAT Lexend: font he thong o ca app lan hop thoai. -->
+    <style name="FlowyHeThong" parent="FlowyGoc">
+        <item name="android:alertDialogTheme">@style/FlowyHopThoaiGoc</item>
+        <item name="android:datePickerDialogTheme">@style/FlowyHopThoaiGoc</item>
+        <item name="android:timePickerDialogTheme">@style/FlowyHopThoaiGoc</item>
+    </style>
+</resources>

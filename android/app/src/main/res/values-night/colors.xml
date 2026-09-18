@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ================================================================
+    BANG MAU DEM "MUC DEM" (v5, 18/09/2026) - VIET LAI HOAN TOAN
+    ================================================================
+
+    Ban v4 chi ha sang bang mau ngay roi giam bao hoa: nhin ra van la
+    "ban sang bi toi di", khong phai mot che do rieng. Ban nay doi CACH
+    PHAN VAI cua mau, khong chi doi do sang:
+
+      Ban SANG : giay kem, MUC navy, khoi vang/cam la mang nen.
+      Ban DEM  : navy tro thanh CHINH NEN (nen la muc), chu la nga lanh,
+                 vang chi con la mot vet nhan nho, va viec "bam duoc"
+                 do mot mau LANH moi - tim oai huong - dam nhan.
+
+    Vi sao tim oai huong (#A99BF0) cho thanh phan bam duoc:
+      · Tren nen toi, vang va cam rung manh va hut mat lien tuc - dung
+        thu nguoi ADHD de bi keo di. Tim lanh tra ve dung mot viec: "cai
+        nay bam duoc".
+      · No van thuoc ho mau cua logo (navy -> tim) nen khong lac bo.
+      · Nguoi mu mau do-luc van phan biet duoc tim voi vang/cam.
+
+    Bon tang be mat, sang dan deu (L = 0.007 / 0.012 / 0.021 / 0.033).
+    Tren nen toi bong do gan nhu vo hinh, nen "cao hon" phai the hien
+    bang SANG HON, giong cach Material Dark lam.
+
+    Do tuong phan da do (WCAG 2.1):
+        chu / nen          14.92     chu / the        13.63
+        chu / the_2        12.03     chu / the_3      10.31
+        chu_phu / nen       7.32     chu_phu / the     6.69
+        chu_lien_ket / nen  7.58     nhan / nen       10.20
+        chu_tren_nhan/nhan  9.93     cam / the         6.50
+
+    Nen KHONG phai den tuyet doi (#000): chu trang tren den 21:1 lam net
+    chu "loe" (halation) va moi mat khi nhin lau.
+-->
+<resources>
+
+    <!-- ============ NEN VA BE MAT ============ -->
+    <color name="nen">#121320</color>
+    <color name="the">#1B1C2B</color>
+    <color name="the_2">#24263A</color>
+    <!-- Tang 3: hop thoai, bottom sheet, thu noi len tren cung. -->
+    <color name="the_3">#2D3050</color>
+    <color name="vien">#3A3D58</color>
+
+    <!-- ============ CHU ============ -->
+    <!-- Nga lanh, khong trang tinh: 14.92:1 - du gap doi chuan AAA. -->
+    <color name="chu">#E8E6F0</color>
+    <color name="chu_phu">#A3A1B8</color>
+    <!-- Moi thu bam duoc ma khong phai nut chinh: tim oai huong. -->
+    <color name="chu_lien_ket">#A99BF0</color>
+
+    <!-- ============ NHAN ============ -->
+    <!-- Vang thuong hieu ha bao hoa. Chi dung cho MOT nut chinh moi man. -->
+    <color name="nhan">#F2B742</color>
+    <color name="chu_tren_nhan">#17161F</color>
+    <color name="nhan_nhat">#2B2517</color>
+    <color name="nhan_vien">#6B5726</color>
+    <color name="cam">#F0844A</color>
+    <color name="cam_nhat">#2E2118</color>
+
+    <!-- ============ DONG HO TAP TRUNG ============ -->
+    <!-- Ba chang: con nhieu (lanh, khong giuc) -> sap het -> di ngay. -->
+    <color name="dh_con_nhieu">#8F8CE0</color>
+    <color name="dh_sap_den">#F2B742</color>
+    <color name="dh_di_ngay">#F0844A</color>
+    <color name="dh_ranh">#2A2C42</color>
+
+    <!-- ============ UU TIEN ============ -->
+    <!-- Mau chi la tin hieu phu: luon kem chu "Cao / Vua / Thap". -->
+    <color name="uu_cao">#F0844A</color>
+    <color name="uu_vua">#F2B742</color>
+    <color name="uu_thap">#6C6A85</color>
+
+    <!-- ============ CU CHI VUOT ============ -->
+    <color name="ghim">#A99BF0</color>
+    <color name="ghim_nhat">#262445</color>
+    <color name="xanh_xong">#5FBF98</color>
+    <color name="do_xoa">#E2705E</color>
+    <color name="vuot_xoa">#E8E6F0</color>
+    <color name="chu_vuot_xoa">#121320</color>
+    <color name="vuot_xong">#F2B742</color>
+    <color name="chu_vuot_xong">#17161F</color>
+
+    <!-- ============ THANH TAB KINH MO ============ -->
+    <color name="tab_pill">#332F52</color>
+    <color name="tab_chon">#E8E6F0</color>
+
+    <!-- ============ KHOI MAU KE HOACH ============ -->
+    <color name="buoc_1">#2A2618</color>
+    <color name="buoc_2">#2E2319</color>
+    <color name="buoc_3">#242641</color>
+    <color name="buoc_4">#2A2340</color>
+    <color name="buoc_5">#26273A</color>
+
+    <!-- ============ LOGO ============ -->
+    <color name="nen_bieu_tuong">#FEF4EF</color>
+
+    <!-- Tam kinh thanh tab, ban toi: mau `the` o do trong 92%. Dam hon ban sang mot chut vi nen toi de lo net chu phia sau hon. -->
+    <color name="kinh_nen">#EB1B1C2B</color>
+    <!-- Vach bat sang: rat nhe o che do toi - mot vach trang manh tren nen muc dem da du thay, manh hon la thanh mot duong ke choi mat. -->
+    <color name="kinh_sang">#1FFFFFFF</color>
+</resources>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    MAN HINH CHINH = MAY TINH BANG (rong tu 600 dp).
+
+    Hai cot, cung cac khoi voi ban dien thoai:
+
+        +=====================+===============================+
+        | THOI GIAN (dia to)  | y dinh                        |
+        |                     | cau hoi + o nhap              |
+        | ke hoach tiep theo  | BUOC                          |
+        |                     | nut chinh + muc nhac          |
+        |                     | loi nhac / nhat ky            |
+        +=====================+===============================+
+
+    Cot trai la thu LIEC MOT CAI LA THAY; cot phai la thu de lam. Khong
+    khoa xoay = xem MainActivity.onCreate.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nen"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/le_man_hinh"
+    android:paddingTop="@dimen/le_man_hinh"
+    android:paddingEnd="@dimen/le_man_hinh">
+
+    <include layout="@layout/khoi_thanh_tren" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/le_man_hinh">
+
+                <include layout="@layout/khoi_thoi_gian" />
+                <include layout="@layout/khoi_tiep_theo" />
+            </LinearLayout>
+        </ScrollView>
+
+        <ScrollView
+            android:id="@+id/cuon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/le_man_hinh"
+            android:layout_weight="3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/le_man_hinh">
+
+                <include layout="@layout/khoi_y_dinh" />
+                <include layout="@layout/khoi_hoi" />
+                <include layout="@layout/khoi_buoc" />
+                <include layout="@layout/khoi_hanh_dong" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <include layout="@layout/khoi_tab_duoi" />
+</LinearLayout>

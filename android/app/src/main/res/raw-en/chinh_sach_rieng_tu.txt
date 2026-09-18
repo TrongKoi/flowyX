@@ -1,0 +1,113 @@
+Last updated: 18 September 2026
+Version: 5.0
+
+# The short version
+
+- Flowy runs entirely on your device. There is no server account and no cloud sync.
+- We collect none of your personal data, because there is nowhere for it to arrive.
+- Journal entries and moods are encrypted with AES-256 using a key held in the device's hardware-backed keystore.
+- No ads, no behavioural analytics, no third-party tracking libraries.
+- We do not sell, share, or train models on your data.
+- You can delete everything with one action, and deletion is real.
+
+The rest of this document explains each point.
+
+# 1. Who is responsible
+
+The Flowy team (ADC 2026 project) publishes the app. In GDPR terms, for almost everything in the app you are both the data subject and the party holding the data — it never leaves your device, so we are not in the position of a data controller over it.
+
+Privacy contact: flowy.adc2026@gmail.com
+
+# 2. What the app stores, and where
+
+Everything below lives in the app's private storage on the device, an area the Android operating system only lets Flowy itself read.
+
+## Account profile
+
+Full name, Gmail address, phone number (optional). The password is NOT stored: we keep only a PBKDF2-HMAC-SHA256 hash with 210,000 iterations and a random per-account salt, following the OWASP 2023 recommendation. The password cannot be recovered from that hash.
+
+The recovery code is stored the same way, as a hash only.
+
+## Plans, calendar, meeting minutes
+
+Titles, times, priority levels, notes, completion state. Stored in plain form in the app's SQLite database.
+
+## Journal entries and moods
+
+Encrypted with AES-256-GCM before being written to disk. The encryption key is generated in and stays inside the Android Keystore — on most modern devices that means a separate hardware area from which it cannot be extracted, even on a rooted phone. The key never leaves the device, no copy exists anywhere else, and we do not have it.
+
+This is the most private data in the app, so it is treated differently from the rest.
+
+## Focus time and progress
+
+Number of focus sessions, their length, tasks completed per day. Used to draw your streak and statistics inside the app.
+
+## Interface preferences
+
+Language, typeface, text size, haptic strength. Stored in SharedPreferences.
+
+# 3. What the app does not collect
+
+- No advertising identifier, no device fingerprinting.
+- No location, contacts, photos or browsing history.
+- No automatic crash reports sent anywhere, no behavioural analytics.
+- No advertising SDKs, no third-party analytics SDKs.
+
+The permission list is verifiable evidence: internet, network state, vibration, microphone (on-device speech recognition), notifications, exact alarms, restart after boot. Nothing for camera, location or contacts.
+
+# 4. Network connections
+
+The app opens a network connection in exactly one case: the experimental "laptop session" mode, when you type your own computer's address on your local network. Those packets travel straight from your phone to your computer, through no server of ours, and carry no journal or mood content.
+
+If you do not enable that mode, Flowy sends and receives nothing.
+
+# 5. Speech recognition
+
+When you use the microphone button, the app calls the operating system's speech recogniser and requests on-device processing. If your phone has no offline language pack for the language in use, Android may fall back to the manufacturer's servers — that is operating-system behaviour, outside Flowy's control. The app tells you in Settings when it detects this; to be certain, install the offline pack or type instead of speaking.
+
+# 6. Health data
+
+When you deliberately enable the Health Connect integration, Flowy requests read access to the metrics you choose — sleep and activity, for example — to display them next to your focus figures.
+
+The principles we apply:
+
+- Read only; we never write back to your health record.
+- Only the metric types you ticked, nothing more.
+- Data read in is kept in its own table, encrypted the same way as the journal.
+- It never leaves the device under any circumstances.
+- Turning the connection off in Settings deletes all health data read so far, immediately.
+
+On HIPAA: the US HIPAA rules apply to covered entities (healthcare providers, insurers and their business associates). Flowy is none of those, and data you enter yourself into a personal app is not "protected health information" in the legal sense. Even so, we apply technical safeguards equivalent to what HIPAA requires — encryption at rest, access control, data minimisation — because that is the right way to treat this kind of information whether or not a law compels it.
+
+On GDPR: health data is a special category under Article 9. The only legal basis we rely on is your explicit consent, expressed by turning the integration on, and you can withdraw it at any time by turning it off.
+
+# 7. Your rights
+
+Under the GDPR (European Union), Decree 13/2023/ND-CP (Vietnam) and equivalent laws, you have the right to access, correct, erase, restrict the processing of, and port your data.
+
+In Flowy these need no request form, because the data is already in your hands:
+
+- Access and correct: open the app.
+- Erase: Settings → Account → Delete account. This removes the database, the preference files and the encryption key in the Keystore. It cannot be undone.
+- Port: the export-to-file option in Settings.
+- Object to processing: uninstall the app.
+
+We cannot exercise these rights on your behalf, because we hold no copy.
+
+# 8. Children
+
+The app is for people aged 16 and over, or 13 and over with the consent of a parent or guardian. We do not collect children's data — we do not collect anyone's data.
+
+# 9. Risks you should know about
+
+Flowy's security rests on your device's security. If your phone has no screen lock, or is rooted and running malware with full privileges, the app's protections can be bypassed. Set a screen lock and keep the operating system updated.
+
+Android's automatic backup is DISABLED for this app (allowBackup="false"), so Flowy data does not end up in Google's or your manufacturer's cloud backups.
+
+# 10. Changes to this policy
+
+When the policy changes, the date at the top is updated and the app shows a notice the next time you open it. For changes that affect how data is handled, we ask for your consent again before applying them.
+
+# 11. Contact
+
+flowy.adc2026@gmail.com — we answer within 30 days.

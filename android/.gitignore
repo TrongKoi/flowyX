@@ -1,0 +1,15 @@
+# Android Studio / Gradle
+*.iml
+.gradle/
+local.properties
+.idea/
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+
+# Anh ma sinh ra tu tools/generate_markers.py - khong commit binary,
+# moi nguoi tu sinh lai theo huong dan trong assets/markers/README.txt
+app/src/main/assets/markers/*.png

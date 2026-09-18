@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    BANG MAU FLOWYX - ban SANG.
+
+    Ban toi o values-night/colors.xml. CUNG TEN, khac gia tri - moi layout
+    va drawable chi goi ten, khong bao gio goi ma mau. Doi bo nhan dien
+    thi sua HAI tep nay, khong sua cho nao khac.
+
+    Bon ma mau LAY THANG tu tep `thiet_ke/FlowyX_LogoBrand/1.png` bang
+    cach do diem anh o giua tung o mau, khong phai doc bang mat. Ban
+    truoc doc bang mat va lech o ba trong bon mau.
+
+    ================================================================
+    QUY TAC QUAN TRONG NHAT: VANG VA CAM LA MAT NEN, NAVY LA MUC
+    ================================================================
+
+    Do tuong phan tung cap (WCAG, can 4.5:1 cho chu thuong):
+
+        navy tren kem     12.75 : 1   dat
+        navy tren vang     9.64 : 1   dat
+        navy tren cam      5.60 : 1   dat
+        kem tren navy     12.75 : 1   dat
+
+        cam tren kem       2.28 : 1   HONG - hong ca voi chu to
+        vang tren kem      1.32 : 1   HONG - gan nhu vo hinh
+        cam tren vang      1.72 : 1   HONG - khong phan biet duoc
+
+    Nen `chu_tren_nhan` la NAVY chu khong phai trang: nut chinh nen vang,
+    chu trang tren vang chi duoc 1.7:1. Day la cho de sai nhat khi ai do
+    "cho no giong Material" - chu trang tren nut mau la phan xa, va o
+    bang mau nay no hong.
+
+    Cam KHONG duoc dung lam mau chu tren nen kem. Chi dung lam mang to,
+    vien, hoac do thi.
+
+    Khong co mau do nao. Do tuoi doc la BAO DONG, ma bao dong lap lai se
+    bi bo qua hoac lam nguoi dung tranh mo app - xem
+    docs/UIUX_QUYET_DINH.md cau 3. Bang mau moi khong co do, tien.
+-->
+<resources>
+    <!-- Nen bieu tuong app. Tach rieng khoi `nen` vi day la mau cua BO
+         NHAN DIEN: no khong doi theo giao dien. -->
+    <color name="nen_bieu_tuong">#FEF4EF</color>
+
+    <color name="nen">#FEF4EF</color>
+    <color name="the">#FFFFFF</color>
+    <color name="vien">#EDE4DD</color>
+    <color name="chu">#2D2A42</color>
+    <color name="chu_phu">#8A8798</color>
+
+    <!-- Nhan chinh = VANG. Chu de len no phai la navy. -->
+    <color name="nhan">#FFD400</color>
+    <color name="chu_tren_nhan">#2D2A42</color>
+    <color name="nhan_nhat">#FFF8E1</color>
+    <color name="nhan_vien">#F5DE8A</color>
+
+    <!-- Nhan phu = CAM. Dung cho tab dang chon, vien the dang lam, va
+         vong dong ho. KHONG dung lam mau chu tren nen kem. -->
+    <color name="cam">#F58A07</color>
+    <color name="cam_nhat">#FFF1E2</color>
+
+    <!-- Dia dong ho: ba muc gap, di tu TRAM sang NONG.
+         Bang mau khong co mau lanh nen thang cu (lam/ho phach/do gach)
+         khong dung duoc. -->
+    <color name="dh_con_nhieu">#2D2A42</color>
+    <color name="dh_sap_den">#FFD400</color>
+    <color name="dh_di_ngay">#F58A07</color>
+    <color name="dh_ranh">#E8E0D8</color>
+
+    <!-- Khoi buoc: xoay vong nam mau diu. Mau KHONG mang y nghia -
+         chi de moi buoc la mot khoi nhin phan biet duoc. -->
+    <color name="buoc_1">#FFF8E1</color>
+    <color name="buoc_2">#FFF1E2</color>
+    <color name="buoc_3">#F3EFF6</color>
+    <color name="buoc_4">#FDF2EC</color>
+    <color name="buoc_5">#F6F0E6</color>
+
+    <!-- ================================================================
+         THEM 17/09 (v4)
+         ================================================================ -->
+
+    <!-- Chu cua nut van ban (Quay lai, Hom nay, Tuan truoc/sau).
+         Truoc day dung `nhan` = vang #FFD400 tren nen kem: 1.32:1 - vua
+         CHOI vua duoi chuan WCAG hon ba lan. Navy thuong (#2D2A42, 12.75:1)
+         thi lai gat qua cho mot nut phu. #57536E: 6.77:1, dat AA, du diu. -->
+    <color name="chu_lien_ket">#57536E</color>
+
+    <!-- The tang 2: hop thoai, the dang chon. Ban sang dung trang. -->
+    <color name="the_2">#FFFFFF</color>
+
+    <!-- Uu tien. KHONG dung do. Mau chi la tin hieu phu - luon kem chu
+         "Cao / Vua / Thap" de nguoi mu mau van doc duoc. -->
+    <color name="uu_cao">#F58A07</color>
+    <color name="uu_vua">#FFD400</color>
+    <color name="uu_thap">#C9C2D6</color>
+
+    <!-- Nen lo ra khi vuot the. Xoa = navy (tram, ro, khong bao dong).
+         Xong = vang. -->
+    <color name="vuot_xoa">#2D2A42</color>
+    <color name="chu_vuot_xoa">#FEF4EF</color>
+    <color name="vuot_xong">#FFD400</color>
+    <color name="chu_vuot_xong">#2D2A42</color>
+
+    <!-- Tab dang chon: vien tron (pill) nen vang nhat, icon + chu NAVY.
+         Icon cam tren pill vang nhat chi 2.22:1 - duoi nguong 3:1 cho do
+         hoa, nen tab dang chon KHONG con to cam nua. -->
+    <color name="tab_pill">#FFF1C2</color>
+    <color name="tab_chon">#2D2A42</color>
+
+    <!-- ================================================================
+         THEM 18/09 (v5)
+         ================================================================ -->
+
+    <!-- Tang 3: hop thoai, bottom sheet. Ban sang van la trang, phan
+         tach bang do do bong chu khong bang mau. -->
+    <color name="the_3">#FFFFFF</color>
+
+    <!-- Ghim mot viec len dau danh sach. Tim: vang va cam da danh cho uu
+         tien roi, them mot sac vang nua la khong doc ra duoc gi. -->
+    <color name="ghim">#7C6BD8</color>
+    <color name="ghim_nhat">#EFECFC</color>
+
+    <!-- Hai nut lo ra khi vuot TRAI. Do chi dung o DAY, cho mot hanh dong
+         xoa co that - khong dung cho "viec chua xong". -->
+    <color name="xanh_xong">#2E7D62</color>
+    <color name="do_xoa">#C0392B</color>
+
+
+    <!-- Tam kinh thanh tab, ban sang: mau `the` o do trong 94%. -->
+    <color name="kinh_nen">#F0FDFBF6</color>
+    <!-- Vach bat sang o canh tren tam kinh. -->
+    <color name="kinh_sang">#B3FFFFFF</color>
+</resources>

@@ -1,0 +1,12 @@
+# Bat buoc
+numpy>=1.24
+opencv-python>=4.7        # can >=4.7 cho ArucoDetector API moi
+
+# Kiem thu
+pytest>=7.0
+
+# Tuy chon - chi can khi bat lop OCR (run_live.py --ocr)
+# easyocr>=1.7
+
+# Tuy chon - chi can khi doc thanh tieng that (run_live.py --speak)
+# pyttsx3>=2.90

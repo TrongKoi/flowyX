@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    LOGO FLOWYX - anh that, xuat tu ban thiet ke cua nhom.
+
+    ================================================================
+    v5: BAN NGHICH DAO CHO CHE DO DEM
+    ================================================================
+
+    Logo goc la muc navy #29293E; tren nen dem no chi con 1.3:1 nen chim.
+
+    Cach chua: dung THEM mot ban logo cho che do dem, dat o
+    `drawable-night-*/logo_ngang.png`. He dieu hanh tu chon ban dung theo
+    che do may - layout nay khong biet gi ve chuyen do, va khong co dong
+    code nao phai chay.
+
+    Ban dem KHONG phai logo ve lai: no sinh tu chinh tep goc bang mot
+    buoc doi mau co quy tac (tools/logo_dem.py):
+
+        · phan MUC navy  -> mau nga #E8E6F0 (dung mau chu ban dem)
+        · giot VANG/CAM  -> giu nguyen tuyet doi
+        · hinh dang, ty le, kim la ban trong chu "o" -> khong dong toi
+
+    Day la "reversed lockup" - cach moi bo nhan dien co logo muc dam deu
+    lam cho nen toi. Khong dung phien nen sang: mot mieng kem sau logo
+    nhin nhu mieng dan, khong phai mot bo nhan dien.
+
+    Logo co mat o goc tren ben trai cua MOI man hinh, cung vi tri, cung
+    kich thuoc - mot moc co dinh khop voi quy tac "thong tin luon o dung
+    mot cho".
+-->
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="22dp"
+    android:adjustViewBounds="true"
+    android:contentDescription="@string/app_name"
+    android:src="@drawable/logo_ngang" />

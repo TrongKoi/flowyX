@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    THANH TIEU DE CUA MOI TAB: logo ben trai, nut hanh dong (tuy trang),
+    va icon Cai dat CO DINH o goc phai. Dung chung cho khung_trang va Lich.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/le_man_hinh"
+    android:paddingEnd="4dp">
+
+    <include layout="@layout/khoi_logo" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1" />
+
+    <!-- Nut hanh dong co CHU (vd "+ Go roi" o tab Focus). An mac dinh. -->
+    <TextView
+        android:id="@+id/nut_hanh_dong"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/chip_tinh"
+        android:drawablePadding="6dp"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:paddingStart="12dp"
+        android:paddingEnd="14dp"
+        android:textColor="@color/chu"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/nut_cai_dat_icon"
+        style="@style/Flowy.NutIcon"
+        android:contentDescription="@string/cai_dat"
+        android:src="@drawable/ic_cai_dat" />
+</LinearLayout>

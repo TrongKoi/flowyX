@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    KHOI 1 / 3 - THOI GIAN.
+
+    Dia thu nho dan + so phut. Chua co gio hen thi dia rong va so la dau
+    gach - khoi van giu nguyen cho, khong bien mat.
+
+    Hai nut ngay duoi: dat gio hen, va uoc luong. Ca hai truoc day KHONG
+    CO CHO NHAP - gio hen chi dat duoc bang dong lenh tren laptop.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Flowy.The"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/Flowy.NhanKhoi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/khoi_thoi_gian" />
+
+    <vn.adc2026.frontend.TimerTronView
+        android:id="@+id/dong_ho"
+        android:layout_width="@dimen/dong_ho"
+        android:layout_height="@dimen/dong_ho"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/tv_con_lai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textColor="@color/chu"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/tv_goi_y"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:minHeight="20dp"
+        android:textColor="@color/chu_phu"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/nut_gio_hen"
+            style="@style/Flowy.NutPhu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/dat_gio_hen" />
+
+        <Button
+            android:id="@+id/nut_uoc_luong"
+            style="@style/Flowy.NutPhu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@string/uoc_luong" />
+    </LinearLayout>
+</LinearLayout>

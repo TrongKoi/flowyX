@@ -1,0 +1,145 @@
+{
+  "chunk_id": "c_01",
+  "topic": "Cập nhật tiến độ backend và QA của sprint 23",
+  "discussion_points": [
+    {
+      "point": "API thanh toán đã merge và deploy lên staging thành công",
+      "speakers": [
+        "Tuấn"
+      ],
+      "evidence_segment_ids": [
+        "s_0003"
+      ],
+      "confidence": "high"
+    },
+    {
+      "point": "Module export báo cáo đang bị chặn do query chạy chậm, mất khoảng 8 giây với dữ liệu một năm",
+      "speakers": [
+        "Tuấn"
+      ],
+      "evidence_segment_ids": [
+        "s_0003",
+        "s_0004"
+      ],
+      "confidence": "high"
+    },
+    {
+      "point": "QA đã hoàn thành khoảng 70% test case; luồng đăng nhập social chưa test được do môi trường staging lỗi",
+      "speakers": [
+        "Lan"
+      ],
+      "evidence_segment_ids": [
+        "s_0008",
+        "s_0009"
+      ],
+      "confidence": "high"
+    },
+    {
+      "point": "Bản RC của mobile đã build xong, chỉ chờ backend ổn định để submit lên store",
+      "speakers": [
+        "Minh"
+      ],
+      "evidence_segment_ids": [
+        "s_0011"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "decisions": [],
+  "action_items": [
+    {
+      "task": "Optimize query của module export báo cáo bằng cách thêm index và cache",
+      "assignee_raw": "anh Tuấn",
+      "due_raw": null,
+      "commitment_strength": "tentative",
+      "priority": "high",
+      "evidence_segment_ids": [
+        "s_0004",
+        "s_0006"
+      ],
+      "quote": "Để anh xem lại rồi báo em sau nhé.",
+      "confidence": "medium"
+    },
+    {
+      "task": "Fix môi trường staging đang bị lỗi khiến QA không test được luồng social login",
+      "assignee_raw": null,
+      "due_raw": null,
+      "commitment_strength": "firm",
+      "priority": "high",
+      "evidence_segment_ids": [
+        "s_0009",
+        "s_0010"
+      ],
+      "quote": "Cái đó phải fix gấp, không là block hết cả team.",
+      "confidence": "medium"
+    }
+  ],
+  "risks": [
+    {
+      "risk": "Query export chậm 8 giây có thể gây trải nghiệm kém cho người dùng",
+      "severity": "medium",
+      "raised_by": "Tuấn",
+      "mitigation": "Thêm index và cache",
+      "evidence_segment_ids": [
+        "s_0004",
+        "s_0005"
+      ],
+      "confidence": "high"
+    },
+    {
+      "risk": "Môi trường staging lỗi từ thứ 2 đang chặn tiến độ kiểm thử",
+      "severity": "high",
+      "raised_by": "Lan",
+      "mitigation": null,
+      "evidence_segment_ids": [
+        "s_0009"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "metrics": [
+    {
+      "label": "Tiến độ test case sprint 23",
+      "value_raw": "70%",
+      "period": "sprint 23",
+      "evidence_segment_ids": [
+        "s_0008"
+      ],
+      "confidence": "high"
+    },
+    {
+      "label": "Crash rate bản beta",
+      "value_raw": "2.3%",
+      "period": "hiện tại",
+      "evidence_segment_ids": [
+        "s_0008"
+      ],
+      "confidence": "high"
+    },
+    {
+      "label": "Crash rate sprint trước",
+      "value_raw": "4.1%",
+      "period": "sprint 22",
+      "evidence_segment_ids": [
+        "s_0008"
+      ],
+      "confidence": "high"
+    },
+    {
+      "label": "Thời gian chạy query export",
+      "value_raw": "8 giây",
+      "period": "với data 1 năm",
+      "evidence_segment_ids": [
+        "s_0004"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "open_questions": [],
+  "extraction_notes": {
+    "audio_quality_issues": [],
+    "ambiguities": [
+      "Segment s_0010 không nêu rõ ai chịu trách nhiệm fix môi trường staging. Đã để assignee_raw = null thay vì suy đoán."
+    ]
+  }
+}

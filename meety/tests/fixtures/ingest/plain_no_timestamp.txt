@@ -1,0 +1,6 @@
+Hùng: Mình họp nhanh về việc bàn giao module thanh toán nhé.
+Tuấn: Phần API em làm xong rồi, tài liệu em cũng viết luôn trong repo.
+Em còn thiếu mỗi phần test tích hợp, chắc mai xong.
+Lan: Vậy thứ 5 em bắt đầu test được chưa anh?
+Tuấn: Được, thứ 5 em cứ test thoải mái.
+Hùng: Ok vậy chốt thứ 5 bàn giao cho QA.

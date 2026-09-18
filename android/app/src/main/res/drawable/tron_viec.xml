@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- O tron danh dau xong: vien, chua xong. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <stroke android:width="2dp" android:color="@color/chu_phu" />
+    <solid android:color="@android:color/transparent" />
+</shape>

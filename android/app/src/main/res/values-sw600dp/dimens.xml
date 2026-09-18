@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- May tinh bang: chu va dong ho to hon, le rong hon. -->
+<resources>
+    <dimen name="le_man_hinh">28dp</dimen>
+    <dimen name="dem_the">22dp</dimen>
+    <dimen name="khoang_khoi">16dp</dimen>
+    <dimen name="bo_goc_the">24dp</dimen>
+    <dimen name="dong_ho">240dp</dimen>
+    <dimen name="chu_cau_hoi">26sp</dimen>
+    <dimen name="chu_buoc_hien_tai">30sp</dimen>
+</resources>

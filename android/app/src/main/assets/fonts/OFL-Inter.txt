@@ -1,0 +1,4 @@
+Inter (c) The Inter Project Authors. Giay phep SIL Open Font License 1.1.
+Ban day du: https://openfontlicense.org
+Hai ban tinh 400/600 duoc tach tu ban bien thien, roi cat bot ky tu cho
+bang chu Latin + tieng Viet.

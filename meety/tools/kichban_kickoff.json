@@ -1,0 +1,36 @@
+{
+  "meeting": {
+    "title": "Kick-off dự án Website bán hàng",
+    "meeting_date": "2026-08-10",
+    "meeting_type": "planning",
+    "note": "Ngày họp 2026-08-10 là THỨ HAI. Mọi mốc thời gian tương đối trong kịch bản đều neo vào ngày này."
+  },
+  "speakers": {
+    "Thảo": { "role": "Project Manager", "voice": "vi-VN-HoaiMyNeural", "pitch": "+0Hz", "rate": "+8%" },
+    "Khoa": { "role": "Backend Lead", "voice": "vi-VN-NamMinhNeural", "pitch": "+0Hz", "rate": "+0%" },
+    "Duyên": { "role": "Designer", "voice": "vi-VN-HoaiMyNeural", "pitch": "+45Hz", "rate": "+14%" },
+    "Bảo": { "role": "Frontend", "voice": "vi-VN-NamMinhNeural", "pitch": "-35Hz", "rate": "+4%" }
+  },
+  "turns": [
+    { "speaker": "Thảo", "text": "Chào cả nhà, mình bắt đầu buổi kick-off dự án website bán hàng nhé. Hôm nay có ba việc: chốt ngân sách, chốt timeline, và phân công đầu việc." },
+    { "speaker": "Thảo", "text": "Anh Khoa cho em xin ước lượng phần backend trước đi ạ." },
+    { "speaker": "Khoa", "text": "Ừ. Phần API sản phẩm với giỏ hàng thì anh nghĩ khoảng ba tuần. Nhưng cái tích hợp cổng thanh toán thì anh chưa dám chắc, còn phụ thuộc bên đối tác duyệt hồ sơ." },
+    { "speaker": "Khoa", "text": "Để anh xem lại tài liệu của họ rồi báo em sau nhé." },
+    { "speaker": "Thảo", "text": "Vâng ạ. Chị Duyên bên design thì sao ạ?" },
+    { "speaker": "Duyên", "text": "Chị đã làm xong wireframe cho trang chủ với trang chi tiết sản phẩm rồi. Còn luồng checkout thì chị cần thêm thời gian, vì có tới bốn bước." },
+    { "speaker": "Duyên", "text": "Chị sẽ hoàn thành bản mockup checkout trước thứ năm tuần sau." },
+    { "speaker": "Bảo", "text": "Em confirm là bên frontend em set up xong repo với cả pipeline deploy rồi ạ. Em chỉ chờ design là em code được." },
+    { "speaker": "Thảo", "text": "Ngon. Về ngân sách thì mình chốt hai trăm triệu cho cả dự án nhé, bao gồm cả phần hạ tầng." },
+    { "speaker": "Khoa", "text": "Hai trăm triệu thì hơi căng đấy. Riêng cái chi phí server với CDN một năm đã ngốn khoảng mười tám phẩy năm phần trăm rồi." },
+    { "speaker": "Duyên", "text": "Với lại còn phần license mấy cái font với icon nữa, cái đó cũng phải tính vào." },
+    { "speaker": "Thảo", "text": "Ừ... thôi vậy để em trình lại sếp. Mình tạm chốt lại là một trăm năm mươi triệu thôi, phần vượt thì làm đề xuất riêng sau." },
+    { "speaker": "Bảo", "text": "Vâng chị. Vậy cái phần tối ưu tốc độ tải trang thì mình để giai đoạn hai đúng không ạ?" },
+    { "speaker": "Thảo", "text": "Đúng rồi, giai đoạn hai. Còn cái vụ dữ liệu khách hàng cũ phải migrate sang thì mình chưa quyết được, để bàn sau, tuần sau họp lại." },
+    { "speaker": "Thảo", "text": "À còn cái server staging đang bị lỗi certificate, cái đó phải fix gấp, không là không ai test được." },
+    { "speaker": "Duyên", "text": "Cái đó chị không rành, chắc bên hạ tầng." },
+    { "speaker": "Thảo", "text": "Anh Khoa với em Bảo nhớ sync với nhau về cái API contract nhé, đừng để lệch như dự án trước." },
+    { "speaker": "Khoa", "text": "Ok em. Anh sẽ viết xong tài liệu API contract trước cuối tuần này." },
+    { "speaker": "Bảo", "text": "Em nhận phần dựng component library, em làm xong trước thứ sáu ạ." },
+    { "speaker": "Thảo", "text": "Tốt. Vậy mình kết thúc ở đây nhé, cảm ơn cả nhà." }
+  ]
+}

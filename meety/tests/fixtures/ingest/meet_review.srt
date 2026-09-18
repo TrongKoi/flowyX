@@ -1,0 +1,15 @@
+1
+00:00:03,000 --> 00:00:12,500
+Hoàng (Design Lead): Bản mockup mới em đã đưa lên Figma rồi, mọi người xem giúp em.
+
+2
+00:00:13,000 --> 00:00:24,750
+Vy: Em thấy phần header hơi chật. Chỗ đó mình để hai dòng được không anh?
+
+3
+00:00:25,200 --> 00:00:36,900
+Hoàng (Design Lead): Được, để anh sửa lại. Chiều nay anh gửi bản cập nhật.
+
+4
+00:00:37,400 --> 00:00:48,120
+Vy: Vâng ạ. Lưu ý: bản này cần khớp với design system mới nhé anh.

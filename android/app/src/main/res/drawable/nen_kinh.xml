@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    THANH TAB "KINH LONG" - BAN SANG
+    ================================================================
+
+    Ba lop, tu duoi len:
+
+      1. tam kinh    - mau the o do trong 94%, de nen phia sau an len mot
+                       chut khi danh sach cuon sat day
+      2. duong vien  - mot duong ke tren, mau vien
+      3. anh sang    - mot vach trang mo 1dp ngay duoi duong vien, dung
+                       kieu "chi kinh bat sang" o canh tren
+
+     Vi sao KHONG lam mo (blur) that 
+
+    Android chi lam mo duoc PHIA SAU MOT CUA SO (Window.setBackgroundBlurRadius,
+    tu API 31), khong lam mo duoc phia sau mot View nam trong cung cua so.
+    `RenderEffect.createBlurEffect` lam mo CHINH view do chu khong phai nen
+    sau no - dung vao day se lam mo ca icon tab.
+
+    Ep cho co mo that se phai ve thanh tab thanh mot cua so rieng: them mot
+    Window nghia la them mot lop nhan cham, mot cho de lech vi tri khi ban
+    phim hien len, va mot duong de crash tren may cu. Cai gia do khong dang
+    cho mot hieu ung.
+
+    Do trong 94% + vach sang o canh tren cho dung cam giac "tam kinh" ma
+    khong phai tra gia nao. Tren nen dac thi khong ai phan biet duoc; tren
+    nen dang cuon thi thay mau lo mo dich chuyen - dung dieu can.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/kinh_nen" />
+        </shape>
+    </item>
+
+    <item android:height="1dp" android:gravity="top">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/vien" />
+        </shape>
+    </item>
+
+    <item android:top="1dp" android:height="1dp" android:gravity="top">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/kinh_sang" />
+        </shape>
+    </item>
+</layer-list>

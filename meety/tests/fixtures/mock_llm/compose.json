@@ -1,0 +1,43 @@
+{
+  "tldr": [
+    "Release version 2.4 được lùi từ 26/07 sang thứ ba ngày 28/07 do QA chưa hoàn tất kiểm thử.",
+    "API thanh toán đã deploy lên staging; module export báo cáo còn vướng query chậm 8 giây.",
+    "Crash rate bản beta giảm từ 4.1% xuống 2.3% so với sprint trước.",
+    "Môi trường staging lỗi đang chặn kiểm thử social login và chưa có người phụ trách.",
+    "Việc migrate dữ liệu khách hàng enterprise được hoãn sang cuộc họp tuần sau."
+  ],
+  "paragraphs": [
+    "Cuộc họp tập trung vào hai nội dung: rà soát tiến độ sprint 23 và chốt thời điểm phát hành version 2.4. Về phía backend, API thanh toán đã được merge và deploy lên môi trường staging, trong khi module export báo cáo vẫn bị chặn bởi vấn đề hiệu năng với thời gian truy vấn khoảng 8 giây trên dữ liệu một năm. Về phía QA, khoảng 70% test case đã hoàn thành và crash rate bản beta giảm còn 2.3% so với 4.1% ở sprint trước.",
+    "Kế hoạch phát hành ban đầu được đề xuất vào cuối tuần này nhằm kịp campaign marketing đầu tháng 8. Sau khi QA nêu rằng còn 30% test case chưa hoàn thành và cảnh báo nguy cơ phải rollback, cùng ý kiến của backend về khả năng timeout khi export báo cáo, cuộc họp thống nhất lùi lịch phát hành sang thứ ba ngày 28/07."
+  ],
+  "chapters": [
+    {
+      "title": "Cập nhật tiến độ backend",
+      "summary": "API thanh toán đã hoàn thành và deploy staging. Module export báo cáo bị chặn do query chậm 8 giây, hướng xử lý dự kiến là thêm index và cache.",
+      "start_ms": 4000,
+      "end_ms": 74000,
+      "consensus_level": "aligned"
+    },
+    {
+      "title": "Cập nhật tiến độ QA",
+      "summary": "Đã test 70% test case, crash rate giảm còn 2.3%. Luồng social login chưa test được do môi trường staging lỗi.",
+      "start_ms": 75000,
+      "end_ms": 137000,
+      "consensus_level": "aligned"
+    },
+    {
+      "title": "Chốt ngày release v2.4",
+      "summary": "Đề xuất release cuối tuần này bị QA và backend phản đối vì rủi ro chất lượng. Kết luận lùi sang thứ ba ngày 28/07.",
+      "start_ms": 138000,
+      "end_ms": 217000,
+      "consensus_level": "debated"
+    },
+    {
+      "title": "Phân công và các vấn đề còn treo",
+      "summary": "Phân công kiểm thử social login và submit store. Vấn đề migrate dữ liệu enterprise được hoãn sang cuộc họp tuần sau.",
+      "start_ms": 218000,
+      "end_ms": 275000,
+      "consensus_level": "unresolved"
+    }
+  ]
+}

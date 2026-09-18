@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    MOT nut chinh, to, luon o day. Nhan doi theo luc:
+        chua bat dau        Bat dau
+        con buoc            Xong buoc
+        khong co buoc       Xong viec
+        dang tam dung       Tiep tuc
+    Hai nut phu nho hon ben duoi. Muc nhac la mot hang chip - doi muc la
+    MOT lan cham (UIUX_QUYET_DINH cau 4), khong chon trong Cai dat.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/khoang_khoi"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/nut_chinh"
+        style="@style/Flowy.NutChinh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bat_dau" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/nut_tam_dung"
+            style="@style/Flowy.NutPhu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/tam_dung" />
+
+        <Button
+            android:id="@+id/nut_ket_thuc"
+            style="@style/Flowy.NutPhu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@string/ket_thuc" />
+    </LinearLayout>
+
+    <!-- Hang chon MUC NHAC da chuyen sang Cai dat (17/09, theo yeu cau
+         nhom).
+
+         Ghi lai vi day la mot quyet dinh BI DAO NGUOC: docs/UIUX_QUYET_DINH.md
+         cau 4 tung chot de no NGAY tren man hinh chinh, ly do la nguoi
+         dung chi biet muc nao hop khi dang lam va thay no qua nhieu hoac
+         qua it - bat ho dung lai, mo menu, tim muc la dung chuoi thao tac
+         nhom nay kho nhat.
+
+         Danh doi khi dua vao Cai dat: doi muc khong con la mot lan cham.
+         Bu lai man hinh Focus bot mot hang, va hang do it dung hon ba nut
+         chinh rat nhieu. Neu buoi test cho thay nguoi dung khong tim ra
+         no nua, dua tro lai la khoi phuc khoi nay. -->
+</LinearLayout>

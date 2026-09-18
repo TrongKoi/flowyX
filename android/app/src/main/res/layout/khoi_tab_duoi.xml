@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    THANH TAB DUOI (v4, 17/09).
+
+    Thu tu nhom chot: Ke hoach -> Lich -> Focus -> Nhat ky -> Bien ban.
+
+    ================================================================
+    CHI BAO TAB DANG CHON - BA TIN HIEU CUNG LUC
+    ================================================================
+
+    Ban v3 chi doi mau icon sang cam. Cam tren nen trang chi 2.2:1 va nguoi
+    mu mau do-luc khong phan biet duoc cam voi xam - tab dang chon gan nhu
+    khong nhin ra. Gio co ba tin hieu, mat mot van con hai:
+
+      1. PILL nen vang nhat 64x32 dp sau icon      (hinh + mau)
+      2. Icon doi sang NAVY dam                    (do sang)
+      3. NHAN CHU hien duoi icon - CHI tab dang chon (chu)
+
+    Nhan chu chi o tab dang chon: giu thanh tab gon kieu Tiimo nhom da chon,
+    nhung van tra loi duoc cau "minh dang o dau" bang chu, khong phai doan.
+
+    Pill mo rong tu 60% ra 100% trong 180 ms khi trang hien len - chuyen
+    dong duy nhat tren thanh tab. Tat "Hieu ung" trong he thong thi no hien
+    ngay, khong chay (ValueAnimator tu ton trong animator scale = 0).
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tab_goc"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="@drawable/nen_kinh"
+    android:clipChildren="false">
+
+    <!-- VIEN THUOC DUNG CHUNG.
+         Mot cai duy nhat cho ca nam tab, ThanhTab dat vi tri cho no. Nho
+         vay no TRUOT tu tab cu sang tab moi thay vi bien o cho nay va
+         hien ra o cho kia. Vi tri ban dau khong quan trong: `noi()` dat
+         lai ngay o lan bo cuc dau tien. -->
+    <View
+        android:id="@+id/tab_vien_thuoc"
+        android:layout_width="64dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/nen_tab_chon"
+        android:importantForAccessibility="no" />
+
+    <LinearLayout
+            android:id="@+id/tab_hang"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingTop="6dp">
+
+        <LinearLayout
+            android:id="@+id/tab_viec"
+            style="@style/Flowy.Tab"
+            android:contentDescription="@string/tab_viec">
+
+            <FrameLayout
+                android:id="@+id/tab_viec_pill"
+                android:layout_width="64dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/tab_viec_icon"
+                    style="@style/Flowy.TabIcon"
+                    android:src="@drawable/ic_viec" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tab_viec_nhan"
+                style="@style/Flowy.TabChu"
+                android:text="@string/tab_viec" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_lich"
+            style="@style/Flowy.Tab"
+            android:contentDescription="@string/tab_lich">
+
+            <FrameLayout
+                android:id="@+id/tab_lich_pill"
+                android:layout_width="64dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/tab_lich_icon"
+                    style="@style/Flowy.TabIcon"
+                    android:src="@drawable/ic_lich" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tab_lich_nhan"
+                style="@style/Flowy.TabChu"
+                android:text="@string/tab_lich" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_focus"
+            style="@style/Flowy.Tab"
+            android:contentDescription="@string/tab_focus">
+
+            <FrameLayout
+                android:id="@+id/tab_focus_pill"
+                android:layout_width="64dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/tab_focus_icon"
+                    style="@style/Flowy.TabIcon"
+                    android:src="@drawable/ic_focus" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tab_focus_nhan"
+                style="@style/Flowy.TabChu"
+                android:text="@string/tab_focus" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_nhat_ky"
+            style="@style/Flowy.Tab"
+            android:contentDescription="@string/tab_nhat_ky">
+
+            <FrameLayout
+                android:id="@+id/tab_nhat_ky_pill"
+                android:layout_width="64dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/tab_nhat_ky_icon"
+                    style="@style/Flowy.TabIcon"
+                    android:src="@drawable/ic_nhat_ky" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tab_nhat_ky_nhan"
+                style="@style/Flowy.TabChu"
+                android:text="@string/tab_nhat_ky" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_meety"
+            style="@style/Flowy.Tab"
+            android:contentDescription="@string/tab_meety">
+
+            <FrameLayout
+                android:id="@+id/tab_meety_pill"
+                android:layout_width="64dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/tab_meety_icon"
+                    style="@style/Flowy.TabIcon"
+                    android:src="@drawable/ic_meety" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tab_meety_nhan"
+                style="@style/Flowy.TabChu"
+                android:text="@string/tab_meety" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

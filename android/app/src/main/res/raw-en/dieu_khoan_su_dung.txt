@@ -1,0 +1,80 @@
+Last updated: 18 September 2026
+Version: 5.0
+
+This is the agreement between you and the Flowy team about using the Flowy app on your device. We have tried to write it in ordinary English. Where legal wording is unavoidable, we explain it underneath.
+
+# 1. What Flowy is
+
+Flowy is a time and focus app designed for people with ADHD and for anyone who finds it hard to start a task. It includes a calendar, a focus timer, a journal, meeting minutes and the supporting tools around them.
+
+Flowy is NOT a medical device, it does NOT diagnose anything, and it does NOT replace a doctor, therapist or psychologist. The suggestions inside the app — including the section that helps when a task feels impossible to start — are organisational tools, not medical advice. If you are struggling with your mental health, please talk to a professional.
+
+# 2. Who may use it
+
+You must be 16 or older to create an account on your own. Between 13 and 16, you need the consent of a parent or guardian. Under 13, this app is not for you.
+
+If you are a parent or guardian and find that your child created an account without your consent, use the delete-account option in Settings — all of the data lives on that device and is erased at the same time.
+
+# 3. Your account lives on your device
+
+A Flowy account is NOT a server account. When you register, the app creates a profile inside the app's private storage on this device. We cannot see that account, we cannot reset your password for you, and we cannot move your data to another device.
+
+What follows from that, before you rely on it:
+
+- The Gmail address you enter is only a username. We do not send mail to it, and we have no way to.
+- The 12-character recovery code shown at registration is the only way back into your account if you forget your password. Write it down somewhere safe.
+- Losing both the password and the recovery code means losing the data. The app lets you wipe everything and start again, but nobody can reopen the old data — including us.
+- Uninstalling the app, clearing app data in Android Settings, or a factory reset all erase everything permanently.
+
+You are responsible for keeping your password and recovery code. If someone can unlock your phone, they can open Flowy.
+
+# 4. What you may do with the app
+
+We grant you the right to use Flowy on your personal devices, free of charge, non-exclusively and non-transferably, for your own personal or work purposes.
+
+You may not:
+
+- Resell, rent or redistribute the app as your own product.
+- Reverse-engineer, disassemble or extract the source code beyond what the law allows.
+- Remove or obscure Flowy's copyright notices, trade marks or logo.
+- Use the app for anything unlawful.
+
+# 5. What you create is yours
+
+Your plans, journal entries, meeting minutes — everything you type into Flowy belongs to you. We claim no rights over it, we do not read it, and we do not use it to train any model. We have no route by which it could leave your device.
+
+The Flowy name, logo, interface design and source code belong to the Flowy team.
+
+# 6. Importing calendars
+
+When you import an .ics file or a calendar from another service, the parsing happens entirely on your device. You are responsible for having the right to use that calendar data. If an imported event clashes with an existing plan, the app asks you before changing anything.
+
+# 7. Health data
+
+If you turn on the Health Connect integration (Android) or an equivalent health app, Flowy reads only the metrics you allow, only to display them inside the app, and stores them only on this device. You can turn the connection off at any time in Settings, and the data read so far is deleted at the same moment. Details are in the corresponding section of the Privacy Policy.
+
+# 8. No warranty
+
+Flowy is provided "as is". We work hard to make it correct, but we do not warrant that it will be free of defects, uninterrupted, or fit for any particular purpose of yours.
+
+In particular: do not make Flowy the only home for something you cannot afford to lose. Software bugs, operating-system faults, storage failure or a mistaken tap can all destroy data, and because the data only exists on your device, we have no copy to give back.
+
+# 9. Limitation of liability
+
+To the extent permitted by law, the Flowy team is not liable for indirect, incidental or consequential damages arising from using or being unable to use the app, including lost data, lost opportunities or missed appointments.
+
+Nothing here excludes liability that the law does not allow to be excluded.
+
+# 10. Changes to these terms
+
+When we change these terms, we update the date at the top of this document and show a notice inside the app the next time you open it. If you do not agree with the new version, stop using the app and delete your account.
+
+# 11. Termination
+
+You end this agreement at any time by deleting your account or uninstalling the app. Because there is no server, we have no ability to disable your account remotely.
+
+# 12. Governing law and contact
+
+This agreement is governed by the laws of Vietnam. Any dispute will be resolved by the competent courts of Vietnam.
+
+Contact: flowy.adc2026@gmail.com

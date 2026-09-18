@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    LEXEND O TANG THEME (Android 8+).
+
+    `android:fontFamily` trong theme la gia tri MAC DINH cho moi TextView
+    tao duoi theme do - ke ca view ben trong hop thoai he thong (tieu de,
+    danh sach chon, nut, o nhap, bo chon so). Nhung view dat font RIENG qua
+    style/textAppearance (vd nut hop thoai "sans-serif-medium") thi khong
+    nhan mac dinh nay; lop thu hai o GiaoDien.hopThoai() phu phan do.
+-->
+<resources>
+    <style name="Theme.Wayfinding" parent="FlowyGoc">
+        <item name="android:fontFamily">@font/lexend</item>
+    </style>
+    <style name="FlowyHopThoai" parent="FlowyHopThoaiGoc">
+        <item name="android:fontFamily">@font/lexend</item>
+    </style>
+</resources>

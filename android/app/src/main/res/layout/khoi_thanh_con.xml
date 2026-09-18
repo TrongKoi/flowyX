@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    THANH TIEU DE MAN HINH CON - mui ten quay lai | tieu de | hanh dong.
+
+    Moi man hinh khong co thanh tab (tao ke hoach, viet nhat ky, go roi,
+    cai dat) dung khoi nay: LUON co mot loi ra nhin thay duoc o cung mot
+    cho, khong phu thuoc vao nut Back cua he thong (nhieu may an no, va
+    nguoi dung cu cham gesture khong biet no ton tai).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="4dp"
+    android:paddingEnd="8dp">
+
+    <ImageView
+        android:id="@+id/nut_quay_lai_icon"
+        style="@style/Flowy.NutIcon"
+        android:contentDescription="@string/quay_lai"
+        android:src="@drawable/ic_quay_lai" />
+
+    <TextView
+        android:id="@+id/tv_tieu_de_con"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:accessibilityHeading="true"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textColor="@color/chu"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/nut_phai_con"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:minWidth="64dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/chu_lien_ket"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+</LinearLayout>

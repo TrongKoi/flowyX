@@ -1,0 +1,54 @@
+{
+  "_huong_dan": "Toa do tinh tu TAM MA, truc x sang PHAI, truc y LEN, don vi MET. Do bang thuoc roi nhap tay. Nho dan mieng xop tron vao tam ma de so thay duoc.",
+
+  "panels": [
+    {
+      "appliance": "May in tang 3",
+      "marker_id": "40",
+      "marker_size_m": 0.06,
+      "notes": "Mo dan o goc duoi ben trai man hinh cam ung.",
+      "buttons": [
+        { "name": "Sao chep",     "x": 0.045, "y": 0.085 },
+        { "name": "Quet",         "x": 0.115, "y": 0.085 },
+        { "name": "In tu USB",    "x": 0.185, "y": 0.085 },
+        { "name": "So ban",       "x": 0.045, "y": 0.040 },
+        { "name": "Mot mat hai mat", "x": 0.115, "y": 0.040,
+          "note": "Nhan lai de doi qua lai" },
+        { "name": "Mau",          "x": 0.185, "y": 0.040 },
+        { "name": "Bat dau",      "x": 0.230, "y": -0.010,
+          "note": "Nut lon nhat, hoi loi len" },
+        { "name": "Huy",          "x": 0.160, "y": -0.010, "danger": true }
+      ]
+    },
+    {
+      "appliance": "May pha ca phe khu bep",
+      "marker_id": "41",
+      "marker_size_m": 0.05,
+      "notes": "Mo dan ben trai khay dat coc.",
+      "buttons": [
+        { "name": "Espresso",   "x": 0.040, "y": 0.055 },
+        { "name": "Ca phe sua", "x": 0.095, "y": 0.055 },
+        { "name": "Nuoc nong",  "x": 0.150, "y": 0.055, "danger": true,
+          "note": "Nuoc rat nong, dat coc truoc khi bam" },
+        { "name": "Coc lon",    "x": 0.040, "y": 0.010 },
+        { "name": "Coc nho",    "x": 0.095, "y": 0.010 },
+        { "name": "Ve sinh may","x": 0.150, "y": 0.010,
+          "note": "Nhan giu 2 giay" }
+      ]
+    },
+    {
+      "appliance": "Lo vi song khu bep",
+      "marker_id": "42",
+      "marker_size_m": 0.05,
+      "buttons": [
+        { "name": "30 giay",  "x": 0.035, "y": 0.070 },
+        { "name": "1 phut",   "x": 0.080, "y": 0.070 },
+        { "name": "2 phut",   "x": 0.125, "y": 0.070 },
+        { "name": "Ra dong",  "x": 0.035, "y": 0.025 },
+        { "name": "Dung",     "x": 0.080, "y": 0.025 },
+        { "name": "Mo cua",   "x": 0.125, "y": -0.030,
+          "note": "Nut co gan, so thay duoc" }
+      ]
+    }
+  ]
+}

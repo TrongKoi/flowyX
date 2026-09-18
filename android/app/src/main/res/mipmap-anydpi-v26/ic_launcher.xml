@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Bieu tuong thich ung (API 26+).
+
+    He dieu hanh tu cat goc theo hinh may dang dung - tron, vuong bo goc,
+    giot nuoc. Nen la mot mang mau dac, lop truoc la cum bon giot nam
+    trong vung an toan 72dp o giua.
+
+    Ban cho API 24-25 la `mipmap-*/ic_launcher.png` - anh 48dp da bo san
+    nen kem. minSdk la 24 nen VAN CAN ban do.
+-->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/nen_bieu_tuong" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+</adaptive-icon>

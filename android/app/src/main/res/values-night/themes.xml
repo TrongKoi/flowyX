@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ban toi: chi doi parent va mau thanh trang thai. Style Flowy.* ke thua tu values/themes.xml va tu doi mau qua @color. -->
+<resources>
+    <style name="FlowyGoc" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/nen</item>
+        <item name="android:colorBackground">@color/nen</item>
+        <item name="android:colorAccent">@color/nhan</item>
+        <item name="android:colorPrimary">@color/nen</item>
+        <item name="android:colorPrimaryDark">@color/nen</item>
+        <item name="android:statusBarColor">@color/nen</item>
+        <item name="android:navigationBarColor">@color/nen</item>
+        <item name="android:textColorPrimary">@color/chu</item>
+        <item name="android:textColorSecondary">@color/chu_phu</item>
+        <item name="android:alertDialogTheme">@style/FlowyHopThoai</item>
+        <item name="android:datePickerDialogTheme">@style/FlowyHopThoai</item>
+        <item name="android:timePickerDialogTheme">@style/FlowyHopThoai</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- Hop thoai he thong. Nut chu dung chu_lien_ket: mau nhan vang cu tren
+         nen trang chi ~1.4:1. Font o tang nay nam o values-v26. -->
+    <style name="FlowyHopThoaiGoc" parent="@android:style/Theme.Material.Dialog.Alert">
+        <item name="android:colorAccent">@color/chu_lien_ket</item>
+        <item name="android:colorBackground">@color/the_2</item>
+        <item name="android:textColorPrimary">@color/chu</item>
+        <item name="android:textColorSecondary">@color/chu_phu</item>
+    </style>
+</resources>

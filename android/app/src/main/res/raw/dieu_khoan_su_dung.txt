@@ -1,0 +1,80 @@
+Cập nhật lần cuối: 18/09/2026
+Phiên bản: 5.0
+
+Đây là thoả thuận giữa bạn và đội ngũ Flowy về việc sử dụng ứng dụng Flowy trên thiết bị của bạn. Chúng tôi đã cố viết bằng tiếng Việt thường ngày. Chỗ nào bắt buộc phải dùng từ pháp lý, chúng tôi giải thích ngay bên dưới.
+
+# 1. Flowy là gì
+
+Flowy là ứng dụng quản lý thời gian và sự tập trung, thiết kế cho người có ADHD và những ai thấy khó bắt đầu một việc. Ứng dụng gồm lịch, đồng hồ tập trung, nhật ký, biên bản họp và các công cụ hỗ trợ đi kèm.
+
+Flowy KHÔNG phải thiết bị y tế, KHÔNG chẩn đoán bệnh và KHÔNG thay thế bác sĩ, nhà trị liệu hay chuyên gia tâm lý. Những gợi ý trong ứng dụng — kể cả phần gỡ rối khi bạn thấy tê liệt trước công việc — là công cụ tổ chức công việc, không phải lời khuyên y tế. Nếu bạn đang gặp khó khăn về sức khoẻ tâm thần, hãy tìm đến người có chuyên môn.
+
+# 2. Ai được dùng
+
+Bạn cần đủ 16 tuổi để tự tạo tài khoản. Từ 13 đến dưới 16 tuổi, bạn cần sự đồng ý của cha mẹ hoặc người giám hộ. Dưới 13 tuổi, ứng dụng này không dành cho bạn.
+
+Nếu bạn là cha mẹ hoặc người giám hộ và phát hiện con mình đã tạo tài khoản mà chưa được bạn đồng ý, hãy dùng chức năng xoá tài khoản trong Cài đặt — toàn bộ dữ liệu nằm trên chính máy đó và sẽ bị xoá cùng lúc.
+
+# 3. Tài khoản của bạn nằm trên máy của bạn
+
+Tài khoản Flowy KHÔNG phải tài khoản trên máy chủ. Khi bạn đăng ký, ứng dụng tạo một hồ sơ trong bộ nhớ riêng của ứng dụng trên chính thiết bị này. Chúng tôi không nhìn thấy tài khoản đó, không khôi phục được mật khẩu giúp bạn, và không thể chuyển dữ liệu của bạn sang máy khác.
+
+Hệ quả bạn cần biết trước:
+
+- Địa chỉ Gmail bạn nhập chỉ là tên đăng nhập. Chúng tôi không gửi thư đến đó và không có cách nào gửi.
+- Mã khôi phục 12 ký tự hiện ra lúc đăng ký là đường duy nhất để lấy lại tài khoản khi quên mật khẩu. Hãy chép nó ra chỗ an toàn.
+- Mất mật khẩu và mất luôn mã khôi phục nghĩa là mất dữ liệu. Ứng dụng cho phép xoá sạch và bắt đầu lại, nhưng không ai mở lại được dữ liệu cũ — kể cả chúng tôi.
+- Gỡ ứng dụng, xoá dữ liệu ứng dụng trong Cài đặt Android, hoặc khôi phục cài đặt gốc đều xoá vĩnh viễn mọi thứ.
+
+Bạn chịu trách nhiệm giữ mật khẩu và mã khôi phục. Nếu ai đó mở được khoá màn hình máy bạn, họ có thể mở được Flowy.
+
+# 4. Bạn được làm gì với ứng dụng
+
+Chúng tôi cấp cho bạn quyền sử dụng Flowy trên thiết bị cá nhân, miễn phí, không độc quyền, không chuyển nhượng, cho mục đích cá nhân hoặc công việc của chính bạn.
+
+Bạn không được:
+
+- Bán lại, cho thuê hoặc phân phối lại ứng dụng như sản phẩm của mình.
+- Dịch ngược, tháo rời hoặc trích xuất mã nguồn ngoài phạm vi pháp luật cho phép.
+- Gỡ bỏ hoặc che các dấu hiệu bản quyền, nhãn hiệu, logo của Flowy.
+- Dùng ứng dụng để làm việc trái pháp luật.
+
+# 5. Nội dung bạn tạo ra là của bạn
+
+Kế hoạch, nhật ký, biên bản họp, mọi thứ bạn gõ vào Flowy đều thuộc về bạn. Chúng tôi không đòi bất kỳ quyền nào với chúng, không đọc chúng, và không dùng chúng để huấn luyện bất cứ mô hình nào — chúng tôi không có đường nào để lấy chúng ra khỏi máy bạn.
+
+Ngược lại, tên Flowy, logo, giao diện và mã nguồn của ứng dụng thuộc về đội ngũ Flowy.
+
+# 6. Nhập lịch từ nguồn khác
+
+Khi bạn nhập tệp .ics hoặc lịch từ dịch vụ khác, việc đọc tệp diễn ra hoàn toàn trên máy bạn. Bạn chịu trách nhiệm đảm bảo mình có quyền dùng dữ liệu lịch đó. Nếu sự kiện nhập vào trùng giờ với kế hoạch sẵn có, ứng dụng hỏi bạn trước khi thay đổi bất cứ điều gì.
+
+# 7. Dữ liệu sức khoẻ
+
+Nếu bạn bật kết nối với Health Connect (Android) hoặc ứng dụng sức khoẻ tương đương, Flowy chỉ đọc những chỉ số bạn cho phép, chỉ để hiển thị trong ứng dụng, và chỉ lưu trên máy này. Bạn tắt kết nối bất cứ lúc nào trong Cài đặt, và dữ liệu đã đọc sẽ bị xoá cùng lúc. Chi tiết nằm ở mục tương ứng trong Chính sách quyền riêng tư.
+
+# 8. Không bảo đảm
+
+Flowy được cung cấp "nguyên trạng". Chúng tôi cố hết sức để ứng dụng chạy đúng, nhưng không bảo đảm nó chạy không lỗi, không gián đoạn, hay phù hợp với một mục đích cụ thể nào của bạn.
+
+Đặc biệt: đừng dùng Flowy làm nơi lưu duy nhất cho thứ bạn không thể mất. Lỗi phần mềm, lỗi hệ điều hành, hỏng bộ nhớ hoặc thao tác nhầm đều có thể làm mất dữ liệu, và vì dữ liệu chỉ nằm trên máy bạn, chúng tôi không có bản sao nào để trả lại.
+
+# 9. Giới hạn trách nhiệm
+
+Trong phạm vi pháp luật cho phép, đội ngũ Flowy không chịu trách nhiệm với thiệt hại gián tiếp, ngẫu nhiên hoặc hệ quả phát sinh từ việc dùng hay không dùng được ứng dụng, bao gồm mất dữ liệu, mất cơ hội hoặc lỡ hẹn.
+
+Điều khoản này không loại trừ trách nhiệm mà pháp luật không cho phép loại trừ.
+
+# 10. Thay đổi điều khoản
+
+Khi sửa điều khoản, chúng tôi cập nhật ngày ở đầu tài liệu này và thông báo trong ứng dụng ở lần mở kế tiếp. Nếu bạn không đồng ý với bản mới, hãy ngừng dùng ứng dụng và xoá tài khoản.
+
+# 11. Chấm dứt
+
+Bạn chấm dứt thoả thuận này bất cứ lúc nào bằng cách xoá tài khoản hoặc gỡ ứng dụng. Vì không có máy chủ, chúng tôi không có khả năng khoá tài khoản của bạn từ xa.
+
+# 12. Luật áp dụng và liên hệ
+
+Thoả thuận này được điều chỉnh bởi pháp luật Việt Nam. Tranh chấp, nếu có, được giải quyết tại toà án có thẩm quyền tại Việt Nam.
+
+Liên hệ: flowy.adc2026@gmail.com

@@ -1,0 +1,94 @@
+WEBVTT
+
+NOTE
+Ban ghi cuoc hop tu Zoom Cloud Recording.
+Xuat luc 2026-07-22 16:05 (GMT+7).
+
+1
+00:00:04.000 --> 00:00:18.400
+Hùng: Ok mọi người mình bắt đầu nhé. Hôm nay có hai việc chính, một là review lại sprint 23, hai là chốt cái release date cho version 2.4.
+
+2
+00:00:19.000 --> 00:00:25.600
+Hùng: Anh Tuấn cập nhật giúp em phần backend trước đi.
+
+3
+00:00:26.000 --> 00:00:44.800
+Tuấn: Ừ, phần API thanh toán thì anh merge xong hôm qua rồi,
+đã deploy lên staging. Còn cái module export báo cáo thì đang stuck ở chỗ query chậm.
+
+4
+00:00:45.000 --> 00:00:52.500
+Tuấn: Query hiện tại mất khoảng 8 giây với data một năm, hơi lâu.
+
+5
+00:00:53.000 --> 00:01:01.500
+Hùng: 8 giây thì không acceptable rồi. Có cách nào optimize không anh?
+
+6
+00:01:02.000 --> 00:01:14.000
+Tuấn: Có, anh nghĩ là thêm index với cache lại là được. Để anh xem lại rồi báo em sau nhé.
+
+7
+00:01:15.000 --> 00:01:20.500
+Hùng: Ok. Chị Lan bên QA thì sao ạ?
+
+8
+00:01:21.000 --> 00:01:39.500
+Lan: Bên chị test được khoảng 70% test case rồi. Crash rate trên bản beta đang là 2.3%, giảm so với sprint trước là 4.1%.
+
+9
+00:01:40.000 --> 00:01:54.500
+Lan: Nhưng còn cái luồng đăng nhập bằng social thì chị chưa test được, vì môi trường staging bị lỗi từ thứ 2.
+
+10
+00:01:55.000 --> 00:02:02.500
+Hùng: Cái đó phải fix gấp, không là block hết cả team.
+
+11
+00:02:03.000 --> 00:02:17.500
+Minh: Em confirm là bên mobile build xong bản RC rồi, chỉ chờ backend ổn định là em submit lên store được.
+
+12
+00:02:18.000 --> 00:02:32.500
+Hùng: Ngon. Vậy mình chốt release version 2.4 vào cuối tuần này nhé, để kịp cái campaign marketing đầu tháng 8.
+
+13
+00:02:33.000 --> 00:02:44.500
+Minh: Ok anh, em nhận phần submit store. Em sẽ làm xong trước thứ 6.
+
+14
+00:02:45.000 --> 00:03:00.500
+Lan: Khoan anh Hùng ơi, cuối tuần này thì chị không kịp đâu. Còn 30% test case với cả cái social login chưa đụng vào được.
+
+15
+00:03:01.000 --> 00:03:14.500
+Lan: Mà release mà chưa test kỹ thì rủi ro cao lắm, lần trước mình đã bị rollback một lần rồi.
+
+16
+00:03:15.000 --> 00:03:27.500
+Tuấn: Anh cũng nghĩ vậy. Cái query chậm kia mà không fix thì user export báo cáo sẽ bị timeout.
+
+17
+00:03:28.000 --> 00:03:37.500
+Hùng: Ừ... thôi được rồi. Vậy mình lùi release sang thứ 3 tuần sau đi.
+
+18
+00:03:38.000 --> 00:03:46.500
+Hùng: Chị Lan cố gắng test xong phần social login trước cuối tuần này giúp em nhé.
+
+19
+00:03:47.000 --> 00:03:54.500
+Lan: Ừ được, chị sẽ xong trước Chủ nhật.
+
+20
+00:03:55.000 --> 00:04:09.500
+Hùng: Còn vụ migrate data cũ của mấy khách hàng enterprise thì mình chưa quyết được, cái đó để bàn sau, tuần sau họp lại.
+
+21
+00:04:10.000 --> 00:04:21.500
+Minh: Anh ơi cái... [không nghe rõ] ...deadline submit store thì Apple review mất 2 ngày đấy ạ.
+
+22
+00:04:22.000 --> 00:04:35.000
+Hùng: Ừ anh biết, vậy em submit ngay khi có bản build cuối nhé. Ok mình kết thúc ở đây.

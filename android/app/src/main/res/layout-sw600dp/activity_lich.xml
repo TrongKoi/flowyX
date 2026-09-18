@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LICH - may tinh bang: tuan ben trai (doc), ngay ben phai. Xem layout/activity_lich.xml. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nen"
+    android:orientation="vertical">
+
+    <include layout="@layout/khoi_thanh_logo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/le_man_hinh"
+        android:paddingEnd="@dimen/le_man_hinh"
+        android:orientation="vertical">
+        <include layout="@layout/khoi_lich_dau" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_weight="1"
+        android:paddingStart="@dimen/le_man_hinh"
+        android:paddingEnd="@dimen/le_man_hinh"
+        android:paddingBottom="@dimen/le_man_hinh"
+        android:orientation="horizontal">
+
+        <ScrollView
+            android:layout_width="220dp"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/dai_tuan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/le_man_hinh"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <include layout="@layout/khoi_lich_ngay" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/khoi_tab_duoi" />
+</LinearLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Id dung lam tag tren view, khai bao truoc de khong dung nham id cua view khac. -->
+<resources>
+    <!-- Danh dau mot view da duoc nhan he so co chu roi (GiaoDien.apCoChu). -->
+    <item name="tag_da_gian" type="id" />
+</resources>

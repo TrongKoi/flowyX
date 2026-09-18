@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    KE HOACH TIEP THEO trong lich hom nay.
+
+    Chi hien khi co ke hoach sap toi - khong co thi an han (GONE). Day la
+    ngoai le cua quy tac "khoi khong bien mat": no khong phai thong tin cua
+    phien lam viec, ma la loi vao tu lich.
+
+    Bam "Bat dau" = dien san viec gi / khi nao / o dau, gio hen va uoc
+    luong tu ke hoach. Nguoi dung khong phai go lai.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/khoi_tiep_theo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/khoang_khoi"
+    android:background="@drawable/nen_the"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:visibility="gone">
+
+    <TextView
+        android:id="@+id/tt_emoji"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tt_nhan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/chu_phu"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tt_ten"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/chu"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/tt_bat_dau"
+        style="@style/Flowy.NutPhu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/bat_dau" />
+</LinearLayout>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        SAU QUYEN, VA KHONG HON. (Ban dau la bon - xem hai quyen cuoi.)
+
+        Moi quyen them vao la mot cau phai tra loi o phan trinh bay, va
+        mot ly do nua de nguoi dung go app ra. Flowy khong can camera,
+        khong can vi tri, khong can danh ba.
+
+        Doi chieu voi ban dieu huong (da cat sang phan_khiem_thi/): ban
+        do can CAMERA cho ARCore va NFC cho the tu. Flowy khong can gi
+        trong so do - no khong nhin ra ngoai.
+    -->
+
+    <!-- Cau noi toi laptop trong mang LAN. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Rung nhe khi xong mot buoc. Phan hoi khong can am thanh, nen no
+         dung duoc ca o cho dong nguoi. -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Nhan dang giong noi chay TREN MAY. Giong noi la duong nhanh hon
+         de tra loi mot cau hoi, nhung luon co o go ben canh - nhan dang
+         hong o noi on, va mot nguoi dang ket ma phai lap lai ba lan se
+         bo app. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- Tu API 33 phai xin quyen nay moi hien duoc thong bao. Thieu no
+         thi notify() im lang khong lam gi - khong bao loi, khong sap.
+         BaoGio da bat SecurityException, nhung khong co quyen thi nguoi
+         dung mat han lop loi nhac theo gio. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Bao thuc chinh xac cho loi nhac. Tu Android 12, setAlarmClock
+         CUNG can quyen nay; tu Android 14 no TAT MAC DINH. Thieu no thi
+         app sap voi SecurityException ngay luc dat loi nhac - bug tu
+         buoi test tren Galaxy Tab S7 FE. Nguoi dung bat tay trong Cai dat;
+         chua bat thi BaoGio roi ve chuong co the tre vai phut. -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+    <!-- AlarmManager xoa sach chuong khi tat may. Can quyen nay de dat
+         lai sau khi khoi dong - xem BaoGio.KhoiDongReceiver. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- ================================================================
+         DU LIEU SUC KHOE (tuy chon, mac dinh TAT)
+         ================================================================
+
+         Hai quyen nay chi duoc XIN khi nguoi dung bam dong y o man hinh
+         SucKhoeActivity. Khai bao trong manifest khong tu cap gi ca -
+         chung la quyen chay (runtime) cua Health Connect, va he thong
+         hoi rieng tung cai.
+
+         Chi doc, khong co WRITE_*: Flowy khong bao gio ghi nguoc vao ho
+         so suc khoe cua nguoi dung. Xem `SucKhoe` cho sau nguyen tac. -->
+    <uses-permission android:name="android.permission.health.READ_SLEEP" />
+    <uses-permission android:name="android.permission.health.READ_STEPS" />
+
+    <!-- Android 11+ an cac app khac voi Flowy. Can khai bao de tim duoc
+         bo doc TTS va trinh nhan dang giong noi tren may. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Wayfinding"
+        android:usesCleartextTraffic="true">
+
+        <!-- usesCleartextTraffic: laptop chay HTTP tren mang LAN, khong
+             co chung chi TLS. Chap nhan duoc vi day la ban mau chay
+             trong mang noi bo, va goi tin KHONG mang du lieu ca nhan
+             nhay cam - xem bang o dau bridge.py.
+
+             Ban chay hoan toan tren may se khong con phan mang nay. -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Khong khoa xoay o day: dien thoai tu khoa doc trong
+             MainActivity.onCreate, may tinh bang (rong tu 600 dp) xoay tu do. -->
+
+        <activity
+            android:name=".CaiDatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Lich kieu Tiimo: dai tuan + dong thoi gian, va man hinh tao/sua. -->
+        <activity
+            android:name=".LichActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false" />
+
+        <!-- ============================================================
+             v5: CUA VAO CUA APP
+             ============================================================
+
+             Tu v5, LAUNCHER khong con la tab Ke hoach ma la KhoiDongActivity.
+             Man hinh do chay hoat hinh dau logo 620 ms, va trong luc do no
+             quyet dinh di dau tiep: chon ngon ngu -> dang ky -> dang nhap
+             -> tab Ke hoach.
+
+             Vi sao mot man hinh dieu phoi rieng, khong nhet logic vao
+             ViecCanLamActivity: tab Ke hoach nay duoc mo lai tu thanh tab,
+             tu thong bao va tu widget. Nhet kiem tra phien vao do nghia la
+             moi duong vao deu phai nho goi dung thu tu - va chi can mot cho
+             quen la app hien du lieu khi chua dang nhap.
+
+             `noHistory` de nut Back tu man hinh sau khong quay nguoc lai
+             hoat hinh mo app. -->
+        <activity
+            android:name=".KhoiDongActivity"
+            android:exported="true"
+            android:noHistory="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Chon ngon ngu: chi hien lan dau. Doi lai trong Cai dat. -->
+        <activity
+            android:name=".ChonNgonNguActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
+
+        <!-- Xac thuc. Tat ca deu adjustResize vi ban phim che mat o nhap. -->
+        <activity
+            android:name=".DangNhapActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".DangKyActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".QuenMatKhauActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Man hinh dong y du lieu suc khoe.
+             Hai bo loc y dinh la BAT BUOC neu app xin quyen health: Health
+             Connect mo man hinh nay khi nguoi dung bam "vi sao ung dung nay
+             can du lieu cua toi" tu trong Cai dat cua HE THONG. Thieu chung
+             thi tren mot so may Health Connect tu chan viec xin quyen.
+             Ban cu dung action cua AndroidX, ban API 34 dung action nen
+             tang - khai bao ca hai de chay duoc tren ca hai. -->
+        <activity
+            android:name=".SucKhoeActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+            </intent-filter>
+        </activity>
+
+        <!-- Dieu khoan su dung / Chinh sach quyen rieng tu.
+             exported=false: mo tu trong app, khong nhan intent ben ngoai. -->
+        <activity
+            android:name=".PhapLyActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
+
+        <!-- Bon tab con lai. Tat ca dung chung `khung_trang.xml`. -->
+        <!-- Tab dau tien, va la man hinh dau tien sau khi dang nhap. -->
+        <activity
+            android:name=".ViecCanLamActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
+        <activity
+            android:name=".NhatKyActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false" />
+        <activity
+            android:name=".MeetyActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false" />
+        <!-- v4: tab Focus chay han tren may. MainActivity o tren gio la
+             "Phien co laptop (thu nghiem)", mo tu Cai dat. -->
+        <activity
+            android:name=".FocusActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false" />
+        <activity
+            android:name=".GoRoiActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".VietNhatKyActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".NhapLichActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BienBanVaoLichActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GhiBienBanActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".KeHoachActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Chuong cho ke hoach trong lich. Tu dat lai cac lan toi moi khi reo. -->
+        <receiver
+            android:name=".LichBao$Receiver"
+            android:exported="false" />
+
+        <!-- Chuong het gio Focus. -->
+        <receiver
+            android:name=".FocusBao$Receiver"
+            android:exported="false" />
+
+        <!-- Chuong cho cac loi nhac nguoi dung tu dat. Khong export:
+             chi AlarmManager cua chinh app nay danh thuc no. -->
+        <receiver
+            android:name=".BaoGio$NhacReceiver"
+            android:exported="false" />
+
+        <!-- Dat lai chuong sau khoi dong, cap nhat app, doi gio, hoac khi
+             vua duoc cap quyen bao thuc chinh xac. exported=true la bat
+             buoc de nhan BOOT_COMPLETED; cac action nay chi he thong gui
+             duoc nen khong mo cua cho app khac. -->
+        <receiver
+            android:name=".BaoGio$KhoiDongReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+</manifest>

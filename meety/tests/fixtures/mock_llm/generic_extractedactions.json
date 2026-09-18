@@ -1,0 +1,14 @@
+{
+  "actions": [
+    {
+      "task": "Theo dõi các việc đã trao đổi trong cuộc họp",
+      "assignee": null,
+      "quote": "Anh Tuấn cập nhật giúp em phần backend trước đi.",
+      "due_raw": null,
+      "commitment_strength": "tentative",
+      "evidence_segment_ids": [
+        "s_0002"
+      ]
+    }
+  ]
+}

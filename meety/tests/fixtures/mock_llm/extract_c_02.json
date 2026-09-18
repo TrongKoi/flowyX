@@ -1,0 +1,150 @@
+{
+  "chunk_id": "c_02",
+  "topic": "Chốt release date v2.4 và phân công công việc",
+  "discussion_points": [
+    {
+      "point": "QA phản đối kế hoạch release cuối tuần vì còn 30% test case và luồng social login chưa kiểm thử",
+      "speakers": [
+        "Lan"
+      ],
+      "evidence_segment_ids": [
+        "s_0014"
+      ],
+      "confidence": "high"
+    },
+    {
+      "point": "Backend đồng tình lùi lịch vì query chậm chưa fix sẽ khiến chức năng export bị timeout",
+      "speakers": [
+        "Tuấn"
+      ],
+      "evidence_segment_ids": [
+        "s_0016"
+      ],
+      "confidence": "high"
+    },
+    {
+      "point": "Quy trình review của Apple mất khoảng 2 ngày, cần tính vào lịch submit store",
+      "speakers": [
+        "Minh"
+      ],
+      "evidence_segment_ids": [
+        "s_0021"
+      ],
+      "confidence": "low"
+    }
+  ],
+  "decisions": [
+    {
+      "statement": "Chốt release version 2.4 vào cuối tuần này để kịp campaign marketing đầu tháng 8",
+      "status": "decided",
+      "decided_by": "Hùng",
+      "alternatives_considered": [],
+      "objections": [],
+      "evidence_segment_ids": [
+        "s_0012"
+      ],
+      "quote": "Vậy mình chốt release version 2.4 vào cuối tuần này nhé",
+      "confidence": "high"
+    },
+    {
+      "statement": "Lùi release version 2.4 sang thứ 3 tuần sau",
+      "status": "decided",
+      "decided_by": "Hùng",
+      "alternatives_considered": [
+        "Giữ nguyên lịch release cuối tuần này"
+      ],
+      "objections": [
+        "Lan: còn 30% test case và social login chưa test xong",
+        "Tuấn: query chậm chưa fix sẽ gây timeout khi export"
+      ],
+      "evidence_segment_ids": [
+        "s_0014",
+        "s_0015",
+        "s_0016",
+        "s_0017"
+      ],
+      "quote": "Vậy mình lùi release sang thứ 3 tuần sau đi.",
+      "confidence": "high"
+    }
+  ],
+  "action_items": [
+    {
+      "task": "Submit bản RC của ứng dụng mobile lên store",
+      "assignee_raw": "em (Minh)",
+      "due_raw": "trước thứ 6",
+      "commitment_strength": "firm",
+      "priority": "high",
+      "evidence_segment_ids": [
+        "s_0013",
+        "s_0022"
+      ],
+      "quote": "Em nhận phần submit store. Em sẽ làm xong trước thứ 6.",
+      "confidence": "high"
+    },
+    {
+      "task": "Hoàn thành kiểm thử luồng đăng nhập bằng social",
+      "assignee_raw": "chị Lan",
+      "due_raw": "trước Chủ nhật",
+      "commitment_strength": "firm",
+      "priority": "high",
+      "evidence_segment_ids": [
+        "s_0018",
+        "s_0019"
+      ],
+      "quote": "Ừ được, chị sẽ xong trước Chủ nhật.",
+      "confidence": "high"
+    }
+  ],
+  "risks": [
+    {
+      "risk": "Release khi chưa kiểm thử đầy đủ có nguy cơ phải rollback như lần trước",
+      "severity": "high",
+      "raised_by": "Lan",
+      "mitigation": "Lùi ngày release để hoàn tất kiểm thử",
+      "evidence_segment_ids": [
+        "s_0015"
+      ],
+      "confidence": "high"
+    },
+    {
+      "risk": "Thời gian review của Apple khoảng 2 ngày có thể ảnh hưởng lịch phát hành",
+      "severity": "medium",
+      "raised_by": "Minh",
+      "mitigation": "Submit ngay khi có bản build cuối",
+      "evidence_segment_ids": [
+        "s_0021",
+        "s_0022"
+      ],
+      "confidence": "low"
+    }
+  ],
+  "metrics": [
+    {
+      "label": "Test case còn lại",
+      "value_raw": "30%",
+      "period": "tại thời điểm họp",
+      "evidence_segment_ids": [
+        "s_0014"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "open_questions": [
+    {
+      "question": "Có cần migrate dữ liệu cũ của các khách hàng enterprise hay không?",
+      "asked_by": "Hùng",
+      "evidence_segment_ids": [
+        "s_0020"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "extraction_notes": {
+    "audio_quality_issues": [
+      "Segment s_0021 có đoạn không nghe rõ ở đầu câu; nội dung về thời gian review của Apple độ tin cậy thấp."
+    ],
+    "ambiguities": [
+      "Cả hai quyết định về ngày release đều xuất hiện trong chunk này với status 'decided'. Cần bước Reconcile phân định theo thứ tự thời gian."
+    ]
+  }
+}
