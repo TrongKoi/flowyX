@@ -125,7 +125,7 @@ class BienBanVaoLichActivity : Activity() {
         khoi.addView(nhanXam(getString(R.string.bb_dat_gio)), lp(18))
         val t = the()
         t.addView(hangCaiDat(R.drawable.ic_lich_nho, getString(R.string.kh_ngay),
-            Lich.tenNgay(ngay, SoLich.homNay())) { chonNgay() })
+            Lich.tenNgay(ngay, SoLich.homNay(), this)) { chonNgay() })
         t.addView(View(this).apply {
             setBackgroundColor(mau(R.color.vien))
             layoutParams = LinearLayout.LayoutParams(-1, dp(1)).apply { marginStart = dp(32) }

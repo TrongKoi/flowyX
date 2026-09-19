@@ -156,10 +156,15 @@ class NhatKyActivity : TrangCoTab() {
                 })
             }, LinearLayout.LayoutParams(-2, -2).apply { marginStart = dp(5) })
         }
-        cot.addView(hang)
-        cot.addView(chuPhu(getString(R.string.nk_chuoi_ngay), 12f).apply {
-            gravity = Gravity.CENTER; setPadding(0, dp(6), 0, 0)
+        // streak + task completion metrics
+        cot.addView(hang.apply {
+            gravity = Gravity.CENTER
         })
+        cot.addView(chuPhu(getString(R.string.nk_chuoi_ngay), 12f).apply {
+            gravity = Gravity.CENTER
+            setPadding(0, dp(6), 0, 0)
+        })
+        // last 7 days widget
         ngoai.addView(cot, FrameLayout.LayoutParams(-1, -2, Gravity.CENTER))
         ngoai.contentDescription = getString(R.string.nk_chuoi_mo_ta, chuoi)
         ngoai.layoutParams = LinearLayout.LayoutParams(0, dp(88), 1f)

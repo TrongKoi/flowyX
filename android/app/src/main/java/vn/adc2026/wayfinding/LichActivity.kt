@@ -233,11 +233,11 @@ class LichActivity : Activity() {
                 isClickable = true
                 isFocusable = true
                 setOnClickListener { chonNgay(ngay) }
-                contentDescription = Lich.tenNgay(ngay, homNay) +
+                contentDescription = Lich.tenNgay(ngay, homNay, this.context) +
                     if (soViec > 0) ", $soViec kế hoạch" else ", trống"
             }
             o.addView(TextView(this).apply {
-                text = Lich.TEN_THU_NGAN[i]
+                text = context.getString(Lich.TEN_THU_NGAN[i])
                 setTextColor(getColor(R.color.chu_phu))
                 textSize = 13f
                 gravity = Gravity.CENTER
@@ -283,7 +283,7 @@ class LichActivity : Activity() {
         if (!::so.isInitialized) return
         val homNay = SoLich.homNay()
         val ds = Lich.trongNgay(so.danhSach, ngayChon)
-        tvNgay.text = Lich.tenNgay(ngayChon, homNay)
+        tvNgay.text = Lich.tenNgay(ngayChon, homNay, this)
         tvTomTat.text = if (ds.isEmpty()) "" else
             getString(R.string.tom_tat_ngay, ds.size, Lich.moTaPhut(ds.sumOf { it.thoiLuong }))
 
@@ -385,7 +385,7 @@ class LichActivity : Activity() {
         val phu = buildList {
             add(Lich.moTaPhut(kh.thoiLuong))
             kh.oDau?.let { add(it) }
-            if (kh.lapLai != LapLai.KHONG) add(Lich.moTaLapLai(kh.lapLai))
+            if (kh.lapLai != LapLai.KHONG) add(getString(Lich.moTaLapLai(kh.lapLai)))
         }.joinToString(" · ")
         chu.addView(TextView(this).apply {
             text = phu

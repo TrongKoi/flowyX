@@ -1,5 +1,6 @@
 package vn.adc2026.wayfinding
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
 import android.graphics.drawable.GradientDrawable
@@ -65,7 +66,7 @@ class ViecCanLamActivity : TrangCoTab() {
         veTheBienBan()
         veTomTat(ds, homNay, phutBayGio)
         veTiepTheo(ds, homNay, phutBayGio)
-        veNhom(ds, homNay)
+        veNhom(ds, homNay, this)
 
         them(nutChinh(getString(R.string.them_ke_hoach)) {
             startActivity(Intent(this, KeHoachActivity::class.java)
@@ -273,11 +274,14 @@ class ViecCanLamActivity : TrangCoTab() {
             orientation = LinearLayout.HORIZONTAL
             setPadding(0, dp(14), 0, 0)
         }
-        for ((i, u) in UuTien.values().withIndex()) {
+        for ((i, u) in UuTien.entries.withIndex()) {
             val n = ds.count { it.uuTien == u }
-            hang.addView(chipUuTien(u, n), LinearLayout.LayoutParams(0, dp(40), 1f).apply {
-                if (i > 0) marginStart = dp(8)
-            })
+            hang.addView(
+                chipUuTien(u, n),
+                LinearLayout.LayoutParams(0, dp(40), 1f).apply {
+                    if (i > 0) marginStart = dp(8)
+                }
+            )
         }
         t.addView(hang)
     }
@@ -295,11 +299,11 @@ class ViecCanLamActivity : TrangCoTab() {
             }
         }, LinearLayout.LayoutParams(dp(10), dp(10)).apply { marginEnd = dp(6) })
         addView(TextView(this@ViecCanLamActivity).apply {
-            text = getString(R.string.kh_uu_tien_dem, u.nhan, n)
+            text = getString(R.string.kh_uu_tien_dem, context.getString(u.resID), n)
             textSize = 13f; includeFontPadding = false
             setTextColor(mau(R.color.chu))
         })
-        contentDescription = getString(R.string.kh_uu_tien_mo_ta, u.nhan, n)
+        contentDescription = getString(R.string.kh_uu_tien_mo_ta, context.getString(u.resID), n)
     }
 
     private fun mauUuTien(u: UuTien) = mau(when (u) {
@@ -342,11 +346,11 @@ class ViecCanLamActivity : TrangCoTab() {
      * THU GON thanh mot dong mong co vien dut - van thay duoc, van la cho
      * de tha viec vao, nhung khong chiem cho.
      */
-    private fun veNhom(ds: List<KeHoach>, homNay: Long) {
+    private fun veNhom(ds: List<KeHoach>, homNay: Long, ctx: Context) {
         vungUuTien.clear()
         for (u in UuTien.values()) {
             val nhom = ds.filter { it.uuTien == u }.let { Lich.theoUuTien(it) }
-            them(nhan(getString(R.string.kh_nhom_uu_tien, u.nhan), camMau = false).apply {
+            them(nhan(getString(R.string.kh_nhom_uu_tien, ctx.getString(u.resID)), camMau = false).apply {
                 setCompoundDrawablesRelativeWithIntrinsicBounds(GradientDrawable().apply {
                     shape = GradientDrawable.OVAL; setColor(mauUuTien(u)); setSize(dp(9), dp(9))
                 }, null, null, null)
@@ -424,7 +428,7 @@ class ViecCanLamActivity : TrangCoTab() {
                     android.view.DragEvent.ACTION_DROP -> {
                         v.background = null
                         val id = e.localState as? String ?: return@setOnDragListener false
-                        doiUuTien(id, u)
+                        doiUuTien(id, u, this.parent.baseContext)
                         true
                     }
                     android.view.DragEvent.ACTION_DRAG_STARTED -> true
@@ -434,13 +438,13 @@ class ViecCanLamActivity : TrangCoTab() {
         }
     }
 
-    private fun doiUuTien(id: String, u: UuTien) {
+    private fun doiUuTien(id: String, u: UuTien, ctx: Context) {
         val kh = soLich.tim(id) ?: return
         if (kh.uuTien == u) { lamMoi(); return }
         soLich.luuKeHoach(this, kh.copy(uuTien = u))
         Rung.xong(noiDung)
         lamMoi()
-        ThongBao.hien(this, getString(R.string.kh_da_doi_uu_tien, kh.ten, u.nhan))
+        ThongBao.hien(this, getString(R.string.kh_da_doi_uu_tien, kh.ten, ctx.getString(u.resID)))
     }
 
     private fun theKeHoach(kh: KeHoach, homNay: Long, vung: LinearLayout) {
@@ -478,7 +482,7 @@ class ViecCanLamActivity : TrangCoTab() {
         })
         cot.addView(chuPhu("${Lich.gioPhut(kh.batDau)}–${Lich.gioPhut(kh.ketThuc)} · " +
             Lich.moTaPhut(kh.thoiLuong) +
-            (if (kh.lapLai != LapLai.KHONG) " · ${Lich.moTaLapLai(kh)}" else ""), 12f).apply {
+            (if (kh.lapLai != LapLai.KHONG) " · ${Lich.moTaLapLai(kh.lapLai)}" else ""), 12f).apply {
             includeFontPadding = false; setPadding(0, dp(4), 0, 0)
         })
         h.addView(cot, LinearLayout.LayoutParams(0, -2, 1f))
@@ -494,7 +498,7 @@ class ViecCanLamActivity : TrangCoTab() {
             startActivity(Intent(this, KeHoachActivity::class.java).putExtra(KeHoachActivity.THEM_ID, kh.id))
         }
         t.contentDescription = "${kh.ten}, ${Lich.gioPhut(kh.batDau)} đến ${Lich.gioPhut(kh.ketThuc)}, " +
-            "ưu tiên ${kh.uuTien.nhan}" + if (xong) ", đã xong" else ""
+            "ưu tiên ${vung.context.getString(kh.uuTien.resID)}" + if (xong) ", đã xong" else ""
 
         batKeoTha(t, kh)
         t.tag = TAG_DANG_KEO

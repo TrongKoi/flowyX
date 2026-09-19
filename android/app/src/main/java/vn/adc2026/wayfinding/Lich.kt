@@ -1,5 +1,7 @@
 package vn.adc2026.wayfinding
 
+import android.content.Context
+
 /**
  * LICH - ke hoach theo ngay, kieu Tiimo. Phan logic THUAN, khong Android.
  *
@@ -44,7 +46,19 @@ enum class LapLai { KHONG, HANG_NGAY, HANG_TUAN, THEO_THU }
  * Muc uu tien. KHONG co "khan cap": ADHD nhin chu "khan" la thay moi viec
  * deu khan. Ba muc la du de chon mot viec lam truoc.
  */
-enum class UuTien(val nhan: String) { CAO("Cao"), VUA("Vừa"), THAP("Thấp") }
+/*
+enum class UuTien(val nhan: String) {
+    CAO(resources.getString(R.string.nh_uu_tien_cao)),
+    VUA(resources.getString(R.string.nh_uu_tien_vua)),
+    THAP(resources.getString(R.string.nh_uu_tien_thap)
+}
+*/
+
+enum class UuTien(val resID: Int) {
+    CAO(R.string.nh_uu_tien_cao),
+    VUA(R.string.nh_uu_tien_vua),
+    THAP(R.string.nh_uu_tien_thap)
+}
 
 data class KeHoach(
     val id: String,
@@ -234,22 +248,22 @@ object Lich {
         else -> "${phut / 60} giờ ${phut % 60} phút"
     }
 
-    fun moTaLapLai(l: LapLai): String = when (l) {
-        LapLai.KHONG -> "Không lặp"
-        LapLai.HANG_NGAY -> "Hằng ngày"
-        LapLai.HANG_TUAN -> "Hằng tuần"
-        LapLai.THEO_THU -> "Theo thứ"
+    fun moTaLapLai(l: LapLai): Int = when (l) {
+        LapLai.KHONG -> R.string.nh_lap_lai_khong_lap
+        LapLai.HANG_NGAY -> R.string.nh_lap_lai_hang_ngay
+        LapLai.HANG_TUAN -> R.string.nh_lap_lai_hang_tuan
+        LapLai.THEO_THU -> R.string.nh_lap_lai_theo_thu
     }
 
     /** "T2, T5 hằng tuần" - doc duoc ngay, khong can nho quy uoc. */
-    fun moTaLapLai(kh: KeHoach): String = when (kh.lapLai) {
+    fun moTaLapLai(kh: KeHoach, ctx: Context): String = when (kh.lapLai) {
         LapLai.THEO_THU -> {
             val thu = kh.thuLap.ifEmpty { setOf(thu(kh.ngay)) }
             if (thu.size == 7) "Hằng ngày"
-            else thu.sorted().joinToString(", ") { TEN_THU_NGAN[it] } + " hằng tuần"
+            else thu.sorted().joinToString(", ") { ctx.getString(TEN_THU_NGAN[it]) } + " hằng tuần"
         }
-        LapLai.HANG_TUAN -> TEN_THU_NGAN[thu(kh.ngay)] + " hằng tuần"
-        else -> moTaLapLai(kh.lapLai)
+        LapLai.HANG_TUAN -> ctx.getString(TEN_THU_NGAN[thu(kh.ngay)]) + " hằng tuần"
+        else -> ctx.getString(moTaLapLai(kh.lapLai))
     }
 
     /** Uu tien cao truoc, roi theo gio. Dung cho phan tom tat tab Ke hoach. */
@@ -304,16 +318,34 @@ object Lich {
     /** Thu Hai cua tuan chua `soNgay`. */
     fun dauTuan(soNgay: Long): Long = soNgay - thu(soNgay)
 
-    val TEN_THU_NGAN = listOf("T2", "T3", "T4", "T5", "T6", "T7", "CN")
-    val TEN_THU = listOf("Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật")
+    val TEN_THU_NGAN: List<Int> =
+        listOf(
+            R.string.nh_thu_hai_short,
+            R.string.nh_thu_ba_short,
+            R.string.nh_thu_tu_short,
+            R.string.nh_thu_nam_short,
+            R.string.nh_thu_sau_short,
+            R.string.nh_thu_bay_short,
+            R.string.nh_chu_nhat_short
+        )
+    val TEN_THU: List<Int> =
+        listOf(
+            R.string.nh_thu_hai_full,
+            R.string.nh_thu_ba_full,
+            R.string.nh_thu_tu_full,
+            R.string.nh_thu_nam_full,
+            R.string.nh_thu_sau_full,
+            R.string.nh_thu_bay_full,
+            R.string.nh_chu_nhat_full
+        )
 
-    fun tenNgay(soNgay: Long, homNay: Long): String {
+    fun tenNgay(soNgay: Long, homNay: Long, ctx: Context): String {
         val (_, m, d) = ngayThang(soNgay)
         val ten = when (soNgay - homNay) {
-            0L -> "Hôm nay"
-            1L -> "Ngày mai"
-            -1L -> "Hôm qua"
-            else -> TEN_THU[thu(soNgay)]
+            0L -> ctx.getString(R.string.nh_ngay_hom_nay)
+            1L -> ctx.getString(R.string.nh_ngay_mai)
+            -1L -> ctx.getString(R.string.nh_ngay_hom_qua)
+            else -> ctx.getString(TEN_THU[thu(soNgay)])
         }
         return "$ten, $d/$m"
     }

@@ -118,8 +118,8 @@
     <string name="viec_moi">Việc mới</string>
     <string name="viec_moi_hoi">Bỏ việc này và bắt đầu gom một việc khác?</string>
     <string name="chua_co_viec">Chưa có việc nào</string>
-    <string name="khi_nao_o_dau">%1$s · %2$s</string>
-    <string name="gach">—</string>
+    <string name="khi_nao_o_dau" translatable="false">%1$s · %2$s</string>
+    <string name="gach" translatable="false">—</string>
     <string name="hint_them_buoc">Thêm một bước nhỏ</string>
     <string name="cham_ban_de_hoi">Bị kẹt? Bấm Gợi ý, Flowy sẽ hỏi một câu nhỏ.</string>
     <string name="goi_y">Gợi ý</string>
@@ -631,4 +631,30 @@
     <string name="sk_tat_lam">Tắt và xoá</string>
     <string name="sk_bi_tu_choi">Chưa có quyền nào được cấp, nên Flowy đã tắt lại kết nối. Bạn có thể cấp quyền trong Health Connect rồi quay lại.</string>
     <string name="sk_doc_hong">Chưa đọc được dữ liệu. Hãy kiểm tra quyền trong Health Connect.</string>
+    <string name="nh_uu_tien_cao">Cao</string>
+    <string name="nh_uu_tien_vua">Vừa</string>
+    <string name="nh_uu_tien_thap">Thấp</string>
+    <string name="nh_ngay_hom_nay">Hôm nay</string>
+    <string name="nh_ngay_hom_qua">Hôm qua</string>
+    <string name="nh_ngay_mai">Ngày mai</string>
+    <string name="nh_thu_hai_short">T2</string>
+    <string name="nh_thu_hai_full">Thứ Hai</string>
+    <string name="nh_thu_ba_short">T3</string>
+    <string name="nh_thu_ba_full">Thứ Ba</string>
+    <string name="nh_thu_tu_short">T4</string>
+    <string name="nh_thu_tu_full">Thứ Tư</string>
+    <string name="nh_thu_nam_short">T5</string>
+    <string name="nh_thu_nam_full">Thứ Năm</string>
+    <string name="nh_thu_sau_short">T6</string>
+    <string name="nh_thu_sau_full">Thứ Sáu</string>
+    <string name="nh_thu_bay_short">T7</string>
+    <string name="nh_thu_bay_full">Thứ Bảy</string>
+    <string name="nh_chu_nhat_short">CN</string>
+    <string name="nh_chu_nhat_full">Chủ Nhật</string>
+    <string name="nh_lap_lai_khong_lap">Không lặp lại</string>
+    <string name="nh_lap_lai_hang_ngay">Hằng ngày</string>
+    <string name="nh_lap_lai_hang_tuan">Hằng tuần</string>
+    <string name="nh_lap_lai_theo_thu">Theo thứ</string>
+
+
 </resources>

@@ -3,6 +3,7 @@ package vn.adc2026.wayfinding
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -176,15 +177,15 @@ class KeHoachActivity : Activity() {
         theDau.addView(oDau, lp(4))
         khoi.addView(theDau, lp(12))
 
-        veUuTien(); veThoiGian(); veLapLai(); veNhac(); veBieuTuong()
+        veUuTien(this); veThoiGian(); veLapLai(); veNhac(); veBieuTuong()
     }
 
-    private fun veUuTien() {
+    private fun veUuTien(ctx: Context) {
         theUuTien.removeAllViews()
         theUuTien.addView(hang(R.drawable.ic_co, getString(R.string.kh_uu_tien), null) {})
         val h = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
         for ((i, u) in UuTien.values().withIndex()) {
-            h.addView(chip(u.nhan, u == uuTien, cham = mauUuTien(u)) { uuTien = u; veUuTien() },
+            h.addView(chip(ctx.getString(u.resID), u == uuTien, cham = mauUuTien(u)) { uuTien = u; veUuTien(this) },
                 LinearLayout.LayoutParams(0, dp(44), 1f).apply { if (i > 0) marginStart = dp(8) })
         }
         theUuTien.addView(h, lp(4))
@@ -194,7 +195,7 @@ class KeHoachActivity : Activity() {
     private fun veThoiGian() {
         theThoiGian.removeAllViews()
         val homNay = SoLich.homNay()
-        theThoiGian.addView(hang(R.drawable.ic_lich_nho, getString(R.string.kh_ngay), Lich.tenNgay(ngay, homNay)) { chonNgay() })
+        theThoiGian.addView(hang(R.drawable.ic_lich_nho, getString(R.string.kh_ngay), Lich.tenNgay(ngay, homNay, this)) { chonNgay() })
         theThoiGian.addView(vach())
         theThoiGian.addView(hang(R.drawable.ic_dong_ho, getString(R.string.kh_bat_dau_luc), Lich.gioPhut(batDau)) {
             chonGio(batDau, R.string.gio_chon_bat_dau) { g ->
@@ -233,7 +234,7 @@ class KeHoachActivity : Activity() {
         theLapLai.addView(hang(R.drawable.ic_lap_lai, getString(R.string.kh_lap_lai), null) {})
         val h = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
         for ((i, l) in listOf(LapLai.KHONG, LapLai.HANG_NGAY, LapLai.THEO_THU).withIndex()) {
-            h.addView(chip(Lich.moTaLapLai(l), l == lapLai) {
+            h.addView(chip(baseContext.getString(Lich.moTaLapLai(l)), l == lapLai) {
                 lapLai = l
                 if (l == LapLai.THEO_THU && thuLap.isEmpty()) thuLap.add(Lich.thu(ngay))
                 veLapLai()
@@ -246,7 +247,7 @@ class KeHoachActivity : Activity() {
             for (t in 0..6) {
                 val chon = t in thuLap
                 hangThu.addView(TextView(this).apply {
-                    text = Lich.TEN_THU_NGAN[t]
+                    text = context.getString(Lich.TEN_THU_NGAN[t])
                     textSize = 13f; gravity = Gravity.CENTER; includeFontPadding = false
                     typeface = if (chon) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
                     setTextColor(mau(if (chon) R.color.chu_tren_nhan else R.color.chu))
@@ -255,7 +256,7 @@ class KeHoachActivity : Activity() {
                         setColor(mau(if (chon) R.color.nhan else R.color.nen))
                         setStroke(dp(1), mau(if (chon) R.color.nhan_vien else R.color.vien))
                     }
-                    contentDescription = Lich.TEN_THU[t] + if (chon) ", đang chọn" else ""
+                    contentDescription = context.getString(Lich.TEN_THU[t]) + if (chon) ", đang chọn" else ""
                     setOnClickListener {
                         Rung.nhe(it)
                         // Luon con it nhat MOT thu - bo het thi "theo thu" vo nghia.
@@ -266,7 +267,7 @@ class KeHoachActivity : Activity() {
             }
             theLapLai.addView(hangThu, lp(12))
             theLapLai.addView(TextView(this).apply {
-                text = Lich.moTaLapLai(taoKeHoach("x"))
+                text = Lich.moTaLapLai(taoKeHoach("x"), this.context)
                 textSize = 13f; setTextColor(mau(R.color.chu_phu)); gravity = Gravity.CENTER
                 setPadding(0, dp(8), 0, 0)
             })

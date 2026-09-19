@@ -230,10 +230,10 @@ class NhapLichActivity : Activity() {
     }
 
     private fun moTa(s: DocIcs.SuKien): String {
-        val ngay = Lich.tenNgay(s.ngay, SoLich.homNay())
+        val ngay = Lich.tenNgay(s.ngay, SoLich.homNay(), this)
         if (s.caNgay) return "$ngay · " + getString(R.string.nl_ca_ngay)
         val lap = if (s.lapLai == LapLai.KHONG) "" else " · " +
-            Lich.moTaLapLai(DocIcs.sangKeHoach(s))
+            Lich.moTaLapLai(DocIcs.sangKeHoach(s).lapLai)
         return "$ngay · ${Lich.gioPhut(s.batDau)}–${Lich.gioPhut((s.batDau + s.thoiLuong) % 1440)}$lap"
     }
 

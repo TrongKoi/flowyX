@@ -67,8 +67,8 @@
     <string name="viec_moi">New task</string>
     <string name="viec_moi_hoi">Drop this one and start on something else?</string>
     <string name="chua_co_viec">No task yet</string>
-    <string name="khi_nao_o_dau">%1$s · %2$s</string>
-    <string name="gach">—</string>
+
+
     <string name="hint_them_buoc">Add one small step</string>
     <string name="cham_ban_de_hoi">Stuck? Tap Nudge and Flowy asks one small question.</string>
     <string name="goi_y">Nudge</string>
@@ -505,4 +505,28 @@
     <string name="sk_tat_lam">Turn off and erase</string>
     <string name="sk_bi_tu_choi">No permission was granted, so Flowy turned the connection back off. You can grant it in Health Connect and come back.</string>
     <string name="sk_doc_hong">Could not read the data. Check the permissions in Health Connect.</string>
+    <string name="nh_uu_tien_cao">High</string>
+    <string name="nh_uu_tien_vua">Medium</string>
+    <string name="nh_uu_tien_thap">Low</string>
+    <string name="nh_ngay_hom_nay">Today</string>
+    <string name="nh_ngay_hom_qua">Yesterday</string>
+    <string name="nh_ngay_mai">Tomorrow</string>
+    <string name="nh_thu_hai_short">Mon</string>
+    <string name="nh_thu_hai_full">Monday</string>
+    <string name="nh_thu_ba_short">Tue</string>
+    <string name="nh_thu_ba_full">Tuesday</string>
+    <string name="nh_thu_tu_short">Wed</string>
+    <string name="nh_thu_tu_full">Wednesday</string>
+    <string name="nh_thu_nam_full">Thursday</string>
+    <string name="nh_thu_sau_short">Fri</string>
+    <string name="nh_thu_sau_full">Friday</string>
+    <string name="nh_thu_bay_short">Sat</string>
+    <string name="nh_thu_bay_full">Saturday</string>
+    <string name="nh_chu_nhat_short">Sun</string>
+    <string name="nh_chu_nhat_full">Sunday</string>
+    <string name="nh_thu_nam_short">Thu</string>
+    <string name="nh_lap_lai_khong_lap">No repeat</string>
+    <string name="nh_lap_lai_hang_ngay">Daily</string>
+    <string name="nh_lap_lai_hang_tuan">Weekly</string>
+    <string name="nh_lap_lai_theo_thu">Custom days</string>
 </resources>
