@@ -169,7 +169,7 @@ struct GhiBienBan: View {
             Text(nhan).chu(15, dam: true).foregroundColor(Mau.chu).padding(.top, 18)
             TextField(goiY, text: chu, axis: nhieuDong ? .vertical : .horizontal)
                 .chu(16).foregroundColor(Mau.chu)
-                .lineLimit(nhieuDong ? 3... : 1...1)
+                .lineLimit(nhieuDong ? 3...8 : 1...1)
                 .padding(.horizontal, 14).padding(.vertical, 12)
                 .frame(minHeight: 52, alignment: .topLeading)
                 .background(RoundedRectangle(cornerRadius: 14).fill(Mau.the))

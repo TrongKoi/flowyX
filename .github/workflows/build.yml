@@ -89,7 +89,11 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - uses: android-actions/setup-android@v3
+      # Khong dung android-actions/setup-android: no goi sdkmanager tren
+      # goi 'tools' da bi go khoi kho, va do ngay o buoc cai. Runner
+      # ubuntu da co san Android SDK o ANDROID_HOME - dung thang.
+      - name: Xac nhan Android SDK co san
+        run: echo "ANDROID_HOME=$ANDROID_HOME" && ls "$ANDROID_HOME/platforms"
 
       - uses: gradle/actions/setup-gradle@v4
 

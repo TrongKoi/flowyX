@@ -238,6 +238,20 @@ final class FlowyModel: ObservableObject {
 
     var duYDinh: Bool { tra.viecGi != nil && tra.khiNao != nil && tra.oDau != nil }
 
+    /// Xep mot lenh vao o cho gui, roi day di ngay khong doi het nhip.
+    ///
+    /// Ban Kotlin: `MainActivity.guiLenh(lenh, noiDung)`. Hai ban phai giong
+    /// nhau tung buoc - `guiMotGoi()` doc dung o nay roi xoa, nen mot lenh
+    /// chi di dung mot lan.
+    ///
+    /// `guiNgay()` chi co tac dung khi vong lap dang chay; luc chua noi duoc
+    /// voi laptop thi lenh nam lai trong o va di cung goi dau tien sau khi noi
+    /// lai duoc - dung y, vi thao tac cua nguoi dung khong duoc mat.
+    private func guiLenh(_ lenh: String, _ noiDung: String? = nil) {
+        lenhChoGui = (lenh, noiDung)
+        guiNgay()
+    }
+
     func bamNutChinh() {
         switch nutChinh {
         case .tiepTuc: guiLenh(Lenh.tiepTuc)
