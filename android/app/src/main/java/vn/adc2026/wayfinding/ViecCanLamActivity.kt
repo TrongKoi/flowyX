@@ -81,10 +81,6 @@ class ViecCanLamActivity : TrangCoTab() {
         batVungTha()
     }
 
-    private companion object {
-        const val TAG_DANG_KEO = "dang_keo"
-    }
-
     // ---------------------------------------------------------------
     // 1. Vien thuoc: phien Focus dang chay ngam
     // ---------------------------------------------------------------
@@ -398,6 +394,17 @@ class ViecCanLamActivity : TrangCoTab() {
      * vuot. Keo-tha buoc phai bat dau bang mot cu giu, va no van con duong
      * khac hoan toan tuong duong: mo the ra va doi uu tien trong trang sua.
      */
+    /**
+     * The dang duoc keo. Giu THAM CHIEU THANG, khong tim lai theo tag.
+     *
+     * Ban truoc dat `t.tag = TAG_DANG_KEO` cho MOI the roi goi
+     * `findViewWithTag` luc tha - ham do tra ve the DAU TIEN mang tag ay,
+     * gan nhu khong bao gio la the dang keo. Ket qua: the that giu nguyen
+     * alpha 0,35 sau khi tha, thanh mot bong mo lo lung tren man hinh, con
+     * the dau danh sach bi dat lai alpha 1 (vo nghia, no van dang la 1).
+     */
+    private var theDangKeo: View? = null
+
     private fun batKeoTha(the: View, kh: KeHoach) {
         the.setOnLongClickListener { v ->
             Rung.nhe(v)
@@ -406,12 +413,32 @@ class ViecCanLamActivity : TrangCoTab() {
             @Suppress("DEPRECATION")
             val ok = if (android.os.Build.VERSION.SDK_INT >= 24)
                 v.startDragAndDrop(du, bong, kh.id, 0) else v.startDrag(du, bong, kh.id, 0)
-            if (ok) v.alpha = 0.35f
+            if (ok) { v.alpha = 0.35f; theDangKeo = v }
             ok
         }
     }
 
+    /**
+     * Tra the dang keo ve nguyen trang.
+     *
+     * Goi o CA `ACTION_DRAG_ENDED` cua vung tha LAN cua goc man hinh: keo
+     * roi tha ra ngoai ca ba vung thi vung tha khong nhan duoc gi, va neu
+     * chi trong vao chung thi bong mo van o lai.
+     */
+    private fun thoiKeo() {
+        theDangKeo?.alpha = 1f
+        theDangKeo = null
+    }
+
     private fun batVungTha() {
+        // Luoi do: tha ra NGOAI ca ba vung (len thanh tab, ra le man hinh)
+        // thi khong vung nao nhan duoc su kien, nhung goc man hinh thi luon
+        // nhan `ACTION_DRAG_ENDED`. Thieu no, keo ra ngoai roi tha se de lai
+        // dung cai bong mo ma ta vua di sua.
+        window.decorView.setOnDragListener { _, e ->
+            if (e.action == android.view.DragEvent.ACTION_DRAG_ENDED) thoiKeo()
+            true
+        }
         for ((u, vung) in vungUuTien) {
             vung.setOnDragListener { v, e ->
                 when (e.action) {
@@ -419,16 +446,22 @@ class ViecCanLamActivity : TrangCoTab() {
                         v.background = getDrawable(R.drawable.nen_vung_tha)
                         Rung.nhe(v); true
                     }
-                    android.view.DragEvent.ACTION_DRAG_EXITED,
+                    // EXITED chi la "ngon tay roi khoi vung nay" - keo van
+                    // dang tiep dien, nen KHONG duoc tra alpha o day.
+                    android.view.DragEvent.ACTION_DRAG_EXITED -> {
+                        v.background = null
+                        true
+                    }
                     android.view.DragEvent.ACTION_DRAG_ENDED -> {
                         v.background = null
-                        noiDung.findViewWithTag<View>(TAG_DANG_KEO)?.alpha = 1f
+                        thoiKeo()
                         true
                     }
                     android.view.DragEvent.ACTION_DROP -> {
                         v.background = null
+                        thoiKeo()
                         val id = e.localState as? String ?: return@setOnDragListener false
-                        doiUuTien(id, u, this.parent.baseContext)
+                        doiUuTien(id, u)
                         true
                     }
                     android.view.DragEvent.ACTION_DRAG_STARTED -> true
@@ -438,13 +471,21 @@ class ViecCanLamActivity : TrangCoTab() {
         }
     }
 
-    private fun doiUuTien(id: String, u: UuTien, ctx: Context) {
+    /**
+     * Ban truoc nhan them mot `ctx` lay bang `this.parent.baseContext`.
+     * `Activity.getParent()` tra ve null tru khi Activity nam trong mot
+     * ActivityGroup - thu da bo tu API 13 - nen `.baseContext` nem
+     * NullPointerException ngay trong `ACTION_DROP`. Khung keo-tha nuot
+     * ngoai le do, phien keo chet giua chung, va man hinh o lai trong mot
+     * trang thai khong ai doan duoc. Activity nay da la Context roi.
+     */
+    private fun doiUuTien(id: String, u: UuTien) {
         val kh = soLich.tim(id) ?: return
         if (kh.uuTien == u) { lamMoi(); return }
         soLich.luuKeHoach(this, kh.copy(uuTien = u))
         Rung.xong(noiDung)
         lamMoi()
-        ThongBao.hien(this, getString(R.string.kh_da_doi_uu_tien, kh.ten, ctx.getString(u.resID)))
+        ThongBao.hien(this, getString(R.string.kh_da_doi_uu_tien, kh.ten, getString(u.resID)))
     }
 
     private fun theKeHoach(kh: KeHoach, homNay: Long, vung: LinearLayout) {
@@ -501,7 +542,6 @@ class ViecCanLamActivity : TrangCoTab() {
             "ưu tiên ${vung.context.getString(kh.uuTien.resID)}" + if (xong) ", đã xong" else ""
 
         batKeoTha(t, kh)
-        t.tag = TAG_DANG_KEO
         val k = KhungVuot(this, t,
             khiXong = { doiXong(kh, homNay) },
             khiXoa = { xoa(kh) },

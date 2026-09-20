@@ -97,6 +97,13 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
+      # Bit thuc thi cua gradlew hay roi mat khi commit tu Windows.
+      # `git update-index --chmod=+x` da dat lai trong index; dong nay
+      # la luoi do phong cho lan sau.
+      - name: Cho phep chay gradlew
+        working-directory: android
+        run: chmod +x gradlew
+
       - name: Test don vi Kotlin
         working-directory: android
         run: ./gradlew :app:testDebugUnitTest --console=plain
