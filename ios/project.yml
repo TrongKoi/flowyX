@@ -29,3 +29,12 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+
+    # Sinh MOT scheme dung chung ten "Flowy", ghi vao xcshareddata/.
+    #
+    # Ban .xcodeproj viet tay khong co scheme nao, nen `xcodebuild -scheme
+    # Flowy` bao "scheme not found". CI sinh lai project tu tep nay truoc
+    # khi bien dich, nen khoi scheme o day la thu lam cho lenh do chay duoc.
+    scheme:
+      testTargets: []
+      gatherCoverageData: false
