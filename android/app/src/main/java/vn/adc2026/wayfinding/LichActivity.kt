@@ -46,8 +46,14 @@ class LichActivity : Activity() {
         }
     }
 
+    /**
+     * Ban truoc goi thang `super.attachBaseContext(base)` - tuc la KHONG
+     * boc gi ca. Man hinh nay vi vay khong he theo cai dat ngon ngu: doi
+     * sang English thi 14 man hinh kia doi, rieng no van tieng Viet.
+     * Loi im lang, khong lam test nao do.
+     */
     override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(base)
+        super.attachBaseContext(GiaoDien.boc(base))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -285,7 +291,7 @@ class LichActivity : Activity() {
         val ds = Lich.trongNgay(so.danhSach, ngayChon)
         tvNgay.text = Lich.tenNgay(ngayChon, homNay, this)
         tvTomTat.text = if (ds.isEmpty()) "" else
-            getString(R.string.tom_tat_ngay, ds.size, Lich.moTaPhut(ds.sumOf { it.thoiLuong }))
+            getString(R.string.tom_tat_ngay, ds.size, Lich.moTaPhut(ds.sumOf { it.thoiLuong }, this))
 
         dongThoiGian.removeAllViews()
         if (ds.isEmpty()) {
@@ -383,7 +389,7 @@ class LichActivity : Activity() {
             setTypeface(typeface, Typeface.BOLD)
         })
         val phu = buildList {
-            add(Lich.moTaPhut(kh.thoiLuong))
+            add(Lich.moTaPhut(kh.thoiLuong, this@LichActivity))
             kh.oDau?.let { add(it) }
             if (kh.lapLai != LapLai.KHONG) add(getString(Lich.moTaLapLai(kh.lapLai)))
         }.joinToString(" · ")
@@ -394,7 +400,7 @@ class LichActivity : Activity() {
         })
         if (kh.nhacTruoc.isNotEmpty()) {
             chu.addView(TextView(this).apply {
-                text = "🔔 " + kh.nhacTruoc.sortedDescending().joinToString(", ") { Lich.moTaNhac(it) }
+                text = "🔔 " + kh.nhacTruoc.sortedDescending().joinToString(", ") { Lich.moTaNhac(it, this@LichActivity) }
                 setTextColor(getColor(R.color.chu_phu))
                 textSize = 13f
                 setPadding(0, dp(2), 0, 0)
@@ -448,7 +454,7 @@ class LichActivity : Activity() {
     }
 
     private fun dongTrong(phut: Int): View = TextView(this).apply {
-        text = getString(R.string.trong_phut, Lich.moTaPhut(phut))
+        text = getString(R.string.trong_phut, Lich.moTaPhut(phut, this@LichActivity))
         setTextColor(getColor(R.color.chu_phu))
         textSize = 13f
         setPadding(dp(58), dp(2), 0, dp(2))

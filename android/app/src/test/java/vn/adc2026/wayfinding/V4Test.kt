@@ -33,10 +33,23 @@ class LichV4Test {
         assertFalse(Lich.coTrongNgay(kh, thuHai + 1))
     }
 
-    @Test fun moTaLapLai_docDuocNgay() {
+    /**
+     * Ban truoc kiem thang chuoi "T2, T5 hằng tuần". Tu khi `moTaLapLai`
+     * lay chuoi tu `strings.xml` thi no can Context, va Context khong co
+     * trong test JVM. Phan DANG KIEM - gom thu, va gom du bay thu thanh
+     * "hằng ngày" - da duoc tach ra thanh `lapLaiThuan`, thuan tuy va
+     * khong dinh Android. Phan con lai chi la thay so vao mau.
+     */
+    @Test fun lapLaiThuan_gomThuVaGomDuBayThanhHangNgay() {
         val kh = KeHoach("a", "Tập", ngay = thuHai, batDau = 600, lapLai = LapLai.THEO_THU, thuLap = setOf(3, 0))
-        assertEquals("T2, T5 hằng tuần", Lich.moTaLapLai(kh))
-        assertEquals("Hằng ngày", Lich.moTaLapLai(kh.copy(thuLap = (0..6).toSet())))
+        assertEquals(Lich.MoTaLap.TheoThu(listOf(0, 3)), Lich.lapLaiThuan(kh))
+        assertEquals(Lich.MoTaLap.HangNgay, Lich.lapLaiThuan(kh.copy(thuLap = (0..6).toSet())))
+    }
+
+    /** Thu rong -> lay thu cua chinh ngay bat dau, khong phai bo trong. */
+    @Test fun lapLaiThuan_thuRongThiLayThuCuaNgayBatDau() {
+        val kh = KeHoach("a", "Tập", ngay = thuHai, batDau = 600, lapLai = LapLai.THEO_THU)
+        assertEquals(Lich.MoTaLap.TheoThu(listOf(0)), Lich.lapLaiThuan(kh))
     }
 
     @Test fun nhacTruocBaNgay_vanDuocDatChuong() {
@@ -46,11 +59,25 @@ class LichV4Test {
         assertEquals((thuHai + 2) * 1440 + 540, ln[0].phutTuyetDoi)
     }
 
-    @Test fun moTaNhac_tuy_y() {
-        assertEquals("Đúng giờ", Lich.moTaNhac(0))
-        assertEquals("1 giờ trước", Lich.moTaNhac(60))
-        assertEquals("1 giờ 30 phút trước", Lich.moTaNhac(90))
-        assertEquals("2 ngày trước", Lich.moTaNhac(2880))
+    /**
+     * MUC 4.3 - thoi luong hien MOT don vi, khong phai hai.
+     *
+     * Day la bai canh gac cho quy tac do: duoi ba tieng phai tra ve
+     * `0 to phut`, nghia la "hien nguyen bang phut". Ai ha nguong xuong
+     * 60 lai - va app quay ve "1 giờ 15 phút" - se lam bai nay do.
+     */
+    @Test fun chiaHienThi_duoiBaTiengThiGiuNguyenBangPhut() {
+        assertEquals(0 to 45, Lich.chiaHienThi(45))
+        assertEquals(0 to 75, Lich.chiaHienThi(75))     // KHONG phai 1 gio 15
+        assertEquals(0 to 120, Lich.chiaHienThi(120))
+        assertEquals(0 to 179, Lich.chiaHienThi(179))
+    }
+
+    /** Tu ba tieng tro len thi con so phut het truc quan -> quay ve gio. */
+    @Test fun chiaHienThi_tuBaTiengThiTachGioVaPhut() {
+        assertEquals(3 to 0, Lich.chiaHienThi(180))
+        assertEquals(3 to 5, Lich.chiaHienThi(185))
+        assertEquals(4 to 0, Lich.chiaHienThi(240))
     }
 
     @Test fun thoiLuongGiua_quaNuaDem() {

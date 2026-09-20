@@ -529,4 +529,30 @@
     <string name="nh_lap_lai_hang_ngay">Daily</string>
     <string name="nh_lap_lai_hang_tuan">Weekly</string>
     <string name="nh_lap_lai_theo_thu">Custom days</string>
+
+    <!-- Settings: light/dark mode (v5.1) -->
+    <string name="cd_theme">Appearance</string>
+    <string name="cd_theme_theo_may">System</string>
+    <string name="cd_theme_sang">Light</string>
+    <string name="cd_theme_toi">Dark</string>
+    <string name="cd_theme_mo_ta">Choose “System” to follow your phone’s light/dark setting.</string>
+
+    <!-- Duration (v5.1, item 4.3): under 3 hours stays in whole minutes -->
+    <string name="tl_phut">%d min</string>
+    <string name="tl_gio">%d hr</string>
+    <string name="tl_gio_phut">%1$d hr %2$d min</string>
+
+    <!-- Reminder offsets -->
+    <string name="nhac_dung_gio">On time</string>
+    <string name="nhac_ngay_truoc">%d days before</string>
+    <string name="nhac_gio_truoc">%d hr before</string>
+    <string name="nhac_truoc">%s before</string>
+
+    <!-- Spoken when a reminder fires -->
+    <string name="cau_den_gio">Time to start: %s.</string>
+    <string name="cau_ngay_mai">Tomorrow at %1$s: %2$s.</string>
+    <string name="cau_con">%1$s to go, at %2$s: %3$s.</string>
+
+    <!-- Repeat on weekdays: %s is the day list, e.g. "Mon, Thu" -->
+    <string name="lap_theo_thu_tuan">%s weekly</string>
 </resources>

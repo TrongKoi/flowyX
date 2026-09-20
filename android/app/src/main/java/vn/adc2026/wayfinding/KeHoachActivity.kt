@@ -85,7 +85,7 @@ class KeHoachActivity : Activity() {
 
     /** Ngon ngu: xem NgonNgu.boc. Theo may thi khong tao context moi. */
     override fun attachBaseContext(moi: android.content.Context) {
-        super.attachBaseContext(NgonNgu.boc(moi))
+        super.attachBaseContext(GiaoDien.boc(moi))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -213,14 +213,14 @@ class KeHoachActivity : Activity() {
 
         val tl = Lich.thoiLuongGiua(batDau, ketThuc)
         theThoiGian.addView(TextView(this).apply {
-            text = getString(R.string.kh_keo_dai_la, Lich.moTaPhut(tl))
+            text = getString(R.string.kh_keo_dai_la, Lich.moTaPhut(tl, this@KeHoachActivity))
             textSize = 13f; setTextColor(mau(R.color.chu_phu)); includeFontPadding = false
             setPadding(dp(32), dp(8), 0, dp(8))
         })
         val cuon = HorizontalScrollView(this).apply { isHorizontalScrollBarEnabled = false }
         val h = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
         for (p in Lich.MUC_THOI_LUONG) {
-            h.addView(chip("+${Lich.moTaPhut(p)}", tl == p) {
+            h.addView(chip("+${Lich.moTaPhut(p, this@KeHoachActivity)}", tl == p) {
                 ketThuc = (batDau + p) % 1440; veThoiGian()
             }, LinearLayout.LayoutParams(-2, dp(40)).apply { marginEnd = dp(8) })
         }
@@ -284,8 +284,8 @@ class KeHoachActivity : Activity() {
             val cuon = HorizontalScrollView(this).apply { isHorizontalScrollBarEnabled = false }
             val h = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
             for (p in nhac.toList()) {
-                h.addView(chip("${Lich.moTaNhac(p)}  ✕", true) { nhac.remove(p); veNhac() }.apply {
-                    contentDescription = getString(R.string.kh_bo_moc_nhac, Lich.moTaNhac(p))
+                h.addView(chip("${Lich.moTaNhac(p, this@KeHoachActivity)}  ✕", true) { nhac.remove(p); veNhac() }.apply {
+                    contentDescription = getString(R.string.kh_bo_moc_nhac, Lich.moTaNhac(p, this@KeHoachActivity))
                 }, LinearLayout.LayoutParams(-2, dp(40)).apply { marginEnd = dp(8) })
             }
             cuon.addView(h)
@@ -294,7 +294,7 @@ class KeHoachActivity : Activity() {
         val cuon2 = HorizontalScrollView(this).apply { isHorizontalScrollBarEnabled = false }
         val h2 = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
         for (p in Lich.MUC_NHAC.filter { it !in nhac }) {
-            h2.addView(chip("+ ${Lich.moTaNhac(p)}", false) { nhac.add(p); veNhac() },
+            h2.addView(chip("+ ${Lich.moTaNhac(p, this@KeHoachActivity)}", false) { nhac.add(p); veNhac() },
                 LinearLayout.LayoutParams(-2, dp(40)).apply { marginEnd = dp(8) })
         }
         h2.addView(chip(getString(R.string.kh_tuy_chinh), false) { nhapNhacTuyChon() },

@@ -51,7 +51,7 @@ object LichBao {
         var kq = if (chinhXac) BaoGio.KetQua.CHINH_XAC else BaoGio.KetQua.CO_THE_TRE
         ds.forEachIndexed { i, ln ->
             val luc = SoLich.sangMili(ln.phutTuyetDoi)
-            val y = pi(ctx, i, "${ln.keHoach.emoji} ${Lich.cauNhac(ln)}", ln.keHoach.id)
+            val y = pi(ctx, i, "${ln.keHoach.emoji} ${Lich.cauNhac(ln, ctx)}", ln.keHoach.id)
             try {
                 if (chinhXac) am.setAlarmClock(AlarmManager.AlarmClockInfo(luc, y), y)
                 else am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, luc, y)

@@ -46,10 +46,23 @@ class LichTest {
         assertNull(Lich.tiepTheo(listOf(kh), d * 1440 + 780, setOf(Lich.khoaXong("c", d))))
     }
 
+    /**
+     * Cau nhac phai neo vao GIO THAT tren dong ho, khong phai mot khoang
+     * troi noi (muc 3.1 cua thiet ke).
+     *
+     * `cauNhac` gio lay mau tu `strings.xml` nen can Context. Thu con
+     * kiem duoc o day, va cung la thu de vo nhat, la con so gio that:
+     * neu `gioPhut` sai thi moi cau nhac deu neo sai.
+     *
+     * Ban than cac mau cau nam o `values/strings.xml` (`cau_den_gio`,
+     * `cau_ngay_mai`, `cau_con`) - ca ba deu phai co cho dien gio.
+     */
     @Test
     fun cauNhacNeoVaoGioThat() {
         val kh = KeHoach("c", "Viết báo cáo", ngay = d, batDau = 840)
-        assertEquals("Còn 15 phút nữa, lúc 14:00: Viết báo cáo.",
-            Lich.cauNhac(LanNhac(kh, d, 15, d * 1440 + 825)))
+        assertEquals("14:00", Lich.gioPhut(kh.batDau))
+        val ln = LanNhac(kh, d, 15, d * 1440 + 825)
+        assertEquals(15, ln.truoc)
+        assertEquals(0 to 15, Lich.chiaHienThi(ln.truoc))
     }
 }

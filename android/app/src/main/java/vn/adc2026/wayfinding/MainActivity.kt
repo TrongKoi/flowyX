@@ -219,8 +219,14 @@ class MainActivity : Activity() {
     // Vong doi
     // ---------------------------------------------------------------
 
+    /**
+     * Ban truoc goi thang `super.attachBaseContext(base)` - tuc la KHONG
+     * boc gi ca. Man hinh nay vi vay khong he theo cai dat ngon ngu: doi
+     * sang English thi 14 man hinh kia doi, rieng no van tieng Viet.
+     * Loi im lang, khong lam test nao do.
+     */
     override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(base)
+        super.attachBaseContext(GiaoDien.boc(base))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -791,7 +797,7 @@ class MainActivity : Activity() {
             getString(R.string.dang_dien_ra_den, Lich.gioPhut(kh.ketThuc))
         } else {
             getString(R.string.tiep_theo_luc, Lich.gioPhut(kh.batDau)) +
-                " (còn ${Lich.moTaPhut(kh.batDau - phut)})"
+                " (còn ${Lich.moTaPhut(kh.batDau - phut, this)})"
         }
         khoiTiepTheo.contentDescription = "${ttNhan.text}. ${kh.ten}"
         khoiTiepTheo.visibility = View.VISIBLE

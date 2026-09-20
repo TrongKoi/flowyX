@@ -657,4 +657,30 @@
     <string name="nh_lap_lai_theo_thu">Theo thứ</string>
 
 
+
+    <!-- Cai dat: che do sang/toi (v5.1) -->
+    <string name="cd_theme">Giao diện</string>
+    <string name="cd_theme_theo_may">Theo máy</string>
+    <string name="cd_theme_sang">Sáng</string>
+    <string name="cd_theme_toi">Tối</string>
+    <string name="cd_theme_mo_ta">Chọn “Theo máy” để đổi cùng lúc với cài đặt sáng/tối của điện thoại.</string>
+
+    <!-- Thoi luong (v5.1, muc 4.3): duoi 3 tieng hien nguyen bang phut -->
+    <string name="tl_phut">%d phút</string>
+    <string name="tl_gio">%d giờ</string>
+    <string name="tl_gio_phut">%1$d giờ %2$d phút</string>
+
+    <!-- Moc nhac truoc -->
+    <string name="nhac_dung_gio">Đúng giờ</string>
+    <string name="nhac_ngay_truoc">%d ngày trước</string>
+    <string name="nhac_gio_truoc">%d giờ trước</string>
+    <string name="nhac_truoc">%s trước</string>
+
+    <!-- Cau doc len khi den moc nhac -->
+    <string name="cau_den_gio">Đến giờ rồi: %s.</string>
+    <string name="cau_ngay_mai">Ngày mai lúc %1$s: %2$s.</string>
+    <string name="cau_con">Còn %1$s nữa, lúc %2$s: %3$s.</string>
+
+    <!-- Lap theo thu: %s la danh sach thu, vd "T2, T5" -->
+    <string name="lap_theo_thu_tuan">%s hằng tuần</string>
 </resources>

@@ -3,4 +3,9 @@
 <resources>
     <!-- Danh dau mot view da duoc nhan he so co chu roi (GiaoDien.apCoChu). -->
     <item name="tag_da_gian" type="id" />
+
+    <!-- ScrollView cua man hinh Cai dat. Co id thi Android moi luu duoc
+         vi tri cuon qua `recreate()`; view dung bang ma khong co id thi
+         moi lan doi ngon ngu / phong chu la mot lan nhay ve dau trang. -->
+    <item name="cuon_cai_dat" type="id" />
 </resources>

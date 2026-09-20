@@ -129,7 +129,19 @@ object GiaoDien {
      */
     fun apTheme(a: Activity) {
         if (AppSettings(a).kieuChu == AppSettings.CHU_HE_THONG) a.setTheme(R.style.FlowyHeThong)
+        // Goi o day vi moi Activity deu goi `apTheme` ngay dau `onCreate`,
+        // truoc `super.onCreate` - som nhat co the trong vong doi.
+        CheDoToi.apDung(a)
     }
+
+    /**
+     * Boc Context cho `attachBaseContext`: ngon ngu TRUOC, roi che do toi.
+     *
+     * Goi mot ham thay vi hai o 16 man hinh - them mot lop boc nua ve sau
+     * thi sua dung mot cho, khong phai di sua 16 cho va quen mat mot.
+     */
+    fun boc(goc: android.content.Context): android.content.Context =
+        CheDoToi.boc(NgonNgu.boc(goc))
 
     /**
      * Dau vet cua moi thu anh huong toi cach ve man hinh. Activity so dau
@@ -139,7 +151,7 @@ object GiaoDien {
      */
     fun dauVet(ctx: Context): String {
         val s = AppSettings(ctx)
-        return "${s.kieuChu}|${s.coChu}|${s.ngonNgu}|${s.mucRung}"
+        return "${s.kieuChu}|${s.coChu}|${s.ngonNgu}|${s.mucRung}|${s.cheDoToi}"
     }
 }
 

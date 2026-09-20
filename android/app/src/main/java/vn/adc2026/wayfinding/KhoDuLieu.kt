@@ -214,10 +214,28 @@ class KhoDuLieu(ctx: Context) : SQLiteOpenHelper(ctx, TEN, null, PHIEN_BAN) {
 
         fun muoiMoi(): ByteArray = ByteArray(16).also { SecureRandom().nextBytes(it) }
 
+        /**
+         * PBKDF2-HMAC-SHA256, roi ghi ra HEX.
+         *
+         * Truoc day ghi ra bang `android.util.Base64`. Trong test JVM,
+         * cac lop `android.*` chi la vo rong - `encodeToString` tra ve
+         * null, nen ba bai trong `XacThucTest` do vi NullPointerException
+         * chu khong phai vi thuat toan sai. Bai kiem quan trong nhat
+         * trong so do la "ban bam khong chua mat khau thuong", va no da
+         * khong he chay lan nao.
+         *
+         * Hex khong dinh toi Android, chay duoc o ca ba noi (app, test,
+         * va ban Python doi chieu), va dai hon Base64 dung 33% - khong
+         * dang ke voi mot chuoi 32 byte.
+         *
+         * Doi dinh dang nay lam moi ban bam CU khong con khop. App chua
+         * phat hanh cho ai ngoai nhom, nen tai khoan thu chi can dang ky
+         * lai; khong co du lieu that nao mat.
+         */
         fun bam(matKhau: String, muoi: ByteArray): String {
             val spec = PBEKeySpec(matKhau.toCharArray(), muoi, VONG, DAI_KHOA)
             val f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
-            return Base64.encodeToString(f.generateSecret(spec).encoded, Base64.NO_WRAP)
+            return f.generateSecret(spec).encoded.joinToString("") { "%02x".format(it) }
         }
 
         /**

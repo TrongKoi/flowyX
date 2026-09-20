@@ -57,7 +57,7 @@ class QuenMatKhauActivity : Activity() {
     private lateinit var tvLoi: TextView
 
     override fun attachBaseContext(moi: Context) {
-        super.attachBaseContext(NgonNgu.boc(moi))
+        super.attachBaseContext(GiaoDien.boc(moi))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

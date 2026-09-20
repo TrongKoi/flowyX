@@ -225,27 +225,62 @@ object Lich {
      * Noi dung thong bao. Moi cau ket thuc bang THOI DIEM cu the, khong
      * phai khoang thoi gian troi noi - neo vao dong ho (muc 3.1).
      */
-    fun cauNhac(ln: LanNhac): String {
+    fun cauNhac(ln: LanNhac, ctx: Context): String {
         val kh = ln.keHoach
         val gio = gioPhut(kh.batDau)
         return when {
-            ln.truoc == 0 -> "Đến giờ rồi: ${kh.ten}."
-            ln.truoc >= 24 * 60 -> "Ngày mai lúc $gio: ${kh.ten}."
-            else -> "Còn ${moTaPhut(ln.truoc)} nữa, lúc $gio: ${kh.ten}."
+            ln.truoc == 0 -> ctx.getString(R.string.cau_den_gio, kh.ten)
+            ln.truoc >= 24 * 60 -> ctx.getString(R.string.cau_ngay_mai, gio, kh.ten)
+            else -> ctx.getString(R.string.cau_con, moTaPhut(ln.truoc, ctx), gio, kh.ten)
         }
     }
 
-    fun moTaNhac(truoc: Int): String = when {
-        truoc == 0 -> "Đúng giờ"
-        truoc % 1440 == 0 -> "${truoc / 1440} ngày trước"
-        truoc % 60 == 0 -> "${truoc / 60} giờ trước"
-        else -> "${moTaPhut(truoc)} trước"
+    fun moTaNhac(truoc: Int, ctx: Context): String = when {
+        truoc == 0 -> ctx.getString(R.string.nhac_dung_gio)
+        truoc % 1440 == 0 -> ctx.getString(R.string.nhac_ngay_truoc, truoc / 1440)
+        truoc % 60 == 0 -> ctx.getString(R.string.nhac_gio_truoc, truoc / 60)
+        else -> ctx.getString(R.string.nhac_truoc, moTaPhut(truoc, ctx))
     }
 
-    fun moTaPhut(phut: Int): String = when {
-        phut < 60 -> "$phut phút"
-        phut % 60 == 0 -> "${phut / 60} giờ"
-        else -> "${phut / 60} giờ ${phut % 60} phút"
+    /**
+     * ================================================================
+     * THOI LUONG: MOT DON VI, KHONG PHAI HAI (muc 4.3)
+     * ================================================================
+     *
+     * Ban truoc doi sang gio ngay tu 60 phut: 75 phut hien ra la
+     * "1 giờ 15 phút". Voi nguoi mu thoi gian do la mot buoc quy doi
+     * THEM trong dau moi lan can so sanh - "1 giờ 15 phút" so voi
+     * "50 phút" cai nao dai hon, phai tinh moi biet.
+     *
+     * Duoi ba tieng thi giu nguyen bang PHUT: 75 phut, 120 phut, 150
+     * phut - dat canh nhau la so sanh duoc ngay bang mat.
+     *
+     * Tren ba tieng thi con so phut mat y nghia truc quan (khong ai
+     * "thay" duoc 260 phut dai bao nhieu), nen quay ve gio + phut.
+     */
+    const val NGUONG_GIO = 180
+
+    /**
+     * Chia mot khoang thanh (gio, phut) THEO QUY TAC HIEN THI o tren -
+     * khong phai phep chia het thong thuong. Duoi nguong tra ve
+     * `0 to phut`, tuc la "hien nguyen bang phut".
+     *
+     * Tach rieng de test duoc tren JVM: phan nay la quy tac, phan ghep
+     * chuoi ben duoi chi la thay so vao mau.
+     */
+    fun chiaHienThi(phut: Int): Pair<Int, Int> = when {
+        phut < NGUONG_GIO -> 0 to phut
+        phut % 60 == 0 -> phut / 60 to 0
+        else -> phut / 60 to phut % 60
+    }
+
+    fun moTaPhut(phut: Int, ctx: Context): String {
+        val (g, p) = chiaHienThi(phut)
+        return when {
+            g == 0 -> ctx.getString(R.string.tl_phut, p)
+            p == 0 -> ctx.getString(R.string.tl_gio, g)
+            else -> ctx.getString(R.string.tl_gio_phut, g, p)
+        }
     }
 
     fun moTaLapLai(l: LapLai): Int = when (l) {
@@ -255,15 +290,42 @@ object Lich {
         LapLai.THEO_THU -> R.string.nh_lap_lai_theo_thu
     }
 
-    /** "T2, T5 hằng tuần" - doc duoc ngay, khong can nho quy uoc. */
-    fun moTaLapLai(kh: KeHoach, ctx: Context): String = when (kh.lapLai) {
+    /**
+     * Ket qua THUAN cua "ke hoach nay lap lai the nao" - khong dinh toi
+     * Context, nen test duoc tren JVM.
+     */
+    sealed interface MoTaLap {
+        /** Du ca bay thu -> noi "Hằng ngày", khong liet ke bay chu. */
+        object HangNgay : MoTaLap
+        /** Cac thu trong tuan, da sap xep. 0 = Thu Hai. */
+        data class TheoThu(val thu: List<Int>) : MoTaLap
+        /** Cac kieu con lai, dung thang chuoi cua `LapLai`. */
+        data class Chung(val l: LapLai) : MoTaLap
+    }
+
+    fun lapLaiThuan(kh: KeHoach): MoTaLap = when (kh.lapLai) {
         LapLai.THEO_THU -> {
-            val thu = kh.thuLap.ifEmpty { setOf(thu(kh.ngay)) }
-            if (thu.size == 7) "Hằng ngày"
-            else thu.sorted().joinToString(", ") { ctx.getString(TEN_THU_NGAN[it]) } + " hằng tuần"
+            val t = kh.thuLap.ifEmpty { setOf(thu(kh.ngay)) }
+            if (t.size == 7) MoTaLap.HangNgay else MoTaLap.TheoThu(t.sorted())
         }
-        LapLai.HANG_TUAN -> ctx.getString(TEN_THU_NGAN[thu(kh.ngay)]) + " hằng tuần"
-        else -> ctx.getString(moTaLapLai(kh.lapLai))
+        LapLai.HANG_TUAN -> MoTaLap.TheoThu(listOf(thu(kh.ngay)))
+        else -> MoTaLap.Chung(kh.lapLai)
+    }
+
+    /**
+     * "T2, T5 hằng tuần" / "Mon, Thu weekly" - doc duoc ngay, khong can
+     * nho quy uoc.
+     *
+     * Ban 20/09 ghep chuoi bang `+ " hằng tuần"` va `"Hằng ngày"` viet
+     * thang trong ma. O che do English, ke hoach lap theo thu hien ra la
+     * "Mon, Thu hằng tuần" - tron hai thu tieng trong mot dong. Gio ca
+     * hai deu la mau co tham so trong strings.xml.
+     */
+    fun moTaLapLai(kh: KeHoach, ctx: Context): String = when (val m = lapLaiThuan(kh)) {
+        is MoTaLap.HangNgay -> ctx.getString(R.string.nh_lap_lai_hang_ngay)
+        is MoTaLap.TheoThu -> ctx.getString(R.string.lap_theo_thu_tuan,
+            m.thu.joinToString(", ") { ctx.getString(TEN_THU_NGAN[it]) })
+        is MoTaLap.Chung -> ctx.getString(moTaLapLai(m.l))
     }
 
     /** Uu tien cao truoc, roi theo gio. Dung cho phan tom tat tab Ke hoach. */

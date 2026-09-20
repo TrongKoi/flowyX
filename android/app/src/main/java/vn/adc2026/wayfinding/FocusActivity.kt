@@ -178,8 +178,8 @@ class FocusActivity : TrangCoTab() {
             val dangChon = (tt.dem.tongMs / 60_000L).toInt()
             for (p in DemNguoc.PHIM_TAT) {
                 hang.addView(TextView(this).apply {
-                    text = Lich.moTaPhut(p)
-                    contentDescription = Lich.moTaPhut(p)
+                    text = Lich.moTaPhut(p, this@FocusActivity)
+                    contentDescription = Lich.moTaPhut(p, this@FocusActivity)
                     textSize = 14f
                     gravity = Gravity.CENTER
                     includeFontPadding = false

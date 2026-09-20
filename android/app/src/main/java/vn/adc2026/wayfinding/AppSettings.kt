@@ -78,6 +78,24 @@ class AppSettings(context: Context) {
         get() = prefs.getInt(KEY_MUC_RUNG, 2)
         set(v) = prefs.edit().putInt(KEY_MUC_RUNG, v.coerceIn(0, 3)).apply()
 
+    /**
+     * ====================================================================
+     * CHE DO SANG / TOI (v5.1) - ba lua chon
+     * ====================================================================
+     *
+     * `""` theo he thong (mac dinh) · `"sang"` · `"toi"`
+     *
+     * Mac dinh la THEO HE THONG chu khong phai sang: nguoi dung da tra
+     * loi cau hoi nay mot lan o muc he thong roi, hoi lai la bat ho chon
+     * hai lan cho cung mot thu.
+     *
+     * Cach ep nam o `CheDoToi.kt` - doc ghi chu dau tep do truoc khi sua,
+     * co mot duong da tung lam app vang tren may that.
+     */
+    var cheDoToi: String
+        get() = prefs.getString(KEY_CHE_DO_TOI, "") ?: ""
+        set(v) = prefs.edit().putString(KEY_CHE_DO_TOI, v).apply()
+
     /** Ngon ngu: "vi" | "en" | "" (theo may). */
     var ngonNgu: String
         get() = prefs.getString(KEY_NGON_NGU, "") ?: ""
@@ -107,6 +125,7 @@ class AppSettings(context: Context) {
         private const val KEY_CO_CHU = "co_chu"
         private const val KEY_MUC_RUNG = "muc_rung"
         private const val KEY_NGON_NGU = "ngon_ngu"
+        private const val KEY_CHE_DO_TOI = "che_do_toi"
         private const val KEY_MUC_NHAC = "muc_nhac"
 
         private const val DEFAULT_URL = "http://192.168.1.100:8765"

@@ -40,7 +40,7 @@ abstract class TrangCoTab : Activity() {
 
     /** Ngon ngu: xem NgonNgu.boc. Theo may thi khong tao context moi. */
     override fun attachBaseContext(moi: android.content.Context) {
-        super.attachBaseContext(NgonNgu.boc(moi))
+        super.attachBaseContext(GiaoDien.boc(moi))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

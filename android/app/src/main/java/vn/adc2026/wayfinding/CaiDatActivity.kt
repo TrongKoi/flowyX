@@ -65,9 +65,29 @@ class CaiDatActivity : Activity() {
 
     private var goc: LinearLayout? = null
 
+    /**
+     * ----- Giu nguyen cho dang cuon (muc 3.2) -----
+     *
+     * Doi ngon ngu goi `recreate()`, doi phong chu goi `recreate()`, doi co
+     * chu va muc rung goi `ve()`, va ca `onResume()` cung goi `ve()`. Moi
+     * duong trong so do deu dung lai TOAN BO cay view, ke ca `ScrollView`.
+     *
+     * `ScrollView` o day duoc tao bang ma va khong co `id`, nen Android
+     * khong luu duoc vi tri cuon cua no - co `id` no moi nam trong bang
+     * trang thai ma `onSaveInstanceState` ghi lai. Vi vay moi lan doi mot
+     * tuy chon nam o cuoi trang la man hinh nhay bat ve dau.
+     *
+     * Cach lam: tu nho lay so `scrollY` truoc khi dung lai cay view, roi
+     * dat lai sau khi bo cuc xong. `scrollTo` goi ngay sau `setContentView`
+     * khong an thua - luc do moi view con cao 0, cuon toi dau cung bi kep
+     * ve 0.
+     */
+    private var cuon: ScrollView? = null
+    private var yCuon = 0
+
 
     override fun attachBaseContext(moi: Context) {
-        super.attachBaseContext(NgonNgu.boc(moi))
+        super.attachBaseContext(GiaoDien.boc(moi))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,7 +95,16 @@ class CaiDatActivity : Activity() {
         super.onCreate(savedInstanceState)
         s = AppSettings(this)
         speaker = Speaker(this) { }.also { it.setRate(s.speechRate) }
+        // `recreate()` cho Activity di qua onSaveInstanceState -> onCreate,
+        // nen day la cho nhan lai cho cuon cu.
+        yCuon = savedInstanceState?.getInt(KHOA_CUON) ?: 0
         ve()
+    }
+
+    override fun onSaveInstanceState(out: Bundle) {
+        super.onSaveInstanceState(out)
+        cuon?.let { yCuon = it.scrollY }
+        out.putInt(KHOA_CUON, yCuon)
     }
 
     override fun onDestroy() {
@@ -99,6 +128,9 @@ class CaiDatActivity : Activity() {
     // ================================================================
 
     private fun ve() {
+        // Nho cho cuon TRUOC khi bo cay view cu di.
+        cuon?.let { yCuon = it.scrollY }
+
         val cot = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(18), dp(16), dp(18), dp(40))
@@ -132,12 +164,33 @@ class CaiDatActivity : Activity() {
         nhomBaoMat(cot)
         nhomHeThong(cot)
 
-        val cuon = ScrollView(this).apply {
+        val c = ScrollView(this).apply {
+            id = R.id.cuon_cai_dat
             setBackgroundColor(mau(R.color.nen)); isFillViewport = true
         }
-        cuon.addView(cot)
-        setContentView(cuon)
+        c.addView(cot)
+        setContentView(c)
+        cuon = c
         GiaoDien.apFont(cot, this)
+        traLaiChoCuon(c)
+    }
+
+    /**
+     * Dat lai `scrollY` sau khi bo cuc xong.
+     *
+     * Phai doi `onGlobalLayout`: truoc do moi view deu cao 0, nen
+     * `scrollTo` bi kep ve 0. `post` khong du o lan ve dau tien.
+     */
+    private fun traLaiChoCuon(c: ScrollView) {
+        if (yCuon <= 0) return
+        val y = yCuon
+        c.viewTreeObserver.addOnGlobalLayoutListener(
+            object : android.view.ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    c.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    c.scrollTo(0, y)
+                }
+            })
     }
 
     // ---------------------------------------------------------------
@@ -397,6 +450,31 @@ class CaiDatActivity : Activity() {
 
     private fun nhomHeThong(cot: LinearLayout) {
         cot.addView(tenNhom(getString(R.string.cd_nhom_he_thong)), lp(26))
+
+        // --- giao dien: sang / toi / theo may ---
+        //
+        // Dat TREN ngon ngu vi day la thu nguoi ta doi thu nhieu nhat va
+        // doi lai ngay neu khong thich; de no o cuoi trang la bat cuon
+        // qua ca nhom chi de thu mot lua chon.
+        val the0 = the()
+        the0.addView(nhanTrong(getString(R.string.cd_theme)))
+        the0.addView(hangChip(
+            CheDoToi.DANH_SACH.map { getString(it.second) },
+            CheDoToi.viTri(this)) { i ->
+            CheDoToi.doi(this, CheDoToi.DANH_SACH[i].first)
+            // API >= 31: he thong tu ve lai, nhung rieng man hinh nay
+            // dang dung bang ma nen phai tu ve de hang chip danh dau lai
+            // dung o vua chon.
+            if (android.os.Build.VERSION.SDK_INT >= 31) ve()
+        })
+        the0.addView(TextView(this).apply {
+            text = getString(R.string.cd_theme_mo_ta)
+            textSize = 13f * s.coChu
+            setLineSpacing(0f, 1.45f)
+            setTextColor(mau(R.color.chu_phu))
+            setPadding(dp(16), 0, dp(16), dp(14))
+        })
+        cot.addView(the0, lp(10))
 
         // --- ngon ngu ---
         val the1 = the()
@@ -763,5 +841,8 @@ class CaiDatActivity : Activity() {
         /** 0,90 .. 1,15 - sau nac, buoc 0,05. Xem GiaoDien.apCoChu. */
         const val CO_MIN = 0.90f
         const val CO_BUOC = 0.05f
+
+        /** Khoa mang `scrollY` qua `recreate()` khi doi ngon ngu / phong chu. */
+        const val KHOA_CUON = "y_cuon"
     }
 }

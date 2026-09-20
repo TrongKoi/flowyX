@@ -259,11 +259,16 @@ class ViecCanLamActivity : TrangCoTab() {
         }
         val lp = LinearLayout.LayoutParams(0, -2, 1f)
         so.addView(o("${ds.size}", getString(R.string.kh_tt_viec)), lp)
-        so.addView(o(if (tong == 0) "0" else Lich.moTaPhut(tong).replace(" giờ ", "g").replace(" phút", "′").replace(" giờ", "g"),
+        // Muc 4.3: bo chuoi `.replace(" giờ ", "g").replace(" phút", "′")`.
+        // No lay chuoi da dich roi CAT CHU trong do - nen o che do English
+        // "1 hr 15 min" khong khop mau nao va hien ra nguyen xi, con o
+        // tieng Viet thi ra "1g15′", mot dang viet tat khong ai doc quen.
+        // `moTaPhut` gio tra thang "75 phút", khong can cat gi nua.
+        so.addView(o(if (tong == 0) "0" else Lich.moTaPhut(tong, this),
             getString(R.string.kh_tt_tong)), LinearLayout.LayoutParams(lp))
         so.addView(o("$con", getString(R.string.kh_tt_con)), LinearLayout.LayoutParams(lp))
         t.addView(so)
-        t.contentDescription = getString(R.string.kh_tt_mo_ta, ds.size, Lich.moTaPhut(tong), con, xong)
+        t.contentDescription = getString(R.string.kh_tt_mo_ta, ds.size, Lich.moTaPhut(tong, this), con, xong)
 
         // Ba o uu tien - LUON du ba o, ke ca khi bang 0 (vi tri co dinh).
         val hang = LinearLayout(this).apply {
@@ -319,7 +324,7 @@ class ViecCanLamActivity : TrangCoTab() {
                        else getString(R.string.kh_tiep_theo_luc, Lich.gioPhut(kh.batDau))))
         t.addView(chuTo("${kh.emoji}  ${kh.ten}", 17f).apply { setPadding(0, dp(4), 0, 0) })
         t.addView(chuPhu(getString(R.string.kh_trong_khoang, Lich.gioPhut(kh.batDau),
-            Lich.gioPhut(kh.ketThuc), Lich.moTaPhut(kh.thoiLuong)), 13f))
+            Lich.gioPhut(kh.ketThuc), Lich.moTaPhut(kh.thoiLuong, this)), 13f))
         t.addView(nutChinh(getString(R.string.kh_bat_dau_viec)) {
             ThanhTab.mo(this, FocusActivity::class.java) { it.putExtra(FocusActivity.EXTRA_KE_HOACH, kh.id) }
         }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
@@ -522,7 +527,7 @@ class ViecCanLamActivity : TrangCoTab() {
             }
         })
         cot.addView(chuPhu("${Lich.gioPhut(kh.batDau)}–${Lich.gioPhut(kh.ketThuc)} · " +
-            Lich.moTaPhut(kh.thoiLuong) +
+            Lich.moTaPhut(kh.thoiLuong, this) +
             (if (kh.lapLai != LapLai.KHONG) " · ${Lich.moTaLapLai(kh.lapLai)}" else ""), 12f).apply {
             includeFontPadding = false; setPadding(0, dp(4), 0, 0)
         })
