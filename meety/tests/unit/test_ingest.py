@@ -22,6 +22,7 @@ import pytest
 from pipeline.s0_ingest import (
     UNKNOWN_LABEL,
     _split_speaker,
+    doc_docx,
     IngestPolicy,
     SourceFormat,
     detect_format,
@@ -662,3 +663,75 @@ class TestTachNguoiNoi:
     def test_khong_co_ten_thi_tra_nguyen_cau(self) -> None:
         assert _split_speaker("chi la mot cau binh thuong") == (
             None, "chi la mot cau binh thuong")
+
+# --------------------------------------------------------------------------- #
+
+
+class TestDocx:
+    """Doc file .docx - muc 8.1.
+
+    `.docx` la mot kho ZIP chua `word/document.xml`. Doc bang thu vien
+    chuan (zipfile + ElementTree), khong keo them `python-docx`/`lxml`:
+    giu cho Meety chay duoc chi voi thu vien chuan nghia la ai clone repo
+    ve cung chay duoc ngay.
+    """
+
+    W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+
+    def _tao(self, tmp_path, than: str):
+        import zipfile
+        xml = (
+            '<?xml version="1.0"?>'
+            f'<w:document xmlns:w="{self.W}"><w:body>{than}</w:body></w:document>'
+        )
+        duong = tmp_path / "bien_ban.docx"
+        with zipfile.ZipFile(duong, "w") as kho:
+            kho.writestr("word/document.xml", xml)
+        return duong
+
+    def test_moi_doan_thanh_mot_dong(self, tmp_path) -> None:
+        d = self._tao(tmp_path,
+            "<w:p><w:r><w:t>Khoi: chot bang mau</w:t></w:r></w:p>"
+            "<w:p><w:r><w:t>Huy: minh lo phan lich</w:t></w:r></w:p>")
+        assert doc_docx(d).split("\n") == [
+            "Khoi: chot bang mau", "Huy: minh lo phan lich"]
+
+    def test_run_bi_cat_duoc_ghep_lai(self, tmp_path) -> None:
+        """Day la ca de hong nhat.
+
+        Word cat mot doan thanh nhieu "run" moi khi dinh dang doi - chi
+        can in dam mot chu giua cau la cau do vo lam ba. Khong ghep lai
+        thi mot cau thanh ba dong, va ten nguoi noi o dau cau bi roi khoi
+        phan noi dung.
+        """
+        d = self._tao(tmp_path,
+            "<w:p><w:r><w:t>Huy: minh </w:t></w:r>"
+            "<w:r><w:t>lo</w:t></w:r>"
+            "<w:r><w:t> phan lich</w:t></w:r></w:p>")
+        assert doc_docx(d) == "Huy: minh lo phan lich"
+
+    def test_doan_rong_bi_bo(self, tmp_path) -> None:
+        d = self._tao(tmp_path,
+            "<w:p><w:r><w:t>Khoi: xong</w:t></w:r></w:p>"
+            "<w:p></w:p>"
+            "<w:p><w:r><w:t>   </w:t></w:r></w:p>")
+        assert doc_docx(d) == "Khoi: xong"
+
+    def test_read_source_text_nhan_ra_docx(self, tmp_path) -> None:
+        """Nhan theo CHU KY ZIP, khong chi theo duoi file.
+
+        Moi buoc do bang ma ben duoi deu vo nghia voi mot kho ZIP, nen
+        phai re nhanh truoc chung.
+        """
+        d = self._tao(tmp_path, "<w:p><w:r><w:t>Khoi: xong</w:t></w:r></w:p>")
+        noi, bang_ma = read_source_text(d)
+        assert bang_ma == "docx"
+        assert noi == "Khoi: xong"
+
+    def test_zip_khong_phai_docx_thi_bao_loi_doc_duoc(self, tmp_path) -> None:
+        import zipfile
+        d = tmp_path / "gia.docx"
+        with zipfile.ZipFile(d, "w") as kho:
+            kho.writestr("doc.txt", "khong phai docx")
+        with pytest.raises(ValueError, match="word/document.xml"):
+            doc_docx(d)
