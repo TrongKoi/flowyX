@@ -12,7 +12,21 @@
   THỬ ĐƯỢC THẬT (không phải ảnh tĩnh):
     · Đồng hồ Tập trung: kéo vòng để đặt giờ, bấm Bắt đầu, chạy thật, hết giờ pháo hoa BAY LÊN.
     · Thanh tab: bấm để xem viên kính mờ trượt và phình theo kiểu Apple.
-    · Nút trên đầu trang: Sáng/Tối, ba phông chữ, ba cỡ chữ.
+    · Nút trên đầu trang: Tiếng Việt/English, Sáng/Tối, ba phông chữ, ba cỡ chữ.
+
+  SONG NGỮ
+    Bấm "English" là cả trang đổi sang tiếng Anh — kể cả phần ghi chú
+    thiết kế, không chỉ chuỗi giao diện. Bấm "Tiếng Việt" là về lại.
+
+    Cách làm: KHÔNG viết lại từng chuỗi trong 29 hàm dựng màn hình
+    (gần 350 chuỗi nằm rải rác, sửa hết sẽ làm tệp này không đọc nổi).
+    Thay vào đó, sau khi trang dựng xong thì đi qua các NÚT VĂN BẢN của
+    DOM và thay chuỗi nào trùng khớp HOÀN TOÀN một khoá trong `TU_DIEN`.
+    Khớp hoàn toàn nên không có cách nào làm vỡ thẻ HTML.
+
+    Thêm màn hình mới: viết tiếng Việt như bình thường, rồi thêm các
+    chuỗi mới vào `TU_DIEN` ở cuối tệp. Thiếu chuỗi nào thì chuỗi đó
+    giữ nguyên tiếng Việt — không vỡ gì cả.
 
   MỚI TRONG v5.1 (29 màn hình):
     · Tab "Nhật ký" -> "Sức khỏe", "Biên bản" -> "Meety".
@@ -248,7 +262,7 @@ h3.tieu { font-size:1.5em; margin:6px 0 2px; font-weight:600; }
 <header>
   <h1>FlowyX — preview giao diện v5</h1>
   <p class="phu">
-    Hai mươi tư màn hình theo bản brief mới nhất.
+    Hai mươi chín màn hình, khớp với bản dựng mới nhất.
     <b style="color:#EAE4DC">Đồng hồ Tập trung kéo được thật</b> — kéo quanh vòng để đặt giờ, bấm Bắt đầu
     rồi xem nó chạy và ăn mừng khi hết giờ. Thanh tab bấm được để xem viên kính mờ trượt.
     Nhãn <span class="nhan-ts ts-moi">mới</span> là màn hình chưa từng có,
@@ -256,6 +270,10 @@ h3.tieu { font-size:1.5em; margin:6px 0 2px; font-weight:600; }
     <span class="nhan-ts ts-xong">giữ</span> là đã dựng từ v4.
   </p>
   <div class="hang-nut">
+    <div class="nhom" id="nhom-nn">
+      <button class="ct" data-nn="vi" aria-pressed="true">Tiếng Việt</button>
+      <button class="ct" data-nn="en" aria-pressed="false">English</button>
+    </div>
     <button class="ct" id="nut-toi" aria-pressed="false">Chế độ tối</button>
     <div class="nhom" id="nhom-font">
       <button class="ct" data-f="lexend" aria-pressed="true">Lexend</button>
@@ -1067,6 +1085,12 @@ function ve() {
   }).join('');
   document.querySelectorAll('.tab').forEach(noiTab);
   document.querySelectorAll('.dh-khung').forEach(noiDongHo);
+  // `ve()` dung lai ca luoi bang innerHTML, nen moi nut van ban deu
+  // moi va da ve tieng Viet. Dich lai neu dang o ban tieng Anh.
+  if (typeof nnHienTai !== 'undefined' && nnHienTai === 'en') {
+    nnHienTai = 'vi';
+    doiNgonNgu('en');
+  }
 }
 ve();
 
@@ -1086,6 +1110,413 @@ document.querySelectorAll('#nhom-co button').forEach(b => b.onclick = () => {
   document.querySelectorAll('.tab').forEach(t => t.querySelector('.vien-pill').style.width = '0px');
   setTimeout(() => document.querySelectorAll('.tab').forEach(noiTab), 30);
 });
+
+/* ============================================================
+   CHUYEN NGU VI <-> EN
+   ============================================================
+
+   Khong dich bang cach viet lai tung chuoi trong ma dung man
+   hinh: co gan 350 chuoi nam rai trong 29 ham dung HTML, va sua
+   het chung se lam tep nay gan nhu khong doc duoc nua.
+
+   Thay vao do: sau khi trang da dung xong, di qua CAC NUT VAN BAN
+   cua DOM va thay chuoi nao trung KHOP HOAN TOAN mot khoa trong
+   tu dien. Khop hoan toan - sau khi cat khoang trang hai dau -
+   nen khong co cach nao lam vo the HTML hay dich nham mot phan
+   cau.
+
+   Ban goc tieng Viet duoc giu trong `data-vi` cua tung nut cha o
+   lan doi dau tien, nen doi qua doi lai bao nhieu lan cung khong
+   mat chu.
+
+   Bo duyet BO QUA <script> va <style>: khong thi no se di qua ca
+   ma nguon ben duoi.
+*/
+const TU_DIEN = {
+ "FlowyX — preview giao diện v5": "FlowyX — UI preview v5",
+ "Đồng hồ Tập trung kéo được thật": "The Focus clock really is draggable",
+ "— kéo quanh vòng để đặt giờ, bấm Bắt đầu\n    rồi xem nó chạy và ăn mừng khi hết giờ. Thanh tab bấm được để xem viên kính mờ trượt.\n    Nhãn": "— drag around the ring to set the time, tap Start, watch it run and celebrate when it ends. Tap the tab bar to see the glass pill slide. The label",
+ "mới": "new",
+ "sửa": "changed",
+ "giữ": "kept",
+ "là màn hình chưa từng có,": "marks a screen that did not exist before,",
+ "là màn cũ đổi theo phản hồi,": "marks one changed after feedback,",
+ "là đã dựng từ v4.": "marks one already built in v4.",
+ "Chế độ tối": "Dark mode",
+ "Chữ nhỏ": "Small",
+ "Vừa": "Medium",
+ "To": "Large",
+ "Mở app — logo lướt thành FlowyX": "Launch — the logo slides into FlowyX",
+ "Chọn ngôn ngữ — lần đầu mở": "Language — first launch",
+ "Đăng nhập": "Sign in",
+ "Đăng ký": "Sign up",
+ "Mã khôi phục — hiện đúng một lần": "Recovery code — shown exactly once",
+ "Quên mật khẩu — nhập mã khôi phục": "Forgot password — enter the recovery code",
+ "Kế hoạch — có biên bản & phiên đang chạy": "Plan — with meeting notes and a running session",
+ "Kế hoạch — kéo thả đổi ưu tiên": "Plan — drag to change priority",
+ "Cử chỉ vuốt — hai bên hai việc": "Swipe — one job each side",
+ "Lịch — kéo lướt tuần": "Calendar — drag through the week",
+ "Lịch — bộ chọn tháng/năm": "Calendar — month and year picker",
+ "Lịch — bộ chọn giờ trống cuộn": "Calendar — the scroll-drum time picker",
+ "Lịch — nhập lịch bên ngoài": "Calendar — import an outside calendar",
+ "Tập trung — kéo thử đi!": "Focus — try dragging it",
+ "Tập trung — đang chạy, vành thở": "Focus — running, the ring breathes",
+ "Tập trung — hết giờ, pháo hoa": "Focus — time is up, confetti",
+ "Gỡ rối — một câu mỗi lần": "Unstick — one question at a time",
+ "Gỡ rối — chọn mức thử thách": "Unstick — pick how long to try",
+ "Sức khỏe — chuỗi ngày có lửa": "Health — the streak with a flame",
+ "Viết nhật ký (Diary) — tiêu đề và nội dung": "Write a diary entry — title and body",
+ "Meety → thêm thẳng vào lịch": "Meety → straight into the calendar",
+ "Cài đặt — ba nhóm": "Settings — three groups",
+ "Cài đặt — chữ và rung": "Settings — type and haptics",
+ "Điều khoản & quyền riêng tư": "Terms and privacy",
+ "Sức khoẻ — màn hình đồng ý riêng": "Health — its own consent screen",
+ "Sức khỏe — bảng bảy ngày": "Health — the seven-day panel",
+ "Cài đặt — nhắc việc & giờ yên tĩnh": "Settings — reminders and quiet hours",
+ "Thanh tab — bấm thử viên kính mờ": "Tab bar — try the glass pill",
+ "Logo chế độ tối — bản nghịch đảo": "Dark-mode logo — the inverted build",
+ "Hai chấm thương hiệu đứng giữa, chữ \"flowyX\" lộ dần sang phải trong 420 ms rồi giữ yên. Không chớp sáng, không phóng to đột ngột — người nhạy cảm giác quan không bị giật mình.": "The two brand dots sit centred; the word \"flowyX\" unfolds to the right over 420 ms and then holds. No flash, no sudden zoom — nobody sensitive to sensory input gets startled.",
+ "Bottom sheet duy nhất trước khi vào đăng nhập. Chỉ một quyết định, hai lựa chọn, không có nút Bỏ qua để khỏi phải cân nhắc thêm. Đổi lại được bất cứ lúc nào trong Cài đặt.": "The only bottom sheet before sign-in. One decision, two options, and no Skip button so there is nothing extra to weigh up. Changeable any time in Settings.",
+ "Hai ô, một nút. Icon con mắt gạch chéo để hiện mật khẩu — chạm giữ để xem, thả ra là ẩn lại, không cần bấm hai lần. \"Quên mật khẩu\" đặt ngay dưới ô mật khẩu, nơi người ta nhận ra mình quên.": "Two fields, one button. Press and hold the eye icon to reveal the password; let go and it hides again, so no second tap. \"Forgot password\" sits right under the password field — where people realise they have forgotten it.",
+ "Số điện thoại ghi rõ \"không bắt buộc\" ngay trên nhãn. Nút Đăng ký chỉ sáng lên sau khi tích đồng ý điều khoản, và hai liên kết điều khoản mở được ngay tại chỗ.": "The phone field says \"optional\" right on its label. Sign up only lights up once the terms box is ticked, and both terms links open in place.",
+ "Không có máy chủ thì không có thư đặt lại mật khẩu: khoá SMTP nằm trong APK là ai giải nén cũng đọc được. Thay vào đó, đăng ký xong hiện một mã 12 ký tự, máy chỉ giữ bản băm. Bảng chữ bỏ I, O, số 0 và 1 để chép tay không nhầm; nút Back bị chặn ở màn này.": "No server means no password-reset email: an SMTP key inside the APK is readable by anyone who unzips it. Instead, signing up shows a 12-character code and the phone keeps only its hash. The alphabet drops I, O, 0 and 1 so copying it by hand cannot go wrong, and Back is blocked on this screen.",
+ "lấy lại tài khoản khi bạn quên mật khẩu.\n     Mất mã là mất dữ liệu — không ai mở lại được, kể cả đội ngũ Flowy.": "way back into your account if you forget your password. Lose the code and the data is gone — nobody can reopen it, the Flowy team included.",
+ "Bản trước đây vẽ ô nhập mã 6 số gửi qua Gmail. Bản dựng thật không làm được thế, nên màn này thay hẳn: gõ mã 12 ký tự, sai thì chậm dần theo cùng bộ đếm với màn đăng nhập. Dòng đỏ cuối trang là lối thoát cuối cùng — xoá sạch và bắt đầu lại, có hai lần xác nhận.": "An earlier draft drew a six-digit field for a code sent by email. The real build cannot do that, so this screen replaces it: type the 12-character code, and wrong attempts slow down on the same counter as sign-in. The red line at the bottom is the last resort — wipe and start over, behind two confirmations.",
+ "Hai thứ mới trên đỉnh tab: thẻ tóm tắt biên bản vừa phân tích (để xử lý việc ngay) và thanh viên thuốc của phiên tập trung đang chạy ngầm — không dùng đồng hồ tròn to chiếm chỗ.": "Two new things at the top of the tab: a card summarising the meeting just analysed, so tasks can be handled straight away, and a thin pill for the focus session running in the background — not a big round clock taking up the screen.",
+ "Giữ thẻ một nhịp rồi kéo sang vùng khác là đổi cấp ưu tiên, không phải mở hộp thoại chỉnh sửa. Vùng đích sáng viền cam, thẻ đang kéo nghiêng nhẹ và đổ bóng để biết nó \"đang nằm trên tay\".": "Hold a card for a beat and drag it to another zone to change its priority — no edit dialog. The target zone lights an orange border, and the dragged card lifts with a shadow so you can tell it is \"in your hand\".",
+ "Vuốt TRÁI lộ hai nút tách bạch như Messenger: dấu tick xanh để xong, thùng rác đỏ để xoá. Vuốt PHẢI là ghim lên đầu danh sách, màu tím để không lẫn với vàng/cam của thương hiệu.": "Swipe LEFT to reveal two separate buttons, Messenger-style: a green tick for done, a red bin for delete. Swipe RIGHT to pin to the top, in violet so it never blends into the brand yellow and orange.",
+ "Người dùng trình đọc màn hình không vuốt được: cả ba thao tác đều có trong menu hành động của thẻ.": "Screen-reader users cannot swipe, so all three actions also live in the card's action menu.",
+ "Tuần chạy theo ngón tay chứ không nhảy cóc: kéo tới đâu dải tuần trượt tới đó, thả ra thì bám mềm về tuần gần nhất. Tuần kế đã ló ra bên mép để biết mình đang đi đâu.": "The week follows your finger instead of jumping: the strip slides as far as you drag and settles softly onto the nearest week. The next week peeks in at the edge so you know where you are heading.",
+ "một, nên tới một ngày cách ba tháng là ba mươi hai lần chạm — và giữa chúng không có gì cho biết đang ở đâu. Không dùng DatePicker của hệ điều hành: nó mang bảng màu riêng, mỗi hãng máy một kiểu, và quan trọng hơn là nó": "at a time, so reaching a day three months away is thirty-two taps — with nothing along the way to say where you are. Not the system DatePicker: it brings its own palette, looks different on every make of phone, and more importantly it",
+ ". Ở đây mỗi ô có ba tầng: số ngày, một chấm cam nếu ngày đó có kế hoạch, và vòng tròn phân biệt": ". Here every cell carries three layers: the date, an orange dot if that day has plans, and a ring that tells",
+ "Thay picker mặc định của hệ điều hành bằng trống cuộn kiểu đồng hồ báo thức iOS, nhưng dùng đúng màu và bo góc của FlowyX.": "Replaces the system picker with a scroll drum like an iOS alarm clock, but in FlowyX's own colours and corner radius.",
+ ", không còn nhảy 5 phút — cùng bộ chọn này dùng cho giờ kết thúc và mốc nhắc, mà họp 14:05 hay xe buýt 7:52 thì bước 5 phút là sai chứ không phải đơn giản hơn. Trống cuộn có": ", no more 5-minute jumps. The same picker sets end times and reminder offsets, and for a 14:05 meeting or a 7:52 bus a 5-minute step is not simpler, it is wrong. The drum now has",
+ "Nhận tệp .ics — định dạng chung của Google Calendar, Apple Calendar và Outlook. Bản Android": "Takes .ics files — the shared format of Google Calendar, Apple Calendar and Outlook. The Android build",
+ ": hướng dẫn Apple là “mở Lịch trên iPhone, chia sẻ, xuất .ics”, một chuỗi thao tác không làm được trên chính cái máy đang mở màn hình này. Đường .ics vẫn nhận tệp xuất từ Apple hay Outlook, nên không mất khả năng nào. Trước khi nhập, app chỉ rõ cái nào trùng giờ với kế hoạch sẵn có và cho chọn giữ bên nào — không tự ý ghi đè.": ": the Apple instructions are \"open Calendar on your iPhone, share, export .ics\" — a sequence you cannot carry out on the very phone showing this screen. The .ics route still accepts files exported from Apple or Outlook, so nothing is lost. Before importing, the app names every clash with an existing plan and lets you choose which to keep — it never overwrites on its own.",
+ "Kéo ngón tay quanh vành để đặt giờ, y như Tiimo trong ảnh anh/chị gửi. Vành khắc vạch, tay cầm ở mép cuối, giữa chỉ ghi số phút — không đếm giây. Rung mạnh dần theo độ dài, có trần an toàn.": "Drag your finger around the ring to set the time. The ring is notched, and the centre shows minutes only — never seconds. Haptics grow with the length you pick, up to a safe ceiling.",
+ "— nhịp một hơi thở người lớn. Cần nó vì mặt đồng hồ không hiện giây: một đồng hồ đang chạy và một đồng hồ đang tạm dừng trông y hệt nhau cho tới khi số phút đổi, có thể hai mươi giây sau — người dùng bấm Bắt đầu rồi không chắc nó chạy chưa, bấm lại, thành ra tạm dừng. Không nhấp nháy: nhấp nháy kéo mắt và gây lo âu.": "— the rhythm of an adult breath. It is needed because the face shows no seconds: a running clock and a paused clock look identical until the minute changes, possibly twenty seconds later. People tap Start, cannot tell whether it is running, tap again, and end up pausing it. Not a blink: blinking pulls the eye and creates anxiety.",
+ "được: chạm đúng vào vành, chỉ kéo dài ra, mỗi phút một nhịp rung riêng. Trước đây muốn đổi thì phải dừng phiên, mà dừng phiên là mất luôn cái đã vào được.": ": touch the ring itself, extend only, one haptic tick per minute. Before this you had to stop the session to change it — and stopping the session loses the state you had just got into.",
+ "Hết giờ là có hạt giấy rơi nhẹ trong hai giây kèm một nhịp rung kép — phần thưởng tức thì cho não ADHD. Không âm thanh chói, không màn hình chớp.": "When time is up, paper flecks drift for two seconds with a double haptic tap — an immediate reward for an ADHD brain. No harsh sound, no flashing screen.",
+ "Bản cũ đổ năm câu hỏi ra cùng lúc gây ngợp. Nay mỗi màn một câu, ba lựa chọn chạm là xong, có thanh tiến trình bốn chấm để biết sắp hết. Chỉ còn một dấu X ở góc, không còn nút “Bỏ qua” trùng lặp.": "The old version poured all five questions onto one screen and overwhelmed people. Now it is one question per screen, three tappable answers, and four progress dots so you can see the end coming. Only an X in the corner remains — no duplicate Skip button.",
+ "Bước cuối: một vòng nhỏ kéo được từ 1 tới 30 phút thay cho bốn chip cứng. Ngay dưới là câu cam kết viết sẵn để đọc lên — đọc thành lời giúp bước qua ngưỡng bắt đầu.": "The last step: a small draggable ring instead of four fixed chips. Below it sits a ready-made commitment line to read out — saying it aloud helps cross the threshold of starting.",
+ "Từ 3 ngày liên tiếp trở lên, ngọn lửa bên cạnh con số bắt đầu nhấp nháy nhẹ. “Việc đã xong” là số của riêng hôm nay, tự về 0 sau 00:00 — không cộng dồn cả đời để khỏi thành áp lực.": "From three days in a row, the flame beside the number starts to flicker gently. \"Done\" counts today only and resets after midnight — never a lifetime total, which would only become pressure.",
+ "Tách hẳn hai trường: tiêu đề một dòng ở trên, nội dung tự do bên dưới. Bỏ hết mẫu gợi ý — trang giấy để trống hoàn toàn cho người viết. Ổ khoá dưới chân nhắc rằng bản ghi này không rời khỏi máy.": "Two clearly separate fields: a one-line title above, free text below. No prompts or templates — the page is left completely blank for the writer. The lock at the foot is a reminder that this entry never leaves the phone.",
+ "Bấm “Thêm vào lịch” ở một việc trong biên bản là nhảy sang tab Lịch, tên việc điền sẵn, trống cuộn mở sẵn chờ chốt ngày giờ. Không phải gõ lại, không phải nhớ.": "Tapping \"Add to calendar\" on a task from the minutes jumps to the Calendar tab with the name filled in and the drum already open, waiting for a date and time. Nothing to retype, nothing to remember.",
+ "Gom lại đúng ba nhóm để khỏi phải quét cả trang: Tài khoản, Bảo mật & Dữ liệu, Hệ thống & Trợ năng. Chế độ tối không có công tắc riêng — nó theo máy, vì công tắc tự đổi ở bản v3 làm sập Galaxy Tab S7 FE.": "Grouped into exactly three, so nobody has to scan the whole page: Account, Security & Data, System & Accessibility.",
+ "Không có máy chủ nào cả. Tài khoản, nhật ký, cảm xúc và dữ liệu sức khoẻ đều nằm lại trong máy này —\n     nhật ký được mã hoá AES-256 bằng khoá trong kho khoá phần cứng.": "Account, diary, feelings and health figures all stay on this phone — the diary encrypted with AES-256 using a key held in the hardware keystore.",
+ "Ba phông: Lexend mặc định, Andika (SIL) cho người khó đọc, Inter cho ai thích nét trung tính. Atkinson Hyperlegible bị loại vì thiếu 50/74 ký tự tiếng Việt — đã đo bằng fontTools. Đổi là cả màn hình đổi ngay, không phải mở lại app. Rung có bốn nấc thay cho nút bật/tắt.": "Three typefaces: Lexend by default, Andika (SIL) for people who find reading hard, Inter for anyone who prefers a neutral face. Atkinson Hyperlegible was ruled out because it is missing 50 of 74 Vietnamese characters — measured with fontTools. Changing one redraws the whole screen at once, no restart.",
+ "Mở ngay trong app, mở đầu bằng bốn dòng tóm tắt dễ hiểu rồi mới tới văn bản đầy đủ — người dùng ADHD hiếm khi đọc hết mười trang, nên phần quan trọng nhất phải nằm trên cùng.": "Opens inside the app, leading with four plain-language lines before the full text — an ADHD reader rarely gets through ten pages, so the part that matters has to be at the top.",
+ "FlowyX là công cụ hỗ trợ tự quản lý, không phải thiết bị y tế: không chẩn đoán, không theo dõi triệu chứng.": "FlowyX is a self-management aid, not a medical device: it does not diagnose and does not track symptoms.",
+ "Dữ liệu sức khoẻ là nhóm đặc biệt theo Điều 9 GDPR: cơ sở pháp lý duy nhất là sự đồng ý rõ ràng, mà một công tắc nằm lẫn giữa mười công tắc khác thì không phải thế. Nên nó có màn riêng, nói rõ đọc gì và giữ bao lâu. Android 14 đọc thẳng qua android.health.connect — API nằm trong hệ điều hành, không kéo theo thư viện nào.": "Health data is a special category under GDPR Article 9: the only lawful basis here is explicit consent, and a switch buried among ten other switches is not that. So it gets its own screen stating what is read and how long it is kept. Android 14 reads it through android.health.connect — an OS API, pulling in no libraries.",
+ "Flowy đặt giấc ngủ và vận động cạnh số liệu tập trung của bạn, để bạn tự thấy hôm nào mình khó bắt đầu và vì sao.": "Flowy puts sleep and movement beside your own focus figures, so you can see for yourself which days were hard to start, and why.",
+ ". Nút xuất dữ liệu rời khỏi thanh công cụ tab này — đây là chỗ yên tĩnh để ghi lại cảm nhận, một nút xuất ngay cạnh tiêu đề biến mỗi lần mở tab thành một lời mời làm việc khác.": ". The export button has left this tab's toolbar — this is a quiet place to write down how the day felt, and an export button beside the title turns every visit into an invitation to do something else.",
+ "— câu nhận xét chỉ hiện khi có ít nhất bốn ngày đủ cả hai số và hai nhóm lệch từ 25% trở lên. Tuần không xong việc nào thì tuyệt đối không nói gì: đó là tuần người dùng đang chật vật nhất.": "— the observation appears only when at least four days carry both figures and the two groups differ by 25% or more. In a week with nothing finished it says absolutely nothing: that is the week the person is struggling most.",
+ "Những hôm bạn ngủ nhiều hơn, bạn xong nhiều việc hơn. Đây là quan sát trên bảy ngày của riêng bạn, không phải một lời khuyên.": "On the days you slept more, you finished more. This is an observation from your own seven days, not advice.",
+ "Thay hai công tắc toàn cục cũ (“mức rung” và “đọc lên / rung / cả hai”). Cả hai đều là bật-tất-cả hoặc tắt-tất-cả, và với người ADHD đó là lựa chọn giữa hai cái đều sai: để nguyên thì buổi tối cũng bị đánh thức, tắt đi thì mất luôn những lời nhắc thật sự cần. Vì tắt là một chạm còn bật lại thì phải nhớ quay vào Cài đặt, nên kết cục gần như luôn là: tắt, rồi quên bật.": "Replaces the two old global switches (haptic level, and speak / vibrate / both). Both were all-on or all-off, and for someone with ADHD that is a choice between two wrong answers: leave them on and the evening wakes you too, turn them off and you lose the reminders you actually needed. Since turning off is one tap while turning back on means remembering to go into Settings, the outcome is almost always: off, then forgotten.",
+ "— rung không đánh thức người khác trong phòng và vẫn đọc được khi máy trong túi; chặn cả ba thì nó thành “tắt thông báo”, và khi đó không ai dám bật.": "— a vibration does not wake anyone else in the room and still reads through a pocket. Block all three and quiet hours becomes \"notifications off\", and then nobody dares turn it on.",
+ "Trong khung giờ này Flowy không phát tiếng và không đọc lên. Vẫn rung, vẫn hiện trên màn hình khoá.": "During these hours Flowy makes no sound and reads nothing aloud. It still vibrates and still shows on the lock screen.",
+ "Để tắt thì hơn: một âm báo kêu cho mọi việc trễ sẽ thành tiếng ồn nền, và khi cần thật thì nó không đánh thức được ai nữa.": "Better left off: a sound that fires for every overdue task becomes background noise, and then it cannot wake anyone when it matters.",
+ "Bấm vào các tab bên dưới: viên thuốc kính mờ trượt theo lò xo, chạm đè thì nó phình ngang rồi co lại. Icon tab tự nói chức năng, và nhãn chữ chỉ hiện ở tab đang chọn.": "Tap the tabs below: the frosted pill slides on a spring, and pressing and holding stretches it sideways before it settles. Each icon carries its own meaning, and the text label shows only on the selected tab.",
+ "Không dùng phiến nền sáng: một miếng kem sau logo nhìn như miếng dán. Thay vào đó là bản nghịch đảo đúng chuẩn nhận diện — mực navy đổi sang màu ngà của nền tối, hai giọt vàng/cam và kim la bàn giữ nguyên tuyệt đối. Bản này SINH TỰ ĐỘNG từ chính tệp gốc bằng android/tools/logo_dem.py, không ai vẽ lại.": "No light plate behind it: a cream patch behind the logo reads like a sticker. Instead there is a properly inverted build — navy ink becomes the ivory of the dark background, while the two yellow and orange drops and the compass needle stay exactly as they are. This build is GENERATED from the original file by android/tools/logo_dem.py; nobody redrew it.",
+ "Chọn ngôn ngữ": "Choose a language",
+ "Tiếng Việt": "Vietnamese",
+ "Tiếp tục": "Continue",
+ "Chào bạn quay lại": "Welcome back",
+ "Đăng nhập để đồng bộ kế hoạch của bạn": "Sign in to sync your plans",
+ "MẬT KHẨU": "PASSWORD",
+ "Quên mật khẩu?": "Forgot password?",
+ "Chưa có tài khoản?": "No account yet?",
+ "Nhật ký và cảm xúc của bạn": "Your diary and feelings",
+ "không": "do not",
+ "đi kèm tài khoản —": "travel with the account —",
+ "chúng nằm lại trong máy này.": "they stay on this phone.",
+ "Tạo tài khoản": "Create an account",
+ "HỌ VÀ TÊN": "FULL NAME",
+ "XÁC NHẬN MẬT KHẨU": "CONFIRM PASSWORD",
+ "SỐ ĐIỆN THOẠI · KHÔNG BẮT BUỘC": "PHONE · OPTIONAL",
+ "Tôi đồng ý với": "I agree to the",
+ "Điều khoản sử dụng": "Terms of use",
+ "và": "and",
+ "Chính sách quyền riêng tư": "Privacy policy",
+ "Mã khôi phục của bạn": "Your recovery code",
+ "Chép mã này ra giấy hoặc trình quản lý": "Copy this onto paper or into a password",
+ "mật khẩu ngay bây giờ.": "manager right now.",
+ "Sao chép mã": "Copy the code",
+ "Vì Flowy không có máy chủ, đây là đường": "Because Flowy has no server, this is the only",
+ "duy nhất": "only",
+ "Tôi đã lưu mã": "I have saved the code",
+ "Lấy lại tài khoản": "Recover your account",
+ "Nhập mã khôi phục 12 ký tự đã hiện lúc bạn đăng ký.": "Enter the 12-character recovery code shown when you signed up.",
+ "MÃ KHÔI PHỤC": "RECOVERY CODE",
+ "Tôi mất cả mã khôi phục": "I lost the recovery code too",
+ "Đường đó xoá sạch máy và tạo tài khoản mới — hỏi lại hai lần trước khi làm.": "That route wipes the phone and creates a new account — it asks twice first.",
+ "Kế hoạch hôm nay": "Today's plan",
+ "Thứ sáu, 18 tháng 9": "Friday, 18 September",
+ "11 phút": "11 min",
+ "viết báo cáo": "write the report",
+ "BIÊN BẢN VỪA XONG · SPRINT 23": "MINUTES JUST ANALYSED · SPRINT 23",
+ "Release 2.4 lùi sang thứ ba 28/07. Có": "Release 2.4 moves to Tuesday 28/07. There are",
+ "4 việc": "4 tasks",
+ "dành cho bạn.": "for you.",
+ "Xem biên bản": "Open the minutes",
+ "Thêm vào lịch": "Add to calendar",
+ "ƯU TIÊN CAO": "HIGH PRIORITY",
+ "Đã ghim": "Pinned",
+ "📝 Nộp báo cáo thực tập": "📝 Submit the internship report",
+ "09:00–09:30 · 30 phút": "09:00–09:30 · 30 min",
+ "ƯU TIÊN TRUNG BÌNH": "MEDIUM PRIORITY",
+ "📚 Ôn bài kiểm tra": "📚 Revise for the test",
+ "14:00–15:00 · 1 giờ": "14:00–15:00 · 1 hr",
+ "ƯU TIÊN THẤP": "LOW PRIORITY",
+ "Trống — kéo một việc vào đây": "Empty — drag a task here",
+ "Kế hoạch": "Plan",
+ "Lịch": "Calendar",
+ "Tập trung": "Focus",
+ "Sức khỏe": "Health",
+ "Thả vào đây để chuyển sang Ưu tiên cao": "Drop here to move it to High priority",
+ "đang kéo…": "dragging…",
+ "🧹 Dọn bàn học": "🧹 Tidy the desk",
+ "VUỐT TRÁI — XONG HOẶC XOÁ": "SWIPE LEFT — DONE OR DELETE",
+ "Xoá": "Delete",
+ "VUỐT PHẢI — GHIM LÊN ĐẦU": "SWIPE RIGHT — PIN TO TOP",
+ "💊 Uống thuốc": "💊 Take medication",
+ "08:00 · T2, T5 hằng tuần": "08:00 · Mon, Thu weekly",
+ "Tháng 9, 2026": "September 2026",
+ "Hôm nay": "Today",
+ "Hôm nay, 18/9": "Today, 18 Sep",
+ "3 kế hoạch · 2 giờ 5 phút": "3 plans · 2 hr 5 min",
+ "Nộp báo cáo": "Submit the report",
+ "30 phút · 🔔 15 phút trước": "30 min · 🔔 15 min before",
+ "Bây giờ 13:42": "Now 13:42",
+ "Ca trực đêm": "Night shift",
+ "2 giờ · kết thúc 01:00 (hôm sau)": "2 hr · ends 01:00 (next day)",
+ "Chạm vào thanh": "Tapping the",
+ "“< Tháng 9, 2026 >”": "\"< September 2026 >\"",
+ "mở lịch tháng đầy đủ. Trước đây hai mũi tên đi từng": "bar opens a full month. The two arrows used to move one",
+ "tuần": "week",
+ "không thể hiện được ngày nào có việc": "cannot show which days have anything on them",
+ "đang chọn": "the selected day",
+ "(nền đậm) với": "(solid) apart from",
+ "hôm nay": "today",
+ "(chỉ viền).": "(outline only).",
+ "Bước 1 phút": "A 1-minute step",
+ "quán tính thật": "real inertia",
+ ": thả tay thì nó quay chậm dần rồi đỗ vào nấc, không khựng lại một cái.": ": let go and it slows to a stop and settles into a notch, instead of halting dead.",
+ "Kế hoạch mới": "New plan",
+ "Lưu": "Save",
+ "✓ Tên một chữ vẫn hợp lệ": "✓ A one-character name is still valid",
+ "Ngày": "Date",
+ "Bắt đầu": "Start",
+ "giờ": "hr",
+ "Kết thúc": "End",
+ "Kéo dài 80 phút": "Lasts 80 min",
+ "chỉ hiện đường Google": "shows the Google route only",
+ "Nhập lịch": "Import a calendar",
+ "Cách lấy": "How to get it",
+ "Mở tệp .ics": "Open an .ics file",
+ "XEM TRƯỚC · 12 SỰ KIỆN": "PREVIEW · 12 EVENTS",
+ "Họp nhóm ADC": "ADC team meeting",
+ "Thứ hai 21/9 · 09:00–10:00": "Monday 21 Sep · 09:00–10:00",
+ "TRÙNG GIỜ · CẦN BẠN CHỌN": "CLASH · YOUR CHOICE",
+ "“Lớp tiếng Anh” 19:00–20:30 trùng với “Ôn bài kiểm tra” đã có.": "\"English class\" 19:00–20:30 clashes with \"Revise for the test\".",
+ "Giữ lịch cũ": "Keep the old one",
+ "Giữ lịch mới": "Keep the new one",
+ "Giữ cả hai": "Keep both",
+ "Nhập 12 sự kiện": "Import 12 events",
+ "Chưa đặt tên việc — không sao cả.": "No task name yet — that is fine.",
+ "PHÚT": "MIN",
+ "5 phút": "5 min",
+ "15 phút": "15 min",
+ "30 phút": "30 min",
+ "1 tiếng": "1 hr",
+ "2 tiếng": "2 hr",
+ "Một quầng sáng rất mờ quanh vành phình ra và thu vào theo chu kỳ": "A very faint halo around the ring swells and contracts on a cycle of",
+ "bốn giây": "four seconds",
+ "Đang chạy vẫn": "While it runs you can still",
+ "kéo dài thêm": "extend it",
+ "Đang làm:": "Working on:",
+ "BƯỚC ĐẦU TIÊN": "FIRST STEP",
+ "Mở tệp và đọc lại tiêu đề": "Open the file and reread the title",
+ "Xong 25 phút": "25 minutes done",
+ "Để: tối nay được nghỉ thoải mái": "So that tonight is properly free",
+ "Nghỉ 5 phút": "Rest 5 min",
+ "Làm thêm 10 phút": "10 min more",
+ "Việc này đang thấy thế nào?": "How does this task feel?",
+ "Chạm một ô. Không có câu trả lời sai.": "Tap one. There is no wrong answer.",
+ "Không biết bắt đầu từ đâu": "I do not know where to start",
+ "Nhìn to quá": "It looks too big",
+ "Đang mệt": "I am tired",
+ "Chưa rõ, đi tiếp": "Not sure, move on",
+ "Thử bao lâu thôi?": "How long will you try for?",
+ "“Mình chỉ mở tệp ra trong": "\"I will just open the file for",
+ "10 phút": "10 min",
+ ". Xong là được phép dừng.”": ". Then I may stop.\"",
+ "Nhật ký": "Diary",
+ "LỜI NHẮN HÔM NAY": "TODAY'S MESSAGE",
+ "Chia nhỏ không phải là làm ít, là làm được.": "Breaking it up is not doing less. It is doing it at all.",
+ "Chuỗi ngày": "Streak",
+ "Việc xong hôm nay": "Done today",
+ "BẢY NGÀY GẦN ĐÂY": "LAST SEVEN DAYS",
+ "CÁC MỤC": "ENTRIES",
+ "Thứ năm, 17/09 · 21:10": "Thursday, 17 Sep · 21:10",
+ "Ngày dài nhưng ổn": "A long day, but all right",
+ "Hôm nay làm xong báo cáo. Bắt đầu muộn…": "Finished the report today. Started late…",
+ "Viết nhật ký": "Write a diary entry",
+ "Thứ sáu, 18/09/2026": "Friday, 18 Sep 2026",
+ "Hôm nay làm xong báo cáo. Bắt đầu muộn hơn dự tính nhưng vẫn kịp trước giờ nộp.": "Finished the report today. Started later than planned but still made the deadline.",
+ "Mã hoá và lưu trong máy này. Không gửi lên máy chủ.": "Encrypted and kept on this phone. Never sent to a server.",
+ "TỪ BIÊN BẢN SPRINT 23": "FROM THE SPRINT 23 MINUTES",
+ "Tuấn: tối ưu query export báo cáo": "Tuan: speed up the report export query",
+ "Thứ hai, 21/9": "Monday, 21 Sep",
+ "Giờ bắt đầu": "Start time",
+ "Giờ kết thúc": "End time",
+ "Ưu tiên": "Priority",
+ "Lưu vào lịch": "Save to calendar",
+ "Cài đặt": "Settings",
+ "Minh Khuê": "Minh Khue",
+ "BẢO MẬT & DỮ LIỆU": "SECURITY & DATA",
+ "Đổi mật khẩu": "Change password",
+ "Tạo mã khôi phục mới": "Generate a new recovery code",
+ "Nhập lịch từ tệp .ics": "Import from an .ics file",
+ "Kết nối dữ liệu sức khoẻ": "Connect health data",
+ "Đang tắt": "Off",
+ "Xuất dữ liệu ra tệp": "Export data to a file",
+ "HỆ THỐNG & TRỢ NĂNG": "SYSTEM & ACCESSIBILITY",
+ "Chế độ hiển thị": "Appearance",
+ "Theo máy": "System",
+ "Ngôn ngữ": "Language",
+ "Chữ và cỡ chữ": "Type and size",
+ "Lexend · Vừa": "Lexend · Medium",
+ "Cường độ rung": "Haptic strength",
+ "Kiểm tra quyền": "Check permissions",
+ "Chữ và rung": "Type and haptics",
+ "KIỂU CHỮ": "TYPEFACE",
+ "— mặc định, dễ đọc lướt": "— default, easy to skim",
+ "Andika — cho người khó đọc": "Andika — for readers who struggle",
+ "Inter — nét trung tính, gọn": "Inter — neutral and compact",
+ "CỠ CHỮ": "TEXT SIZE",
+ "Nhỏ": "Small",
+ "Cả thẻ, nút và khoảng cách đều giãn theo, không chỉ mỗi chữ.": "Cards, buttons and spacing all scale with it, not just the text.",
+ "CƯỜNG ĐỘ RUNG": "HAPTIC STRENGTH",
+ "Tắt": "Off",
+ "Nhẹ": "Light",
+ "Mạnh": "Strong",
+ "Rung thử": "Try it",
+ "Quyền riêng tư": "Privacy",
+ "NGẮN GỌN": "IN SHORT",
+ "· Nhật ký và cảm xúc": "· Your diary and feelings",
+ "ở lại máy này": "stay on this phone",
+ ", mã hoá AES-256.": ", encrypted with AES-256.",
+ "· Máy chủ chỉ giữ email và mật khẩu đã băm.": "· The server holds only an email and a hashed password.",
+ "· Dữ liệu sức khoẻ chỉ đọc khi bạn cho phép, không bao giờ rời máy.": "· Health data is read only with your permission and never leaves the phone.",
+ "· Xoá tài khoản là xoá sạch trong 30 ngày.": "· Deleting your account wipes everything within 30 days.",
+ "MỤC LỤC": "CONTENTS",
+ "1. Dữ liệu chúng tôi thu thập": "1. What we collect",
+ "2. Cách bảo vệ dữ liệu": "2. How it is protected",
+ "3. Dữ liệu sức khoẻ": "3. Health data",
+ "4. Quyền của bạn": "4. Your rights",
+ "Dữ liệu sức khoẻ": "Health data",
+ "FLOWY SẼ ĐỌC": "FLOWY WILL READ",
+ "Giấc ngủ": "Sleep",
+ "Tổng số phút ngủ mỗi đêm": "Total minutes slept each night",
+ "Vận động": "Movement",
+ "Tổng số bước mỗi ngày": "Total steps each day",
+ "FLOWY CAM KẾT": "FLOWY PROMISES",
+ "Chỉ đọc. Không bao giờ ghi ngược vào hồ sơ sức khoẻ của bạn.": "Read only. It never writes back into your health record.",
+ "Chỉ số tổng theo ngày, không lưu chuỗi đo chi tiết.": "Daily totals only, never the detailed measurement series.",
+ "Chỉ giữ 7 ngày gần nhất, cũ hơn thì tự xoá.": "Only the last 7 days are kept; anything older is deleted automatically.",
+ "Không rời khỏi máy này, và tắt kết nối là xoá sạch ngay.": "It never leaves this phone, and turning the connection off wipes it immediately.",
+ "Tôi đồng ý, bật kết nối": "I agree, turn it on",
+ "Tab “Nhật ký” đổi tên thành": "The \"Diary\" tab is now called",
+ "), và nhãn": "), and the label",
+ "đổi thành": "becomes",
+ "Bảng trả lời câu mà đồng hồ nào cũng": "The panel answers the question no watch",
+ "trả lời được:": "can answer:",
+ "những hôm ngủ đủ, tôi có làm được nhiều hơn không?": "on the days I slept enough, did I get more done?",
+ "Và phần quan trọng nhất ở đây là": "And the most important part of it is",
+ "sự im lặng": "the silence",
+ "Bảy ngày gần đây": "Last seven days",
+ "402 phút": "402 min",
+ "Ngủ": "Sleep",
+ "bước/ngày": "steps/day",
+ "Bước chân": "Steps",
+ "nhịp/phút": "bpm",
+ "Nhịp tim nghỉ": "Resting heart rate",
+ "Hôm nay xong được phần màu đêm. Mệt nhưng dễ chịu.": "Got the dark palette done today. Tired but content.",
+ "Bốn trục mới đều trả lời câu": "All four new controls answer the question",
+ "“khi nào thì được làm phiền”": "\"when may I be interrupted\"",
+ ". Giờ yên tĩnh": ". Quiet hours",
+ "vẫn rung": "still vibrate",
+ "NHẮC VIỆC": "REMINDERS",
+ "Giờ yên tĩnh": "Quiet hours",
+ "Bật": "On",
+ "Nhắc trước giờ bắt đầu": "Remind me before the start time",
+ "Đúng giờ": "On time",
+ "Nhắc lại nếu chưa động tới": "Remind again if untouched",
+ "Không nhắc lại": "No repeat",
+ "20 phút": "20 min",
+ "Âm báo khẩn cho việc đã trễ": "Urgent sound for overdue tasks",
+ "GIAO DIỆN": "APPEARANCE",
+ "Giao diện": "Appearance",
+ "Sáng": "Light",
+ "Tối": "Dark",
+ "Chọn “Theo máy” để đổi cùng lúc với cài đặt sáng/tối của điện thoại.": "Choose \"System\" to follow your phone's light and dark setting.",
+ "Ba tín hiệu cho tab đang chọn": "Three signals for the selected tab",
+ "· viên kính mờ, nền mờ theo nội dung phía sau": "· a frosted pill, blurring what is behind it",
+ "· icon đổi sang màu mực": "· the icon turns ink-coloured",
+ "· nhãn chữ hiện ra": "· the text label appears",
+ "Khi chạm": "On touch",
+ "· phình ngang 1,18 lần rồi về": "· stretches to 1.18× and settles back",
+ "· rung nhẹ 6 ms": "· a light 6 ms haptic",
+ "· trượt lò xo 420 ms": "· a 420 ms spring slide",
+ "Bấm thử ở thanh dưới ↓": "Try the bar below ↓",
+ "Nền sáng — bản gốc, mực navy": "Light background — the original, navy ink",
+ "Nền đêm — bản nghịch đảo, mực ngà": "Dark background — inverted, ivory ink",
+ "Nếu để nguyên bản gốc —": "Left as the original —",
+ ", coi như tàng hình": ", effectively invisible",
+ "Hệ điều hành tự chọn bản đúng theo chế độ máy (": "The OS picks the right file for the phone's mode (",
+ "). Không dòng code nào phải chạy.": "). No code has to run.",
+ "Hai mươi chín màn hình, khớp với bản dựng mới nhất.": "Twenty-nine screens, matching the latest build.",
+ "↑ đã thêm khoảng trắng trước “(hôm sau)”.": "↑ a space was added before \"(next day)\".",
+ "Thân Ngọc Minh Khuê": "Than Ngoc Minh Khue"
+};
+
+/** Cac nut van ban that, bo qua ma nguon. */
+function nutVanBan() {
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => /^(SCRIPT|STYLE)$/.test(n.parentNode.nodeName)
+      ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+  const ra = []; let n;
+  while (n = w.nextNode()) ra.push(n);
+  return ra;
+}
+
+let nnHienTai = 'vi';
+
+function doiNgonNgu(nn) {
+  if (nn === nnHienTai) return;
+  for (const nut of nutVanBan()) {
+    // Nho ban tieng Viet ngay lan dau cham toi nut nay.
+    if (nut.__vi === undefined) nut.__vi = nut.textContent;
+    if (nn === 'vi') { nut.textContent = nut.__vi; continue; }
+    const goc = nut.__vi.trim();
+    const dich = TU_DIEN[goc];
+    if (dich === undefined) continue;
+    // Giu nguyen khoang trang hai dau de bo cuc khong xe dich.
+    const truoc = nut.__vi.slice(0, nut.__vi.indexOf(goc));
+    const sau = nut.__vi.slice(nut.__vi.indexOf(goc) + goc.length);
+    nut.textContent = truoc + dich + sau;
+  }
+  nnHienTai = nn;
+  document.documentElement.lang = nn;
+}
+
+document.querySelectorAll('#nhom-nn button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#nhom-nn button')
+    .forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  doiNgonNgu(b.dataset.nn);
+});
+
 </script>
 </body>
 </html>
