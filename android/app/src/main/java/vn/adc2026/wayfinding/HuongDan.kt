@@ -118,7 +118,27 @@ object HuongDan {
      */
     fun hien(a: Activity, cacBuoc: List<Buoc>, khiXong: () -> Unit = {}) {
         if (cacBuoc.isEmpty()) { khiXong(); return }
-        val goc = a.findViewById<ViewGroup>(android.R.id.content)
+        val goc = a.findViewById<ViewGroup>(android.R.id.content) ?: return
+
+        // ----- MOT LOP, KHONG BAO GIO HAI -----
+        //
+        // `hien` duoc goi tu `onResume`, va `onResume` chay lai moi lan
+        // nguoi dung quay ve tab: sang Cai dat roi quay lai, tat man hinh
+        // roi bat, hay cham mot tab khac roi cham ve (thanh tab dung
+        // REORDER_TO_FRONT).
+        //
+        // Co `daXong` khong chan duoc nhung lan do, vi no chi duoc dat
+        // khi nguoi dung di HET hoac bam Bo qua. Truoc khi do, moi lan
+        // quay ve la them mot lop phu nua chong len lop cu - moi lop mot
+        // bo dem buoc rieng, va bam Bo qua chi go duoc lop tren cung.
+        //
+        // Kiem thang tren cay view thay vi giu mot bien tinh: bien tinh
+        // se sai sau khi Activity bi he thong dung lai (xoay man hinh,
+        // doi sang/toi), con cay view thi luon noi dung su that.
+        for (i in 0 until goc.childCount) {
+            if (goc.getChildAt(i) is LopHuongDan) return
+        }
+
         val lop = LopHuongDan(a, cacBuoc) {
             danhDauXong(a)
             goc.post { goc.removeView(it) }
