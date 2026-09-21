@@ -819,4 +819,9 @@
     <!-- Chay lai huong dan -->
     <string name="cd_chay_lai_hd">Xem lại hướng dẫn</string>
     <string name="cd_chay_lai_hd_phu">Đi lại vòng giới thiệu năm tab.</string>
+
+    <!-- Man Them ke hoach, hai tang (phuong an B) -->
+    <string name="kh_chi_can_ten">Chỉ cần tên là lưu được.</string>
+    <string name="kh_them_muc">Thêm ưu tiên, lặp lại, nhắc, nơi chốn</string>
+    <string name="kh_bot_muc">Thu gọn lại</string>
 </resources>

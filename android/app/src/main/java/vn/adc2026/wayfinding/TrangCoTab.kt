@@ -80,7 +80,37 @@ abstract class TrangCoTab : Activity() {
     }
 
     /** Ve lai toan bo noi dung, giu vi tri cuon. */
+    /**
+     * ================================================================
+     * VE LAI CA TRANG - LUON HOAN SANG KHUNG HINH SAU
+     * ================================================================
+     *
+     * `lamMoi()` goi `noiDung.removeAllViews()`. Goi no TU TRONG mot bo
+     * nghe su kien la dung lai cay view ngay giua lan dispatch cua chinh
+     * cai view do - va do chinh la hai loi da gap tren may that:
+     *
+     *   · Tha the sang muc uu tien khac: `ACTION_DROP` goi thang
+     *     `doiUuTien` -> `lamMoi()`. Khung keo-tha sau do con phai gui
+     *     `ACTION_DRAG_ENDED` toi cac view vua bi go. App crash, hoac
+     *     phien keo khong bao gio ket thuc va man hinh dung im.
+     *   · Keo thanh co chu: moi buoc keo goi `ve()`, go luon cai SeekBar
+     *     ngon tay dang giu, nen thanh truot nhay mot nac roi dung.
+     *
+     * Ca hai da duoc chua tai cho bang `post`. Nhung chua tai cho nghia
+     * la lan sau co nguoi goi `lamMoi()` tu mot bo nghe khac thi loi
+     * quay lai, va no se quay lai duoi mot hinh dang khac nen kho nhan
+     * ra la cung mot nguyen nhan.
+     *
+     * Nen `lamMoi()` tu no hoan sang khung hinh sau. Luc do moi lan
+     * dispatch dang chay deu da xong, va khong con cho nao cho loi kia
+     * xuat hien nua. Doi lai: mot khung hinh tre - khoang 16 ms, khong
+     * ai thay duoc.
+     */
     protected fun lamMoi() {
+        noiDung.post { lamMoiNgay() }
+    }
+
+    private fun lamMoiNgay() {
         val cuon = findViewById<android.widget.ScrollView>(R.id.cuon_trang)
         val y = cuon?.scrollY ?: 0
         noiDung.removeAllViews()
@@ -212,7 +242,35 @@ abstract class TrangCoTab : Activity() {
         them(h, tren)
     }
 
+    /**
+     * ================================================================
+     * THEM MOT KHOI VAO TRANG - CHIU DUOC VIEC GOI HAI LAN
+     * ================================================================
+     *
+     * Dong `removeView` duoi day khong phai de phong xa. No chan mot loi
+     * DA XAY RA THAT, va la loi lam app thoat ngay khi mo tab Suc khoe.
+     *
+     * `the()` o ngay duoi TU GOI `them()` - no vua tao the vua gan vao
+     * trang. Doc ten ham thi khong doan duoc dieu do, nen cach viet tu
+     * nhien nhat la:
+     *
+     *     val t = the()
+     *     t.addView(...)
+     *     them(t, 12)      // <- lan thu hai
+     *
+     * va ket qua la `IllegalStateException: The specified child already
+     * has a parent`. Khong phai mot loi hien thi - app thoat han.
+     *
+     * Co hai huong chua. Doi `the()` de no khong tu gan nua thi phai sua
+     * 20 cho dang dung dung, va bo sot mot cho la mot man hinh chet.
+     * Huong nay - lam `them()` chiu duoc - chua tan goc: tu gio goi hai
+     * lan la mot viec VO HAI, va khong ai con phai nho quy uoc nao.
+     *
+     * Go khoi cha cu roi gan lai la dung y: ket qua giong het nhu khi
+     * chi goi mot lan.
+     */
     protected fun them(v: View, tren: Int = 8) {
+        (v.parent as? android.view.ViewGroup)?.removeView(v)
         noiDung.addView(v, LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT

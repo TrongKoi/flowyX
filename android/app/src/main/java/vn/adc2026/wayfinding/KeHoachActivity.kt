@@ -74,6 +74,15 @@ class KeHoachActivity : Activity() {
     private lateinit var khoi: LinearLayout
     private lateinit var oTen: EditText
     private lateinit var oDau: EditText
+    private lateinit var theDau: LinearLayout
+    private lateinit var nutThem: TextView
+
+    /**
+     * Tang hai dang mo hay dong.
+     *
+     * Mo san khi SUA mot ke hoach da dung toi cac muc do - xem `veThem`.
+     */
+    private var moThem = false
     private lateinit var tvLoiTen: TextView
     private lateinit var tvEmoji: TextView
 
@@ -122,6 +131,11 @@ class KeHoachActivity : Activity() {
             setOnClickListener { luu() }
         }
 
+        // Ke hoach da co gia tri o tang hai -> mo san. Xem `veThem`.
+        moThem = cu?.let { k ->
+            k.lapLai != LapLai.KHONG || k.nhacTruoc.isNotEmpty() ||
+                !k.oDau.isNullOrBlank() || k.uuTien != UuTien.VUA
+        } ?: false
         dungForm()
         cu?.let { oTen.setText(it.ten); oDau.setText(it.oDau ?: "") }
         GiaoDien.apFont(findViewById(android.R.id.content), this)
@@ -162,10 +176,47 @@ class KeHoachActivity : Activity() {
         }
         khoi.addView(tvLoiTen)
 
-        theUuTien = the(); theThoiGian = the(); theLapLai = the(); theNhac = the(); theBieuTuong = the()
-        for (t in listOf(theUuTien, theThoiGian, theLapLai, theNhac, theBieuTuong)) khoi.addView(t, lp(12))
+        // ================================================================
+        // HAI TANG, KHONG PHAI BAY THE (phuong an B)
+        // ================================================================
+        //
+        // Man hinh cu co bay khoi va 15 diem quyet dinh cho mot viec ma
+        // nguoi dung thuong chi muon ghi mot dong. Va khong co gi cho
+        // biet cai nao BAT BUOC - bay the trong ngang hang nhau, nen
+        // nguoi ta doc ca bay truoc khi dam bam Luu. Thuc te chi co TEN
+        // la bat buoc.
+        //
+        // Voi nguoi dang ne chinh cong viec do, bay the la bay ly do de
+        // dong man hinh lai.
+        //
+        // Tang 1 - luon hien: ten, ngay, bat dau, ket thuc. Bon thu nay
+        // la thu hay dung nhat, VA gio la thu Flowy dung de chong mu
+        // thoi gian - giau no di thi mot ke hoach khong con moc de nhac.
+        //
+        // Tang 2 - gap lai: uu tien, lap lai, nhac, o dau, bieu tuong.
+        // Deu bo trong duoc, va deu sua lai duoc sau.
+        //
+        // Diem quyet dinh nhin thay luc mo man: 15 -> 4.
+        khoi.addView(chuGoiY(getString(R.string.kh_chi_can_ten)), lp(2))
 
-        val theDau = the()
+        theThoiGian = the()
+        khoi.addView(theThoiGian, lp(12))
+
+        // --- Dong gap ---
+        nutThem = TextView(this).apply {
+            textSize = 15f
+            typeface = Typeface.DEFAULT_BOLD
+            gravity = Gravity.CENTER
+            minHeight = dp(48)
+            setTextColor(mau(R.color.chu_lien_ket))
+            setOnClickListener { Rung.nhe(it); moThem = !moThem; veThem() }
+        }
+        khoi.addView(nutThem, lp(6))
+
+        theUuTien = the(); theLapLai = the(); theNhac = the(); theBieuTuong = the()
+        theDau = the()
+        for (t in listOf(theUuTien, theLapLai, theNhac, theDau, theBieuTuong)) khoi.addView(t, lp(12))
+
         theDau.addView(hang(R.drawable.ic_ghim, getString(R.string.kh_o_dau), null) {})
         oDau = EditText(this).apply {
             hint = getString(R.string.hint_o_dau); textSize = 16f
@@ -175,9 +226,36 @@ class KeHoachActivity : Activity() {
             minHeight = dp(50); setPadding(dp(14), 0, dp(14), 0)
         }
         theDau.addView(oDau, lp(4))
-        khoi.addView(theDau, lp(12))
 
         veUuTien(this); veThoiGian(); veLapLai(); veNhac(); veBieuTuong()
+        veThem()
+    }
+
+    /**
+     * An / hien tang hai.
+     *
+     * Dong gap ghi luon CAI GI dang nam ben trong, khong phai mot chu
+     * "Thêm" tron tran: nguoi dung phai biet minh bo lo gi neu khong mo.
+     *
+     * Khi SUA mot ke hoach da co san gia tri o tang hai thi mo san -
+     * nguoi ta vao day de sua dung nhung thu do, bat mo them mot lan la
+     * mot cham thua.
+     */
+    private fun veThem() {
+        nutThem.text = getString(
+            if (moThem) R.string.kh_bot_muc else R.string.kh_them_muc)
+        val hien = if (moThem) View.VISIBLE else View.GONE
+        for (t in listOf(theUuTien, theLapLai, theNhac, theDau, theBieuTuong)) {
+            t.visibility = hien
+        }
+    }
+
+    /** Dong chu nho duoi o ten - noi ro chi can ten la luu duoc. */
+    private fun chuGoiY(chu: String) = TextView(this).apply {
+        text = chu
+        textSize = 13f
+        setTextColor(mau(R.color.chu_phu))
+        setPadding(dp(66), dp(2), 0, 0)
     }
 
     private fun veUuTien(ctx: Context) {

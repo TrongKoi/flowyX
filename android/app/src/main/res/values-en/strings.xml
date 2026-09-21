@@ -687,4 +687,9 @@
 
     <string name="cd_chay_lai_hd">Replay the tour</string>
     <string name="cd_chay_lai_hd_phu">Walk through the five tabs again.</string>
+
+    <!-- Add-plan screen, two tiers (option B) -->
+    <string name="kh_chi_can_ten">A name is all you need to save.</string>
+    <string name="kh_them_muc">Add priority, repeat, reminders, place</string>
+    <string name="kh_bot_muc">Show less</string>
 </resources>

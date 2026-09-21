@@ -651,10 +651,11 @@ class ViecCanLamActivity : TrangCoTab() {
                         dungCuon()
                         thoiKeo()
                         val id = e.localState as? String ?: return@setOnDragListener false
-                        // HOAN sang khung hinh sau - xem muc 1 o ghi chu tren.
-                        // Dung lai cay view ngay giua lan dispatch nay la
-                        // dung cai lam app crash / dung im.
-                        v.post { doiUuTien(id, u) }
+                        // `lamMoi()` gio tu hoan sang khung hinh sau (xem
+                        // ghi chu o `TrangCoTab.lamMoi`), nen goi thang
+                        // duoc. Giu mot lop `post` nua o day chi lam cho
+                        // duong ma kho doc hon ma khong an toan them.
+                        doiUuTien(id, u)
                         true
                     }
                     android.view.DragEvent.ACTION_DRAG_STARTED -> true
