@@ -627,4 +627,17 @@
     <string name="cd_khong_nhac_lai">No repeat</string>
     <string name="cd_am_khan">Urgent sound for overdue tasks</string>
     <string name="cd_am_khan_phu">Better left off: a sound that fires for every overdue task becomes background noise, and then it cannot wake anyone when it matters.</string>
+
+    <!-- Health panel in the Health tab (item 7.2) -->
+    <string name="sk_bang_tieu_de">Last seven days</string>
+    <string name="sk_bang_moi">Connect Flowy to the health data on this phone to see your sleep next to the number of tasks you finished. The figures stay on this phone, kept for seven days, then deleted.</string>
+    <string name="sk_bang_ket_noi">See how to connect</string>
+    <string name="sk_o_ngu">Sleep</string>
+    <string name="sk_o_buoc">Steps</string>
+    <string name="sk_o_nhip_tim">Resting heart rate</string>
+    <string name="sk_don_vi_buoc">steps/day</string>
+    <string name="sk_don_vi_nhip">bpm</string>
+    <string name="sk_chua_co">no figure yet</string>
+    <string name="sk_lien_he_thuan">On the days you slept more, you finished more. This is an observation from your own seven days, not advice.</string>
+    <string name="sk_lien_he_nghich">Over the last seven days, the days with more sleep had fewer tasks finished. One week says very little - those may simply have been the days you needed rest.</string>
 </resources>

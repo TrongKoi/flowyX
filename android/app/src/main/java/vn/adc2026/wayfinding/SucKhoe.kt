@@ -51,6 +51,7 @@ object SucKhoe {
     private const val K_BAT = "bat"
     private const val K_NGU = "loai_ngu"
     private const val K_BUOC = "loai_buoc"
+    private const val K_NHIP_TIM = "loai_nhip_tim"
     private const val K_DONG_Y_LUC = "dong_y_luc"
 
     /** Giu bay ngay gan nhat. Xem nguyen tac 4. */
@@ -61,6 +62,21 @@ object SucKhoe {
         val ngay: String,
         val nguPhut: Int?,
         val buocChan: Int?,
+        /**
+         * Nhip tim luc nghi, don vi nhip/phut (muc 7.2).
+         *
+         * Co the null, va do la trang thai BINH THUONG chu khong phai
+         * loi: may khong co cam bien nhip tim, hoac hom do khong deo
+         * dong ho, thi ngay do khong co so. Bang `suc_khoe` cung de cot
+         * nay NULL - xem di tru 1 -> 2 trong `KhoDuLieu`.
+         *
+         * Vi sao chi so NGHI chu khong phai nhip tim trung binh ca ngay:
+         * nhip trung binh doi theo viec vua lam gi (di bo, leo cau
+         * thang), con nhip nghi doi cham va phan anh trang thai nen -
+         * ngu du hay thieu, cang thang keo dai hay khong. Do la thu co
+         * the dat canh so phut tap trung de thay lien he.
+         */
+        val nhipTimNghi: Int? = null,
     )
 
     // ---------------------------------------------------------------
@@ -72,14 +88,25 @@ object SucKhoe {
     fun docNgu(ctx: Context): Boolean = p(ctx).getBoolean(K_NGU, true)
     fun docBuoc(ctx: Context): Boolean = p(ctx).getBoolean(K_BUOC, true)
 
+    /**
+     * Doc nhip tim nghi khong. MAC DINH TAT (muc 7.2).
+     *
+     * Hai o tich kia mac dinh bat vi ngu va buoc chan la nhung so ma
+     * gan nhu ai cung da quen nhin. Nhip tim thi khac: no la chi so y
+     * te ro net nhat trong ba, va bat san mot o doc du lieu tim mach la
+     * dieu khong nen lam thay nguoi dung - du man hinh co giai thich.
+     */
+    fun docNhipTim(ctx: Context): Boolean = p(ctx).getBoolean(K_NHIP_TIM, false)
+
     /** Luc nguoi dung bam dong y - GDPR doi hoi chung minh duoc su dong y. */
     fun dongYLuc(ctx: Context): Long = p(ctx).getLong(K_DONG_Y_LUC, 0L)
 
-    fun bat(ctx: Context, ngu: Boolean, buoc: Boolean) {
+    fun bat(ctx: Context, ngu: Boolean, buoc: Boolean, nhipTim: Boolean = false) {
         p(ctx).edit()
             .putBoolean(K_BAT, true)
             .putBoolean(K_NGU, ngu)
             .putBoolean(K_BUOC, buoc)
+            .putBoolean(K_NHIP_TIM, nhipTim)
             .putLong(K_DONG_Y_LUC, System.currentTimeMillis())
             .apply()
     }
@@ -100,6 +127,7 @@ object SucKhoe {
         val ds = ArrayList<String>(2)
         if (docNgu(ctx)) ds.add("android.permission.health.READ_SLEEP")
         if (docBuoc(ctx)) ds.add("android.permission.health.READ_STEPS")
+        if (docNhipTim(ctx)) ds.add("android.permission.health.READ_RESTING_HEART_RATE")
         return ds.toTypedArray()
     }
 
@@ -128,6 +156,7 @@ object SucKhoe {
         v.put("ngay", n.ngay)
         v.put("ngu_phut", n.nguPhut)
         v.put("buoc_chan", n.buocChan)
+        v.put("nhip_tim_nghi", n.nhipTimNghi)
         v.put("cap_nhat", System.currentTimeMillis())
         KhoDuLieu(ctx).writableDatabase.insertWithOnConflict(
             "suc_khoe", null, v, android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE)
@@ -136,14 +165,15 @@ object SucKhoe {
     fun doc(ctx: Context, soNgay: Int = GIU_NGAY): List<Ngay> {
         val ra = ArrayList<Ngay>()
         val c = KhoDuLieu(ctx).readableDatabase.query(
-            "suc_khoe", arrayOf("ngay", "ngu_phut", "buoc_chan"),
+            "suc_khoe", arrayOf("ngay", "ngu_phut", "buoc_chan", "nhip_tim_nghi"),
             null, null, null, null, "ngay DESC", soNgay.toString())
         c.use {
             while (it.moveToNext()) {
                 ra.add(Ngay(
                     it.getString(0),
                     if (it.isNull(1)) null else it.getInt(1),
-                    if (it.isNull(2)) null else it.getInt(2)))
+                    if (it.isNull(2)) null else it.getInt(2),
+                    if (it.isNull(3)) null else it.getInt(3)))
             }
         }
         return ra

@@ -750,4 +750,17 @@
     <string name="cd_khong_nhac_lai">Không nhắc lại</string>
     <string name="cd_am_khan">Âm báo khẩn cho việc đã trễ</string>
     <string name="cd_am_khan_phu">Để tắt thì hơn: một âm báo kêu cho mọi việc trễ sẽ thành tiếng ồn nền, và khi cần thật thì nó không đánh thức được ai nữa.</string>
+
+    <!-- Bang suc khoe trong tab Suc khoe (muc 7.2) -->
+    <string name="sk_bang_tieu_de">Bảy ngày gần đây</string>
+    <string name="sk_bang_moi">Nối Flowy với dữ liệu sức khoẻ trên máy để xem giấc ngủ đặt cạnh số việc bạn làm xong. Số liệu ở lại trên máy, giữ bảy ngày rồi tự xoá.</string>
+    <string name="sk_bang_ket_noi">Xem cách kết nối</string>
+    <string name="sk_o_ngu">Ngủ</string>
+    <string name="sk_o_buoc">Bước chân</string>
+    <string name="sk_o_nhip_tim">Nhịp tim nghỉ</string>
+    <string name="sk_don_vi_buoc">bước/ngày</string>
+    <string name="sk_don_vi_nhip">nhịp/phút</string>
+    <string name="sk_chua_co">chưa có số</string>
+    <string name="sk_lien_he_thuan">Những hôm bạn ngủ nhiều hơn, bạn xong nhiều việc hơn. Đây là quan sát trên bảy ngày của riêng bạn, không phải một lời khuyên.</string>
+    <string name="sk_lien_he_nghich">Bảy ngày qua, những hôm ngủ nhiều hơn lại xong ít việc hơn. Một tuần thì chưa nói lên điều gì — có thể đó đúng là những ngày bạn cần nghỉ.</string>
 </resources>
