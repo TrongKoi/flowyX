@@ -75,7 +75,11 @@ class NhatKyActivity : TrangCoTab() {
             t.addView(nutChuSucKhoe(getString(R.string.sk_bang_ket_noi)) {
                 startActivity(Intent(this, SucKhoeActivity::class.java))
             })
-            them(t, 12)
+            // KHONG goi `them(t, ...)`: `the()` da tu gan the vao trang roi.
+            // Goi them mot lan nua la them CUNG MOT View vao ViewGroup hai
+            // lan -> IllegalStateException "already has a parent" -> app
+            // thoat ngay khi mo tab. Day chinh la loi "bam vao nut nhat ky
+            // thi thoat khoi app".
             return
         }
 
@@ -129,7 +133,7 @@ class NhatKyActivity : TrangCoTab() {
                 setPadding(0, dp(12), 0, 0); setLineSpacing(0f, 1.4f)
             })
         }
-        them(t, 12)
+        // Xem ghi chu o nhanh tren - `the()` da gan the vao trang roi.
     }
 
     private fun nutChuSucKhoe(chu: String, khi: () -> Unit) = TextView(this).apply {

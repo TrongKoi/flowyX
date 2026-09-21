@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -398,12 +400,35 @@ class LichActivity : Activity() {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(10), 0, 0, 0)
         }
-        chu.addView(TextView(this).apply {
+        // ----- HANG TEN: DAU GHIM + GACH NGANG KHI XONG -----
+        //
+        // Tab Lich truoc day khong co dau hieu nao cho viec da ghim - chi
+        // co thu tu sap xep, ma thu tu thi khong doc ra duoc. Nguoi dung
+        // vuot phai de ghim, the nhay len dau, roi khong con dau vet gi.
+        //
+        // Va viec DA XONG truoc day chi mo di 55% va doi emoji thanh dau
+        // tick. Mo di la mot tin hieu YEU: no de bi nham voi "the o xa"
+        // hay "man hinh dang toi", nhat la o ban dem. Gach ngang thi
+        // khong nham voi gi duoc.
+        val hangTen = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+        if (kh.ghim) {
+            hangTen.addView(ImageView(this).apply {
+                setImageResource(R.drawable.ic_ghim)
+                setColorFilter(getColor(R.color.chu))
+                contentDescription = getString(R.string.vuot_ghim)
+            }, LinearLayout.LayoutParams(dp(15), dp(15)).apply { marginEnd = dp(6) })
+        }
+        hangTen.addView(TextView(this).apply {
             text = kh.ten
             setTextColor(getColor(R.color.chu))
             textSize = 17f
             setTypeface(typeface, Typeface.BOLD)
-        })
+            if (xong) paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        }, LinearLayout.LayoutParams(0, -2, 1f))
+        chu.addView(hangTen, LinearLayout.LayoutParams(-1, -2))
         val phu = buildList {
             add(Lich.moTaPhut(kh.thoiLuong, this@LichActivity))
             kh.oDau?.let { add(it) }
@@ -493,6 +518,14 @@ class LichActivity : Activity() {
         if (ngayChon == SoLich.homNay() && !xong) {
             muc += getString(R.string.kh_bat_dau_viec) to {
                 ThanhTab.mo(this, FocusActivity::class.java) { it.putExtra(FocusActivity.EXTRA_KE_HOACH, kh.id) }
+            }
+        }
+        // Them mot DONG vao hop thoai da co san - khong them tab, khong
+        // them nut nao len man hinh. Chi hien khi viec chua xong: chia
+        // nho mot viec da lam xong la mot lua chon vo nghia.
+        if (!xong) {
+            muc += getString(R.string.pr_nho_chia) to {
+                PhanRaActivity.moHoacBao(this, kh.ten, kh.id)
             }
         }
         muc += getString(R.string.kh_sua) to { moSua(kh.id) }

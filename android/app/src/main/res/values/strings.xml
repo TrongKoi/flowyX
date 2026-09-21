@@ -775,4 +775,78 @@
 
     <!-- Hau to cho contentDescription cua muc dang duoc chon -->
     <string name="dang_chon">đang chọn</string>
+
+    <!-- ================================================================
+         HUONG DAN LAN DAU (spotlight)
+         ================================================================
+         QUY TAC VIET, co bai test canh gac o `HuongDanTest`:
+           · Tieu de toi da 34 ky tu.
+           · Noi dung toi da 110 ky tu, va la MOT-HAI cau.
+           · Cau dau luon la mot VIEC LAM DUOC, khong phai mot mo ta.
+             "Chạm để bắt đầu 25 phút" chu khong phai "Đây là đồng hồ
+             tập trung giúp bạn quản lý thời gian hiệu quả".
+           · Khong "bạn nên", "bạn phải", "hãy cố" - cung quy tac voi
+             loi nhan hang ngay. -->
+    <string name="hd_bo_qua">Bỏ qua</string>
+    <string name="hd_tiep">Tiếp</string>
+    <string name="hd_xong">Bắt đầu dùng</string>
+    <string name="hd_buoc_may">BƯỚC %1$d / %2$d</string>
+
+    <string name="hd_chao_td">Năm tab, thế thôi</string>
+    <string name="hd_chao_nd">Đi một vòng chưa tới một phút. Bỏ qua lúc nào cũng được.</string>
+
+    <string name="hd_viec_td">Kế hoạch: việc hôm nay</string>
+    <string name="hd_viec_nd">Việc trong ngày, xếp theo mức ưu tiên. Vuốt trái để xong hoặc xoá, vuốt phải để ghim lên đầu.</string>
+
+    <string name="hd_lich_td">Lịch: xem cả tuần</string>
+    <string name="hd_lich_nd">Việc dài hơn thì khối màu dài hơn. Chạm vào tháng để nhảy tới ngày bất kỳ.</string>
+
+    <string name="hd_focus_td">Tập trung: đồng hồ</string>
+    <string name="hd_focus_nd">Kéo vòng để đặt giờ, chạm Bắt đầu. Màu đổi dần khi sắp hết — không cần nhìn số.</string>
+
+    <string name="hd_goroi_td">Kẹt thì bấm dấu cộng</string>
+    <string name="hd_goroi_nd">Bốn câu hỏi ngắn, chạm để trả lời. Cuối cùng còn đúng một bước nhỏ để bắt đầu.</string>
+
+    <string name="hd_suckhoe_td">Sức khỏe: ghi lại</string>
+    <string name="hd_suckhoe_nd">Viết vài dòng về hôm nay. Không ai chấm điểm, và chữ ở lại trong máy này.</string>
+
+    <string name="hd_meety_td">Meety: biên bản họp</string>
+    <string name="hd_meety_nd">Thả bản ghi cuộc họp vào đây. Máy lọc ra việc cần làm, bạn duyệt rồi mới vào lịch.</string>
+
+    <string name="hd_caidat_td">Cài đặt ở góc này</string>
+    <string name="hd_caidat_nd">Giờ yên tĩnh, cỡ chữ, sáng tối, màu đồng hồ. Đổi lúc nào cũng được.</string>
+
+    <!-- Chay lai huong dan -->
+    <string name="cd_chay_lai_hd">Xem lại hướng dẫn</string>
+    <string name="cd_chay_lai_hd_phu">Đi lại vòng giới thiệu năm tab.</string>
+
+    <!-- Man Them ke hoach, hai tang (phuong an B) -->
+    <string name="kh_chi_can_ten">Chỉ cần tên là lưu được.</string>
+    <string name="kh_them_muc">Thêm ưu tiên, lặp lại, nhắc, nơi chốn</string>
+    <string name="kh_bot_muc">Thu gọn lại</string>
+
+    <!-- ================================================================
+         PHAN RA TAC VU (AI Task Demystifier)
+         ================================================================ -->
+    <string name="pr_tieu_de">Chia nhỏ việc</string>
+    <string name="pr_dang_chia">Đang chia nhỏ “%s”…</string>
+    <string name="pr_con_luot">Còn %d lượt hôm nay</string>
+    <string name="pr_bat_dau_buoc_1">Bắt đầu bước 1 · %d phút</string>
+    <string name="pr_chi_luu">Chỉ lưu, chưa bắt đầu</string>
+    <string name="pr_xoa_buoc">Xóa bước %d</string>
+    <string name="pr_buoc_tren">Bước %1$d trên %2$d. %3$s. %4$d phút.</string>
+    <string name="pr_mo_ho">Bước này hơi chung. Sửa cho cụ thể hơn nếu muốn.</string>
+    <string name="pr_da_xoa_het">Đã xóa hết các bước. Bạn tự chia cũng được.</string>
+    <string name="pr_khong_noi_duoc">Không nối được</string>
+    <string name="pr_khong_noi_duoc_phu">Thử lại, hoặc tự chia bằng Gỡ rối — bốn câu hỏi, không giới hạn.</string>
+    <string name="pr_thu_lai">Thử lại</string>
+    <string name="pr_tu_chia">Tự chia bằng Gỡ rối</string>
+    <string name="pr_can_them">Cần biết thêm một chút</string>
+
+    <!-- Duong vao -->
+    <string name="pr_nho_chia">Nhờ chia nhỏ việc này</string>
+    <string name="pr_nho_goi_y">Nhờ gợi ý · còn %d lượt</string>
+    <string name="pr_het_luot_td">Hết lượt hôm nay</string>
+    <string name="pr_het_luot">Hết 3 lượt chia nhỏ hôm nay. Đến nửa đêm có lại.\n\nBạn vẫn tự chia nhỏ được bằng Gỡ rối — bốn câu hỏi, không giới hạn.</string>
+    <string name="pr_mo_go_roi">Mở Gỡ rối</string>
 </resources>

@@ -54,6 +54,18 @@ class ViecCanLamActivity : TrangCoTab() {
 
     override fun tab() = ThanhTab.VIEC
 
+    override fun onResume() {
+        super.onResume()
+        // Huong dan chay o day chu khong o `onCreate`: phai doi cay view
+        // dung xong VA do duoc kich thuoc thi moi biet khoet sang cho nao.
+        // `post` de chac chan da qua mot vong do.
+        if (!HuongDan.daXong(this)) {
+            noiDung.post {
+                if (!HuongDan.daXong(this)) HuongDan.hien(this, HuongDan.chuoiChuan())
+            }
+        }
+    }
+
     override fun ve() {
         soLich = SoLich.doc(this)
         val c = Calendar.getInstance()
@@ -75,9 +87,9 @@ class ViecCanLamActivity : TrangCoTab() {
         them(nutPhu(getString(R.string.kh_xem_lich)) {
             ThanhTab.mo(this, LichActivity::class.java)
         })
-        them(chuPhu(getString(R.string.kh_meo_vuot), 12f).apply {
-            gravity = Gravity.CENTER; setPadding(0, dp(10), 0, 0)
-        })
+        // Dong meo "vuot de..." da bo. Tu khi co man hinh huong dan luc
+        // dang ky, meo dung cho cua no la o do - mot dong chu nam mai o
+        // cuoi danh sach thi sau lan thu hai no chi con la nhieu thi giac.
         batVungTha()
     }
 
@@ -639,10 +651,11 @@ class ViecCanLamActivity : TrangCoTab() {
                         dungCuon()
                         thoiKeo()
                         val id = e.localState as? String ?: return@setOnDragListener false
-                        // HOAN sang khung hinh sau - xem muc 1 o ghi chu tren.
-                        // Dung lai cay view ngay giua lan dispatch nay la
-                        // dung cai lam app crash / dung im.
-                        v.post { doiUuTien(id, u) }
+                        // `lamMoi()` gio tu hoan sang khung hinh sau (xem
+                        // ghi chu o `TrangCoTab.lamMoi`), nen goi thang
+                        // duoc. Giu mot lop `post` nua o day chi lam cho
+                        // duong ma kho doc hon ma khong an toan them.
+                        doiUuTien(id, u)
                         true
                     }
                     android.view.DragEvent.ACTION_DRAG_STARTED -> true
@@ -773,6 +786,11 @@ class ViecCanLamActivity : TrangCoTab() {
                 paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
         }, LinearLayout.LayoutParams(0, -2, 1f))
+        // Viec da xong: mo CA THE di, khong chi rieng dong ten. Mot the
+        // sang nguyen voi mot dong chu bi gach doc ra nhu loi hien thi;
+        // ca the mo di thi no lui han ve sau, dung cho cua mot viec khong
+        // con can nghi toi nua.
+        if (xong) t.alpha = 0.6f
         cot.addView(hangTen, LinearLayout.LayoutParams(-1, -2))
         cot.addView(chuPhu("${Lich.gioPhut(kh.batDau)}–${Lich.gioPhut(kh.ketThuc)} · " +
             Lich.moTaPhut(kh.thoiLuong, this) +

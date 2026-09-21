@@ -86,7 +86,18 @@ data class DemNguoc(
          * moc nao cung keo duoc bang vanh, danh sach dai chi them mot lan
          * phai can nhac.
          */
-        val PHIM_TAT = listOf(5, 15, 30, 60, 120)
+        /**
+         * Ba muc chon nhanh, khong phai nam.
+         *
+         * Bo 60 va 120: chung khong phai "chon nhanh" ma la hai con so
+         * lon dung canh ba con so nho, va o mot man hinh danh cho nguoi
+         * dang kho bat dau thi moi lua chon them la mot lan phai can
+         * nhac. 5 / 15 / 30 phu gan het cac phien that.
+         *
+         * Dong ho VAN keo tay duoc toi `TOI_DA_PHUT` (120) - bo chip
+         * khong bo mat kha nang nao, chi bo bot lua chon bay san.
+         */
+        val PHIM_TAT = listOf(5, 15, 30)
 
         /** Giu ten cu cho code/test cu. */
         val NHANH = PHIM_TAT

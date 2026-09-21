@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -18,6 +21,36 @@ android {
         targetSdk = 34
         versionCode = 5
         versionName = "0.5.1"
+
+        // ================================================================
+        // KHOA GEMINI - KHONG BAO GIO NAM TRONG MA NGUON
+        // ================================================================
+        //
+        // Gan khoa vao APK thi bat ky ai cung lay ra duoc: giai nen tep
+        // apk va doc chuoi, khong can ky nang gi. Ma hoa cung vo nghia -
+        // ca khoa lan ma giai deu nam trong cung goi cai dat.
+        //
+        // Nen khoa doc tu `local.properties`, tep da nam trong
+        // .gitignore va khong bao gio len GitHub. Ai muon chay ban goi
+        // Gemini that thi them mot dong vao may minh:
+        //
+        //     GEMINI_API_KEY=...
+        //
+        // Khong co khoa -> rong -> app dung `MauProvider`. Do la mac
+        // dinh CO CHU DICH, khong phai duong du phong: buoi demo khong
+        // phu thuoc WiFi hoi truong, khong phu thuoc han muc Google, va
+        // khong lo khoa cho ai nhin man hinh. Xem `PhanRaProvider.kt`.
+        //
+        // Duong dung ve lau dai la proxy qua may chu cua nhom.
+        val tepCucBo = rootProject.file("local.properties")
+        val props = Properties()
+        if (tepCucBo.exists()) FileInputStream(tepCucBo).use { props.load(it) }
+        val khoaGemini = props.getProperty("GEMINI_API_KEY", "")
+        buildConfigField("String", "GEMINI_API_KEY", "\"$khoaGemini\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {

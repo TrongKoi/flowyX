@@ -42,6 +42,15 @@ ADHD, và §4 giải thích Flowy tránh trở thành thiết bị y tế bằng
 **[`BAO_MAT.md`](BAO_MAT.md)** — dữ liệu nào ở lại máy, dữ liệu nào rời
 máy, và mã hoá ra sao.
 
+## Chuẩn bị cho phần thi
+
+**[`ques/CAU_HOI_GIAM_KHAO.md`](ques/CAU_HOI_GIAM_KHAO.md)** — những câu
+hội đồng có thể hỏi, kèm câu trả lời. Có cả mục **giới hạn nói trước khi
+bị hỏi** và bốn câu khó chuẩn bị riêng.
+
+Đọc một lượt để *biết mình đã có câu trả lời*, rồi trả lời bằng lời của
+mình. Đừng học thuộc.
+
 ## Muốn báo lỗi
 
 Không nằm trong `docs/` — xem **[`../BAO_LOI/`](../BAO_LOI/README.md)** ở
