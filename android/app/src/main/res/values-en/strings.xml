@@ -558,4 +558,6 @@
 
     <!-- Bien ban Meety khuyet tieu de (muc 8.2) -->
     <string name="bb_khong_ten">Untitled meeting</string>
+    <string name="motd_small_beginning">A small beginning is still a beginning.</string>
+    <string name="motd_no_perfection">It doesn’t have to be perfect, just get something done.</string>
 </resources>
