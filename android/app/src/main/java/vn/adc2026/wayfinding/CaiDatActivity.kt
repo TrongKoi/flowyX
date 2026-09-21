@@ -373,11 +373,16 @@ class CaiDatActivity : Activity() {
         }, LinearLayout.LayoutParams(-1, -2))
         the.addView(vach())
 
-        the.addView(dong(getString(R.string.cd_nhap_lich),
-            getString(R.string.cd_nhap_lich_phu)) {
-            startActivity(Intent(this, NhapLichActivity::class.java))
-        })
-        the.addView(vach())
+        // MUC 3.4 - "Nhap lich" da chuyen han sang tab Lich.
+        //
+        // Truoc day no nam o CA HAI cho: mot nut tren thanh tieu de cua
+        // tab Lich, va mot dong o day. Hai duong vao cho cung mot viec
+        // nghia la nguoi dung phai nho no nam o dau - va dat trong Cai dat
+        // con gui sai tin hieu: nhap lich khong phai mot tuy chon he
+        // thong, no la mot thao tac lam voi lich, ngay o cho co lich.
+        //
+        // Cai dat giu lai nhung thu lam MOT LAN roi thoi. Nhap lich la
+        // viec lap lai moi hoc ky, moi du an.
 
         the.addView(dong(getString(R.string.cd_suc_khoe),
             getString(if (SucKhoe.dangBat(this)) R.string.cd_dang_bat

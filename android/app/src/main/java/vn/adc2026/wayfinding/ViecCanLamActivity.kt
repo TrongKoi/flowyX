@@ -519,13 +519,37 @@ class ViecCanLamActivity : TrangCoTab() {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(8), 0, 0, 0)
         }
-        cot.addView(chuTo("${kh.emoji}  ${kh.ten}", 15f).apply {
+        // ----- DAU GHIM NHIN THAY DUOC (muc 5.4) -----
+        //
+        // Ghim da day viec len dau danh sach (`GHIM_ROI_UU_TIEN`), nhung
+        // tren man hinh khong co gi noi ra dieu do. Nguoi dung vuot phai,
+        // the nhay len dau, roi khong con dau vet nao - va lan mo app sau
+        // ho khong biet vi sao viec do lai nam tren cung, hay lam sao go
+        // no xuong.
+        //
+        // Mot cai ghim nho truoc ten la du. Khong to hon, khong doi mau ca
+        // the: ghim la "toi muon nhin thay cai nay truoc", khong phai
+        // "cai nay khan cap" - do la viec cua muc uu tien, va hai thu do
+        // ma trong giong nhau thi ca hai deu mat nghia.
+        val hangTen = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+        if (kh.ghim) {
+            hangTen.addView(ImageView(this).apply {
+                setImageResource(R.drawable.ic_ghim)
+                setColorFilter(mau(R.color.ghim))
+                contentDescription = getString(R.string.vuot_ghim)
+            }, LinearLayout.LayoutParams(dp(14), dp(14)).apply { marginEnd = dp(5) })
+        }
+        hangTen.addView(chuTo("${kh.emoji}  ${kh.ten}", 15f).apply {
             includeFontPadding = false
             if (xong) {
                 setTextColor(mau(R.color.chu_phu))
                 paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
-        })
+        }, LinearLayout.LayoutParams(0, -2, 1f))
+        cot.addView(hangTen, LinearLayout.LayoutParams(-1, -2))
         cot.addView(chuPhu("${Lich.gioPhut(kh.batDau)}–${Lich.gioPhut(kh.ketThuc)} · " +
             Lich.moTaPhut(kh.thoiLuong, this) +
             (if (kh.lapLai != LapLai.KHONG) " · ${Lich.moTaLapLai(kh.lapLai)}" else ""), 12f).apply {
@@ -550,7 +574,11 @@ class ViecCanLamActivity : TrangCoTab() {
         val k = KhungVuot(this, t,
             khiXong = { doiXong(kh, homNay) },
             khiXoa = { xoa(kh) },
-            khiGhim = { doiGhim(kh) })
+            khiGhim = { doiGhim(kh) },
+            // Nhan doi theo trang thai that - xem ghi chu `daXong` o KhungVuot.
+            nhanXong = getString(if (xong) R.string.vuot_chua_xong else R.string.vuot_xong),
+            nhanGhim = getString(if (kh.ghim) R.string.vuot_bo_ghim else R.string.vuot_ghim),
+            daXong = xong)
         vung.addView(k, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
     }
 

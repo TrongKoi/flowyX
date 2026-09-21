@@ -603,4 +603,15 @@
     <string name="gr_dang_chay_hoi">&quot;%1$s&quot; has %2$d minutes left. Start the new task right now?</string>
     <string name="gr_dang_chay_bat_dau">Start the new task</string>
     <string name="gr_dang_chay_giu">Keep the running session</string>
+
+    <!-- Left swipe on an already-done task (item 5.4) -->
+    <string name="vuot_chua_xong">Not done</string>
+    <string name="vuot_bo_ghim">Unpin</string>
+
+    <!-- Month/year picker (item 5.2) -->
+    <string name="thang_truoc">Previous month</string>
+    <string name="thang_sau">Next month</string>
+    <string name="o_ngay_co_viec">Day %d, has plans</string>
+    <string name="o_ngay_trong">Day %d</string>
+    <string name="lich_mo_chon_thang">Pick a month and day</string>
 </resources>

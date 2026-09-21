@@ -87,6 +87,22 @@ class LichActivity : Activity() {
         findViewById<Button>(R.id.nut_hom_nay).setOnClickListener { chonNgay(SoLich.homNay()) }
         findViewById<Button>(R.id.nut_tuan_truoc).setOnClickListener { chonNgay(ngayChon - 7) }
         findViewById<Button>(R.id.nut_tuan_sau).setOnClickListener { chonNgay(ngayChon + 7) }
+
+        // ----- MUC 5.2: CHAM VAO THANG DE MO LICH THANG -----
+        //
+        // Hai mui ten di tung TUAN mot. Muon toi mot ngay cach day ba
+        // thang la ba muoi hai lan cham - va giua chung khong co gi cho
+        // biet dang o dau. Thanh thang o giua trong da nhu mot nhan bam
+        // duoc (no nam giua hai nut), nen truoc day cham vao no ma khong
+        // co gi xay ra la mot cho hong im lang.
+        tvThang.isClickable = true
+        tvThang.contentDescription = getString(R.string.lich_mo_chon_thang)
+        tvThang.setOnClickListener {
+            Rung.nhe(it)
+            ChonThangNam.hien(this, ngayChon,
+                coViec = { n -> Lich.trongNgay(so.danhSach, n).isNotEmpty() },
+                xong = { n -> chonNgay(n) })
+        }
         findViewById<Button>(R.id.nut_them).setOnClickListener { moSua(null) }
 
         batKeoTuan()
@@ -430,7 +446,10 @@ class LichActivity : Activity() {
         // Vuot tren KHOI MAU, khong tren ca hang: cot gio dung yen lam moc.
         khoi.isClickable = true
         hang.addView(KhungVuot(this, khoi,
-            khiXong = { doiXong(kh) }, khiXoa = { xoa(kh) }, khiGhim = { doiGhim(kh) }),
+            khiXong = { doiXong(kh) }, khiXoa = { xoa(kh) }, khiGhim = { doiGhim(kh) },
+            nhanXong = getString(if (xong) R.string.vuot_chua_xong else R.string.vuot_xong),
+            nhanGhim = getString(if (kh.ghim) R.string.vuot_bo_ghim else R.string.vuot_ghim),
+            daXong = xong),
             LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
         return hang
     }

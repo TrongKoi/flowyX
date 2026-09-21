@@ -726,4 +726,15 @@
     <string name="gr_dang_chay_hoi">“%1$s” còn %2$d phút. Bắt đầu việc mới ngay bây giờ?</string>
     <string name="gr_dang_chay_bat_dau">Bắt đầu việc mới</string>
     <string name="gr_dang_chay_giu">Giữ phiên đang chạy</string>
+
+    <!-- Vuot trai tren mot viec DA xong (muc 5.4) -->
+    <string name="vuot_chua_xong">Chưa xong</string>
+    <string name="vuot_bo_ghim">Bỏ ghim</string>
+
+    <!-- Bo chon thang/nam (muc 5.2) -->
+    <string name="thang_truoc">Tháng trước</string>
+    <string name="thang_sau">Tháng sau</string>
+    <string name="o_ngay_co_viec">Ngày %d, có kế hoạch</string>
+    <string name="o_ngay_trong">Ngày %d</string>
+    <string name="lich_mo_chon_thang">Chọn tháng và ngày</string>
 </resources>

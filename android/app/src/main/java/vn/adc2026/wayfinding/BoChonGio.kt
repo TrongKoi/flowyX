@@ -29,8 +29,26 @@ import vn.adc2026.frontend.TrongCuonView
  */
 object BoChonGio {
 
-    /** Buoc phut mac dinh. Nguoi ADHD hiem khi can dat 14:37. */
-    private const val BUOC = 5
+    /**
+     * ================================================================
+     * BUOC MOT PHUT, KHONG PHAI NAM (muc 5.3)
+     * ================================================================
+     *
+     * Ly do cu: "nguoi ADHD hiem khi can dat 14:37". Dung voi gio BAT
+     * DAU - nhung cung bo chon nay dung cho gio KET THUC, cho moc nhac,
+     * va cho gio hen ma nguoi khac dat ra: cuoc hop 14:05, xe buyt 7:52,
+     * uong thuoc 21:03. Voi nhung cai do thi buoc nam phut khong phai la
+     * don gian hoa - no la SAI, va nguoi dung phai di tim mot nut khac
+     * de sua lai cho dung.
+     *
+     * Nut "phut le" sinh ra chinh de vong qua han che nay, va no la mot
+     * lua chon them ma nguoi dung phai hieu truoc khi dung duoc. Bo buoc
+     * nam phut thi bo luon duoc nut do: mot muc bot khoi man hinh.
+     *
+     * Quan tinh that (xem `TrongCuonView.nem`) lam cho 60 nac cuon nhanh
+     * khong kem 12 nac - day la dieu kien de bo duoc buoc nam.
+     */
+    private const val BUOC = 1
 
     /**
      * @param phut gia tri ban dau, tinh tu 00:00
@@ -39,7 +57,6 @@ object BoChonGio {
     fun hien(a: Activity, tieuDe: String, phut: Int, xong: (Int) -> Unit) {
         var gio = (phut / 60).coerceIn(0, 23)
         var ph = phut % 60
-        var buocLe = ph % BUOC != 0
 
         val d = Dialog(a)
         val goc = LinearLayout(a).apply {
@@ -82,10 +99,8 @@ object BoChonGio {
         }
 
         val cotGio = cot((0..23).map { "%02d".format(it) }, gio) { gio = it }
-        fun dsPhut() = if (buocLe) (0..59).map { "%02d".format(it) }
-                       else (0 until 60 step BUOC).map { "%02d".format(it) }
-        fun chiSoPhut() = if (buocLe) ph else (ph / BUOC).coerceIn(0, 59 / BUOC)
-        val cotPhut = cot(dsPhut(), chiSoPhut()) { ph = if (buocLe) it else it * BUOC }
+        val cotPhut = cot((0 until 60 step BUOC).map { "%02d".format(it) },
+            (ph / BUOC).coerceIn(0, 59 / BUOC)) { ph = it * BUOC }
 
         hang.addView(cotGio, LinearLayout.LayoutParams(0, dp(a, 168), 1f))
         hang.addView(TextView(a).apply {
@@ -99,22 +114,7 @@ object BoChonGio {
         khung.addView(hang, FrameLayout.LayoutParams(-1, dp(a, 168)))
         goc.addView(khung, LinearLayout.LayoutParams(-1, dp(a, 168)).apply { topMargin = dp(a, 12) })
 
-        // Nut "Phut le": chi hien khi nguoi dung THAT SU can 14:37.
-        val nutLe = TextView(a).apply {
-            text = a.getString(if (buocLe) R.string.gio_buoc_5 else R.string.gio_phut_le)
-            textSize = 13.5f
-            gravity = Gravity.CENTER
-            minHeight = dp(a, 44)
-            setTextColor(mau(a, R.color.chu_lien_ket))
-            setOnClickListener {
-                Rung.nhe(it)
-                buocLe = !buocLe
-                cotPhut.gia = dsPhut()
-                cotPhut.chiSo = chiSoPhut()
-                text = a.getString(if (buocLe) R.string.gio_buoc_5 else R.string.gio_phut_le)
-            }
-        }
-        goc.addView(nutLe, LinearLayout.LayoutParams(-1, -2))
+        // Nut "Phut le" da bo: buoc 1 phut lam no thua. Xem ghi chu o `BUOC`.
 
         goc.addView(TextView(a).apply {
             text = a.getString(R.string.xong)
