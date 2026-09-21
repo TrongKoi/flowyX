@@ -824,4 +824,29 @@
     <string name="kh_chi_can_ten">Chỉ cần tên là lưu được.</string>
     <string name="kh_them_muc">Thêm ưu tiên, lặp lại, nhắc, nơi chốn</string>
     <string name="kh_bot_muc">Thu gọn lại</string>
+
+    <!-- ================================================================
+         PHAN RA TAC VU (AI Task Demystifier)
+         ================================================================ -->
+    <string name="pr_tieu_de">Chia nhỏ việc</string>
+    <string name="pr_dang_chia">Đang chia nhỏ “%s”…</string>
+    <string name="pr_con_luot">Còn %d lượt hôm nay</string>
+    <string name="pr_bat_dau_buoc_1">Bắt đầu bước 1 · %d phút</string>
+    <string name="pr_chi_luu">Chỉ lưu, chưa bắt đầu</string>
+    <string name="pr_xoa_buoc">Xóa bước %d</string>
+    <string name="pr_buoc_tren">Bước %1$d trên %2$d. %3$s. %4$d phút.</string>
+    <string name="pr_mo_ho">Bước này hơi chung. Sửa cho cụ thể hơn nếu muốn.</string>
+    <string name="pr_da_xoa_het">Đã xóa hết các bước. Bạn tự chia cũng được.</string>
+    <string name="pr_khong_noi_duoc">Không nối được</string>
+    <string name="pr_khong_noi_duoc_phu">Thử lại, hoặc tự chia bằng Gỡ rối — bốn câu hỏi, không giới hạn.</string>
+    <string name="pr_thu_lai">Thử lại</string>
+    <string name="pr_tu_chia">Tự chia bằng Gỡ rối</string>
+    <string name="pr_can_them">Cần biết thêm một chút</string>
+
+    <!-- Duong vao -->
+    <string name="pr_nho_chia">Nhờ chia nhỏ việc này</string>
+    <string name="pr_nho_goi_y">Nhờ gợi ý · còn %d lượt</string>
+    <string name="pr_het_luot_td">Hết lượt hôm nay</string>
+    <string name="pr_het_luot">Hết 3 lượt chia nhỏ hôm nay. Đến nửa đêm có lại.\n\nBạn vẫn tự chia nhỏ được bằng Gỡ rối — bốn câu hỏi, không giới hạn.</string>
+    <string name="pr_mo_go_roi">Mở Gỡ rối</string>
 </resources>

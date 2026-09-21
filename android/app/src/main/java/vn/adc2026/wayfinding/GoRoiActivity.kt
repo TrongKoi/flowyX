@@ -321,6 +321,33 @@ class GoRoiActivity : Activity() {
         for (b in buocNhoThem) themO(b, false)
         noi.addView(cotO, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(6) })
 
+        // ----- DUONG VAO PHAN RA, DAT DUNG O DAY -----
+        //
+        // Buoc 3 la cho nguoi dung duoc hoi "buoc nho nhat la gi?" - tuc
+        // la dung khoanh khac ho biet minh ke, da ngoi xuong, va van
+        // khong nghi ra duoc. Do la luc mot goi y co gia tri nhat.
+        //
+        // Dat o buoc 1 thi qua som: nguoi dung chua noi duoc viec gi
+        // dang kho. Dat thanh mot nut rieng tren thanh tieu de thi no
+        // thanh mot thu phai de y truoc khi kip vao luong.
+        //
+        // La dong CHU, khong phai nut chinh: duong tu go van la duong
+        // chinh, va cai nay chi dung khi go khong ra.
+        if (viec.isNotBlank()) {
+            noi.addView(TextView(this).apply {
+                text = getString(R.string.pr_nho_goi_y, PhanRa.conLai(this@GoRoiActivity))
+                textSize = 14f
+                gravity = Gravity.CENTER
+                minHeight = dp(46)
+                typeface = Typeface.DEFAULT_BOLD
+                setTextColor(mau(R.color.chu_lien_ket))
+                setOnClickListener {
+                    Rung.nhe(it)
+                    PhanRaActivity.moHoacBao(this@GoRoiActivity, viec)
+                }
+            }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(4) })
+        }
+
         val nutThemBuoc = TextView(this).apply {
             text = getString(R.string.gr_them_buoc)
             textSize = 14.5f

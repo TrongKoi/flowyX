@@ -520,6 +520,14 @@ class LichActivity : Activity() {
                 ThanhTab.mo(this, FocusActivity::class.java) { it.putExtra(FocusActivity.EXTRA_KE_HOACH, kh.id) }
             }
         }
+        // Them mot DONG vao hop thoai da co san - khong them tab, khong
+        // them nut nao len man hinh. Chi hien khi viec chua xong: chia
+        // nho mot viec da lam xong la mot lua chon vo nghia.
+        if (!xong) {
+            muc += getString(R.string.pr_nho_chia) to {
+                PhanRaActivity.moHoacBao(this, kh.ten, kh.id)
+            }
+        }
         muc += getString(R.string.kh_sua) to { moSua(kh.id) }
         AlertDialog.Builder(this)
             .setTitle("${kh.emoji}  ${kh.ten}")

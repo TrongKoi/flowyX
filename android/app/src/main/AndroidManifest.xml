@@ -204,6 +204,11 @@
             android:name=".GoRoiActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".PhanRaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".VietNhatKyActivity"
             android:exported="false"

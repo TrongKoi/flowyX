@@ -692,4 +692,26 @@
     <string name="kh_chi_can_ten">A name is all you need to save.</string>
     <string name="kh_them_muc">Add priority, repeat, reminders, place</string>
     <string name="kh_bot_muc">Show less</string>
+
+    <!-- AI Task Demystifier -->
+    <string name="pr_tieu_de">Break it down</string>
+    <string name="pr_dang_chia">Breaking down \u201c%s\u201d\u2026</string>
+    <string name="pr_con_luot">%d left today</string>
+    <string name="pr_bat_dau_buoc_1">Start step 1 · %d min</string>
+    <string name="pr_chi_luu">Just save, do not start</string>
+    <string name="pr_xoa_buoc">Delete step %d</string>
+    <string name="pr_buoc_tren">Step %1$d of %2$d. %3$s. %4$d minutes.</string>
+    <string name="pr_mo_ho">This step is a bit general. Make it more specific if you like.</string>
+    <string name="pr_da_xoa_het">All steps deleted. You can split it yourself instead.</string>
+    <string name="pr_khong_noi_duoc">Could not connect</string>
+    <string name="pr_khong_noi_duoc_phu">Try again, or split it yourself with Unstick — four questions, no limit.</string>
+    <string name="pr_thu_lai">Try again</string>
+    <string name="pr_tu_chia">Split it with Unstick</string>
+    <string name="pr_can_them">Need a little more</string>
+
+    <string name="pr_nho_chia">Break this task down</string>
+    <string name="pr_nho_goi_y">Suggest steps · %d left</string>
+    <string name="pr_het_luot_td">No breakdowns left today</string>
+    <string name="pr_het_luot">That is 3 breakdowns for today. They come back at midnight.\n\nYou can still split anything yourself with Unstick — four questions, no limit.</string>
+    <string name="pr_mo_go_roi">Open Unstick</string>
 </resources>
