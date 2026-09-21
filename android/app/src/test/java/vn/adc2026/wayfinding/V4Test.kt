@@ -136,11 +136,47 @@ class LoiNhanNgayTest {
     }
     @Test fun bamMotNgayMoiCauDeuXuatHien() =
         assertEquals(LoiNhanNgay.CAU.size, (0L until LoiNhanNgay.CAU.size).map { LoiNhanNgay.cua(it) }.toSet().size)
+    /**
+     * ================================================================
+     * BAI CANH GAC CAU CHU - doc thang tu strings.xml
+     * ================================================================
+     *
+     * Ban truoc duyet `LoiNhanNgay.CAU` va goi `.lowercase()` tren tung
+     * phan tu, vi luc do `CAU` la `List<String>`. Dot localization
+     * 20-21/09 doi no thanh `List<Int>` (ma so tai nguyen) - dung huong,
+     * nhung bai canh gac mat cho bam: khong con doc duoc cau nao ca.
+     *
+     * Neu chi sua cho no bien dich duoc - vi du bo han bai nay - thi tu
+     * gio ai cung co the them "bạn phải cố lên!" vao strings.xml ma
+     * khong gi chan lai. Dung thu quy tac nay sinh ra de chan.
+     *
+     * Nen bai kiem doc THANG tep strings.xml. Doi lai, no manh hon ban
+     * cu: no soat CA HAI ngon ngu, trong khi ban cu chi soat tieng Viet.
+     */
     @Test fun khongCoCauRaLenh() {
-        for (c in LoiNhanNgay.CAU) {
-            val t = c.lowercase()
-            assertFalse(c, "bạn phải" in t || "bạn nên" in t || "cố lên" in t)
+        val cam = listOf(
+            // tieng Viet
+            "bạn phải", "bạn nên", "cố lên", "đừng lười", "hãy cố",
+            // tieng Anh
+            "you must", "you should", "you need to", "just do it", "cheer up",
+        )
+        var daSoat = 0
+        for (thuMuc in listOf("values", "values-en")) {
+            val tep = java.io.File("src/main/res/$thuMuc/strings.xml")
+            assertTrue("khong thay ${tep.path} - kiem lai thu muc chay test", tep.exists())
+            val xml = tep.readText()
+            for (m in Regex("""<string name="(motd_[^"]+)">(.*?)</string>""",
+                            RegexOption.DOT_MATCHES_ALL).findAll(xml)) {
+                val ten = m.groupValues[1]
+                val cau = m.groupValues[2].lowercase()
+                daSoat++
+                for (xau in cam) {
+                    assertFalse("$thuMuc/$ten chua cau ra lenh: \"$xau\"", xau in cau)
+                }
+            }
         }
+        // Khong tim thay cau nao nghia la mau doc sai, chu khong phai "sach".
+        assertEquals(LoiNhanNgay.CAU.size * 2, daSoat)
     }
 }
 
