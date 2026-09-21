@@ -378,10 +378,40 @@ class KeHoachActivity : Activity() {
             }
         }
 
+    /**
+     * ----- CHIP LUON MOT DONG -----
+     *
+     * Ba chip lap lai chia deu be ngang bang `weight = 1`, nen moi cai
+     * duoc mot phan ba man hinh tru padding. "Không lặp lại" khong vua,
+     * nen no xuong dong thu hai - va o cao co dinh 44dp thi dong thu hai
+     * bi cat, chu tut han xuong duoi duong bo goc. Nhin ra la mot o bi
+     * vo, chu khong phai mot chip.
+     *
+     * Hai lop chong:
+     *
+     *   · `maxLines = 1` - khong bao gio xuong dong nua.
+     *   · Tu thu nho co chu (API 26+) cho toi khi vua, thay vi cat bang
+     *     dau ba cham. Mot chip ghi "Không lặp..." thi nguoi dung phai
+     *     doan not, va doan sai o day nghia la dat nham lich lap.
+     *
+     * Duoi API 26 khong co tu thu nho: luc do `ellipsize` la luoi do
+     * cuoi cung. Hiem - API 26 ra nam 2017.
+     *
+     * Khong don gian hoa bang cach rut ngan chu: "Không lặp lại" la cau
+     * ro nghia nhat, va ban tieng Anh "No repeat" thi vua thoai mai -
+     * sua o day thi sua duoc cho MOI ngon ngu va MOI co chu he thong,
+     * ke ca khi nguoi dung keo co chu len 115%.
+     */
     private fun chip(chu: String, chon: Boolean, co: Float = 14f, cham: Int? = null, khiCham: () -> Unit) =
         TextView(this).apply {
             text = chu; textSize = co; gravity = Gravity.CENTER; includeFontPadding = false
-            setPadding(dp(14), 0, dp(14), 0)
+            maxLines = 1
+            ellipsize = android.text.TextUtils.TruncateAt.END
+            if (android.os.Build.VERSION.SDK_INT >= 26) {
+                setAutoSizeTextTypeUniformWithConfiguration(
+                    10, co.toInt().coerceAtLeast(11), 1, android.util.TypedValue.COMPLEX_UNIT_SP)
+            }
+            setPadding(dp(10), 0, dp(10), 0)
             setTextColor(mau(R.color.chu))
             background = getDrawable(R.drawable.chip)
             isSelected = chon

@@ -105,4 +105,22 @@
          ho mau voi `chu_lien_ket`, va tren nen #121320 dat 7,5:1 (AAA). -->
     <color name="dh_dang_keo">#A99BF0</color>
     <color name="dh_mat_dang_keo">#24263A</color>
+
+    <!-- Xem ghi chu o values/colors.xml. Ban dem cung ho mau nhung sang
+         hon mot bac de dat toi thieu 4,5:1 tren nen #121320. -->
+    <color name="dhm_diu_1">#9AA7B7</color>
+    <color name="dhm_diu_2">#D4A574</color>
+    <color name="dhm_diu_3">#E08B7E</color>
+
+    <color name="dhm_bien_1">#7FA8C0</color>
+    <color name="dhm_bien_2">#5FB8D8</color>
+    <color name="dhm_bien_3">#F07A56</color>
+
+    <color name="dhm_rung_1">#8FB894</color>
+    <color name="dhm_rung_2">#B4D46A</color>
+    <color name="dhm_rung_3">#EE8266</color>
+
+    <color name="dhm_hh_1">#A99BF0</color>
+    <color name="dhm_hh_2">#F0A868</color>
+    <color name="dhm_hh_3">#EE6A5E</color>
 </resources>

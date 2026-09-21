@@ -144,6 +144,17 @@ class AppSettings(context: Context) {
         get() = prefs.getBoolean(KEY_AM_KHAN, false)
         set(v) = prefs.edit().putBoolean(KEY_AM_KHAN, v).apply()
 
+    /**
+     * Bo mau vong dong ho Tap trung. "" = bang mau FlowyX goc.
+     *
+     * Day la MUC DUY NHAT trong app cho doi mau, va co ly do - xem ghi
+     * chu dau `MauDongHo.kt`. Dung mo rong sang cac mau khac: moi mau
+     * con lai trong app deu mang mot nghia co dinh.
+     */
+    var mauDongHo: String
+        get() = prefs.getString(KEY_MAU_DONG_HO, "") ?: ""
+        set(v) = prefs.edit().putString(KEY_MAU_DONG_HO, v).apply()
+
     /** Ngon ngu: "vi" | "en" | "" (theo may). */
     var ngonNgu: String
         get() = prefs.getString(KEY_NGON_NGU, "") ?: ""
@@ -174,6 +185,7 @@ class AppSettings(context: Context) {
         private const val KEY_MUC_RUNG = "muc_rung"
         private const val KEY_NGON_NGU = "ngon_ngu"
         private const val KEY_CHE_DO_TOI = "che_do_toi"
+        private const val KEY_MAU_DONG_HO = "mau_dong_ho"
         private const val KEY_YEN_BAT = "gio_yen_bat"
         private const val KEY_YEN_TU = "gio_yen_tu"
         private const val KEY_YEN_DEN = "gio_yen_den"

@@ -640,4 +640,16 @@
     <string name="sk_chua_co">no figure yet</string>
     <string name="sk_lien_he_thuan">On the days you slept more, you finished more. This is an observation from your own seven days, not advice.</string>
     <string name="sk_lien_he_nghich">Over the last seven days, the days with more sleep had fewer tasks finished. One week says very little - those may simply have been the days you needed rest.</string>
+
+    <!-- Focus clock colour -->
+    <string name="dh_mau">Clock colour</string>
+    <string name="dh_mau_mac_dinh">Default</string>
+    <string name="dh_mau_diu">Muted</string>
+    <string name="dh_mau_bien">Sea</string>
+    <string name="dh_mau_rung">Forest</string>
+    <string name="dh_mau_hoang_hon">Sunset</string>
+    <string name="dh_mau_phu">Changes only the ring on the Focus tab. Every set keeps all three time stages, so the “almost done” signal is never lost.</string>
+
+    <!-- Hau to cho contentDescription cua muc dang duoc chon -->
+    <string name="dang_chon">selected</string>
 </resources>

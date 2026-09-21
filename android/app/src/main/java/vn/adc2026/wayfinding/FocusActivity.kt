@@ -169,10 +169,12 @@ class FocusActivity : TrangCoTab() {
         // Dong ho
         val v = VongTapTrungView(this).apply {
             // Vach khac mau NEN de trong nhu khac vao vanh (xem VongTapTrungView).
+            // Ba mau chang lay tu bo nguoi dung da chon - xem `MauDongHo`.
+            val bo = MauDongHo.dangDung(this@FocusActivity)
             datMau(mau(R.color.the), mau(R.color.dh_mat_dang_keo),
                 mau(R.color.nen), mau(R.color.dh_ranh),
                 mau(R.color.chu), mau(R.color.chu_phu),
-                mau(R.color.dh_con_nhieu), mau(R.color.dh_sap_den), mau(R.color.dh_di_ngay),
+                mau(bo.conNhieu), mau(bo.sapDen), mau(bo.diNgay),
                 mau(R.color.dh_dang_keo))
             datFont(GiaoDien.font(this@FocusActivity, false), GiaoDien.font(this@FocusActivity, true))
             datPhutKeo((tt.dem.tongMs / 60_000L).toInt())
@@ -233,6 +235,7 @@ class FocusActivity : TrangCoTab() {
             }
             cuon.addView(hang)
             them(cuon, 12)
+            veChonMau()
         }
 
         // Nut chinh
@@ -276,6 +279,71 @@ class FocusActivity : TrangCoTab() {
 
         capNhatDongHo()
         if (tt.dem.daHet(bay)) hetGio()
+    }
+
+    /**
+     * ----- CHON MAU VONG DONG HO -----
+     *
+     * Dat o day chu khong phai trong Cai dat, va do la co y: nguoi dung
+     * doi mau vi mau HIEN TAI dang lam ho kho chiu, va luc do ho dang
+     * nhin thang vao cai vong do. Bat ho di tim trong Cai dat roi quay
+     * lai xem co vua mat khong la ba lan chuyen man hinh cho mot viec
+     * dang le thay ngay.
+     *
+     * CHI hien khi chua bat dau. Dang dem nguoc ma con chon mau la mot
+     * viec khong lien quan xen vao dung luc can tap trung - va chinh no
+     * se thanh mot cho de tri hoan.
+     *
+     * Moi chip la ba cham mau cua bo do, khong phai ten bo: "Biển" hay
+     * "Rừng" khong noi duoc mau that trong ra sao, con ba cham thi noi
+     * duoc ngay. Ten van co, nhung o duoi va nho.
+     */
+    private fun veChonMau() {
+        val cuon = HorizontalScrollView(this).apply { isHorizontalScrollBarEnabled = false }
+        val hang = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+        val dangChon = MauDongHo.viTri(this)
+
+        for ((i, bo) in MauDongHo.BO.withIndex()) {
+            val o = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                gravity = Gravity.CENTER
+                minimumHeight = dp(56)
+                setPadding(dp(10), dp(6), dp(10), dp(6))
+                background = getDrawable(R.drawable.chip)
+                isSelected = i == dangChon
+                isClickable = true
+            }
+            val chamHang = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER
+            }
+            for (idMau in listOf(bo.conNhieu, bo.sapDen, bo.diNgay)) {
+                chamHang.addView(View(this).apply {
+                    background = android.graphics.drawable.GradientDrawable().apply {
+                        shape = android.graphics.drawable.GradientDrawable.OVAL
+                        setColor(mau(idMau))
+                    }
+                }, LinearLayout.LayoutParams(dp(12), dp(12)).apply { marginEnd = dp(3) })
+            }
+            o.addView(chamHang, LinearLayout.LayoutParams(-2, -2))
+            o.addView(chuPhu(getString(bo.ten), 11f).apply {
+                includeFontPadding = false
+                setPadding(0, dp(4), 0, 0)
+            }, LinearLayout.LayoutParams(-2, -2))
+            o.contentDescription = getString(bo.ten) +
+                if (i == dangChon) ", " + getString(R.string.dang_chon) else ""
+            o.setOnClickListener {
+                Rung.nhe(it)
+                AppSettings(this).mauDongHo = bo.ma
+                lamMoi()
+            }
+            hang.addView(o, LinearLayout.LayoutParams(-2, -2).apply { marginEnd = dp(8) })
+        }
+        cuon.addView(hang)
+        them(cuon, 10)
+        them(chuPhu(getString(R.string.dh_mau_phu), 11.5f).apply {
+            setLineSpacing(0f, 1.35f)
+        }, 6)
     }
 
     private fun veKetQua() {
