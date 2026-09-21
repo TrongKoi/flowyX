@@ -140,4 +140,32 @@
     <!-- Mat dong ho nhich am hon mot chut khi dang xoay - du de thay doi
          trang thai, khong du de hut mat. -->
     <color name="dh_mat_dang_keo">#FFFBF7</color>
+
+    <!-- ================================================================
+         BON BO MAU DONG HO NGUOI DUNG CHON DUOC (xem MauDongHo.kt)
+         ================================================================
+         Moi bo ba mau theo ba chang: con nhieu / sap den / di ngay.
+         Bo nao cung phai giu duoc thu tu "diu -> manh dan", vi mau chinh
+         la kenh bao thoi gian cho nguoi khong doc kip con so.
+         Tuong phan do tren nen kem #FEF4EF. -->
+
+    <!-- Diu: cho nguoi nhay cam giac quan. Khong mau nao bao hoa cao. -->
+    <color name="dhm_diu_1">#6E7B8B</color>
+    <color name="dhm_diu_2">#B08968</color>
+    <color name="dhm_diu_3">#A65D57</color>
+
+    <!-- Bien: lanh, tram. -->
+    <color name="dhm_bien_1">#2F4858</color>
+    <color name="dhm_bien_2">#2C7DA0</color>
+    <color name="dhm_bien_3">#C9583B</color>
+
+    <!-- Rung: xanh la sang dan sang do dat. -->
+    <color name="dhm_rung_1">#2D4739</color>
+    <color name="dhm_rung_2">#7F9A3C</color>
+    <color name="dhm_rung_3">#B5533C</color>
+
+    <!-- Hoang hon: tim sang cam, ho mau gan logo nhat. -->
+    <color name="dhm_hh_1">#4A3F6B</color>
+    <color name="dhm_hh_2">#C77D4A</color>
+    <color name="dhm_hh_3">#C2453B</color>
 </resources>

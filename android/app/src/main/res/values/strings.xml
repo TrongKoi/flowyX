@@ -763,4 +763,16 @@
     <string name="sk_chua_co">chưa có số</string>
     <string name="sk_lien_he_thuan">Những hôm bạn ngủ nhiều hơn, bạn xong nhiều việc hơn. Đây là quan sát trên bảy ngày của riêng bạn, không phải một lời khuyên.</string>
     <string name="sk_lien_he_nghich">Bảy ngày qua, những hôm ngủ nhiều hơn lại xong ít việc hơn. Một tuần thì chưa nói lên điều gì — có thể đó đúng là những ngày bạn cần nghỉ.</string>
+
+    <!-- Mau dong ho Tap trung -->
+    <string name="dh_mau">Màu đồng hồ</string>
+    <string name="dh_mau_mac_dinh">Mặc định</string>
+    <string name="dh_mau_diu">Dịu</string>
+    <string name="dh_mau_bien">Biển</string>
+    <string name="dh_mau_rung">Rừng</string>
+    <string name="dh_mau_hoang_hon">Hoàng hôn</string>
+    <string name="dh_mau_phu">Chỉ đổi vòng đồng hồ ở tab Tập trung. Bộ nào cũng giữ đủ ba chặng màu, nên tín hiệu “sắp hết giờ” không mất.</string>
+
+    <!-- Hau to cho contentDescription cua muc dang duoc chon -->
+    <string name="dang_chon">đang chọn</string>
 </resources>

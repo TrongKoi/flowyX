@@ -40,12 +40,31 @@
             android:contentDescription="@string/tuan_truoc"
             android:text="‹"
             android:textSize="24sp" />
+        <!-- Cham vao day mo lich thang (muc 5.2).
+
+             Ban truoc la mot TextView `wrap_content` cao khoang 24dp nam
+             giua hai nut cao 48dp, va KHONG co nen bam. Hai hau qua:
+
+               1. Hai dai chet 12dp tren va duoi - cham hoi lech mot chut
+                  la truot, ma nguoi dung khong biet minh vua truot.
+               2. Khong co ripple nen khong co phan hoi nao ca. Cham ba
+                  lan khong thay gi thi ket luan la "bam khong len".
+
+             Gio: cao toi thieu 48dp dung bang hai nut hai ben, co nen bam
+             de thay ripple, va co mot mui ten nho chi xuong de bao rang
+             cho nay mo ra duoc. -->
         <TextView
             android:id="@+id/tv_thang"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawableEnd="@drawable/ic_chevron_xuong"
+            android:drawablePadding="6dp"
+            android:focusable="true"
             android:gravity="center"
+            android:minHeight="48dp"
             android:textColor="@color/chu"
             android:textSize="17sp" />
         <Button
