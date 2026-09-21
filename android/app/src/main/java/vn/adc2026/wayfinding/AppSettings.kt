@@ -96,6 +96,54 @@ class AppSettings(context: Context) {
         get() = prefs.getString(KEY_CHE_DO_TOI, "") ?: ""
         set(v) = prefs.edit().putString(KEY_CHE_DO_TOI, v).apply()
 
+    /**
+     * ====================================================================
+     * NHAC VIEC (v5.1, muc 3.3) - bon truc, xem `NhacCaiDat.kt`
+     * ====================================================================
+     */
+
+    /** Gio yen tinh co bat khong. */
+    var gioYenBat: Boolean
+        get() = prefs.getBoolean(KEY_YEN_BAT, false)
+        set(v) = prefs.edit().putBoolean(KEY_YEN_BAT, v).apply()
+
+    /** Dau gio yen tinh, so phut tu 00:00. Mac dinh 22:00. */
+    var gioYenTu: Int
+        get() = prefs.getInt(KEY_YEN_TU, 22 * 60)
+        set(v) = prefs.edit().putInt(KEY_YEN_TU, v.coerceIn(0, 24 * 60 - 1)).apply()
+
+    /** Cuoi gio yen tinh. Mac dinh 07:00 - khung nay VAT QUA nua dem. */
+    var gioYenDen: Int
+        get() = prefs.getInt(KEY_YEN_DEN, 7 * 60)
+        set(v) = prefs.edit().putInt(KEY_YEN_DEN, v.coerceIn(0, 24 * 60 - 1)).apply()
+
+    /**
+     * Bao truoc bao nhieu phut truoc gio bat dau. Mac dinh 10.
+     *
+     * Khong phai 0: nhac DUNG gio bat dau la nhac muon. Nguoi dung con
+     * phai roi viec dang lam, di toi cho, mo tep ra - va chinh khoang dem
+     * do la thu nguoi mu thoi gian khong uoc duoc.
+     */
+    var nhacTruocPhien: Int
+        get() = prefs.getInt(KEY_TRUOC_PHIEN, 10)
+        set(v) = prefs.edit().putInt(KEY_TRUOC_PHIEN, v.coerceIn(0, 60)).apply()
+
+    /** Toi gio ma chua dong toi thi nhac lai sau bao lau. 0 = khong. */
+    var nhacLai: Int
+        get() = prefs.getInt(KEY_NHAC_LAI, 10)
+        set(v) = prefs.edit().putInt(KEY_NHAC_LAI, v.coerceIn(0, 60)).apply()
+
+    /**
+     * Viec da qua gio duoc dung am bao KHAN.
+     *
+     * Mac dinh TAT. Am khan la mot cong cu manh, va neu no keu cho moi
+     * viec tre thi chi sau vai ngay no thanh tieng on nen - luc do no
+     * khong con danh thuc duoc ai, ke ca khi that su can.
+     */
+    var amKhanChoViecTre: Boolean
+        get() = prefs.getBoolean(KEY_AM_KHAN, false)
+        set(v) = prefs.edit().putBoolean(KEY_AM_KHAN, v).apply()
+
     /** Ngon ngu: "vi" | "en" | "" (theo may). */
     var ngonNgu: String
         get() = prefs.getString(KEY_NGON_NGU, "") ?: ""
@@ -126,6 +174,12 @@ class AppSettings(context: Context) {
         private const val KEY_MUC_RUNG = "muc_rung"
         private const val KEY_NGON_NGU = "ngon_ngu"
         private const val KEY_CHE_DO_TOI = "che_do_toi"
+        private const val KEY_YEN_BAT = "gio_yen_bat"
+        private const val KEY_YEN_TU = "gio_yen_tu"
+        private const val KEY_YEN_DEN = "gio_yen_den"
+        private const val KEY_TRUOC_PHIEN = "nhac_truoc_phien"
+        private const val KEY_NHAC_LAI = "nhac_lai"
+        private const val KEY_AM_KHAN = "am_khan"
         private const val KEY_MUC_NHAC = "muc_nhac"
 
         private const val DEFAULT_URL = "http://192.168.1.100:8765"

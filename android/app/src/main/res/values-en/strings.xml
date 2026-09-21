@@ -167,9 +167,9 @@
     <string name="dv_gio">hours</string>
     <string name="dv_ngay">days</string>
     <string name="kh_hom_nay">Today\'s plans</string>
-    <string name="kh_tt_viec">tasks</string>
-    <string name="kh_tt_tong">total time</string>
-    <string name="kh_tt_con">left</string>
+    <string name="kh_tt_viec">Tasks</string>
+    <string name="kh_tt_tong">Total Time</string>
+    <string name="kh_tt_con">Left</string>
     <string name="kh_tt_mo_ta">Today has %1$d tasks, %2$s in total, %3$d still to do, %4$d done.</string>
     <string name="kh_uu_tien_dem">%1$s · %2$d</string>
     <string name="kh_uu_tien_mo_ta">%1$s priority: %2$d tasks</string>
@@ -614,4 +614,17 @@
     <string name="o_ngay_co_viec">Day %d, has plans</string>
     <string name="o_ngay_trong">Day %d</string>
     <string name="lich_mo_chon_thang">Pick a month and day</string>
+
+    <!-- Reminders (item 3.3) -->
+    <string name="cd_nhom_nhac">Reminders</string>
+    <string name="cd_gio_yen">Quiet hours</string>
+    <string name="cd_gio_yen_phu">During these hours Flowy makes no sound and reads nothing aloud. It still vibrates and still shows on the lock screen.</string>
+    <string name="cd_gio_yen_tu">Starts</string>
+    <string name="cd_gio_yen_den">Ends</string>
+    <string name="cd_nhac_truoc">Remind me before the start time</string>
+    <string name="cd_nhac_dung_gio">On time</string>
+    <string name="cd_nhac_lai">Remind again if untouched</string>
+    <string name="cd_khong_nhac_lai">No repeat</string>
+    <string name="cd_am_khan">Urgent sound for overdue tasks</string>
+    <string name="cd_am_khan_phu">Better left off: a sound that fires for every overdue task becomes background noise, and then it cannot wake anyone when it matters.</string>
 </resources>

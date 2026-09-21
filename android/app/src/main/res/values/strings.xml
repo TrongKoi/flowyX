@@ -262,9 +262,9 @@
     <string name="dv_gio">giờ</string>
     <string name="dv_ngay">ngày</string>
     <string name="kh_hom_nay">Kế hoạch hôm nay</string>
-    <string name="kh_tt_viec">việc</string>
-    <string name="kh_tt_tong">tổng thời gian</string>
-    <string name="kh_tt_con">còn lại</string>
+    <string name="kh_tt_viec">Việc</string>
+    <string name="kh_tt_tong">Tổng thời gian</string>
+    <string name="kh_tt_con">Còn lại</string>
     <string name="kh_tt_mo_ta">Hôm nay có %1$d việc, tổng %2$s, còn %3$d việc, đã xong %4$d.</string>
     <string name="kh_uu_tien_dem">%1$s · %2$d</string>
     <string name="kh_uu_tien_mo_ta">Ưu tiên %1$s: %2$d việc</string>
@@ -737,4 +737,17 @@
     <string name="o_ngay_co_viec">Ngày %d, có kế hoạch</string>
     <string name="o_ngay_trong">Ngày %d</string>
     <string name="lich_mo_chon_thang">Chọn tháng và ngày</string>
+
+    <!-- Nhac viec (muc 3.3) -->
+    <string name="cd_nhom_nhac">Nhắc việc</string>
+    <string name="cd_gio_yen">Giờ yên tĩnh</string>
+    <string name="cd_gio_yen_phu">Trong khung giờ này Flowy không phát tiếng và không đọc lên. Vẫn rung, vẫn hiện trên màn hình khoá.</string>
+    <string name="cd_gio_yen_tu">Bắt đầu</string>
+    <string name="cd_gio_yen_den">Kết thúc</string>
+    <string name="cd_nhac_truoc">Nhắc trước giờ bắt đầu</string>
+    <string name="cd_nhac_dung_gio">Đúng giờ</string>
+    <string name="cd_nhac_lai">Nhắc lại nếu chưa động tới</string>
+    <string name="cd_khong_nhac_lai">Không nhắc lại</string>
+    <string name="cd_am_khan">Âm báo khẩn cho việc đã trễ</string>
+    <string name="cd_am_khan_phu">Để tắt thì hơn: một âm báo kêu cho mọi việc trễ sẽ thành tiếng ồn nền, và khi cần thật thì nó không đánh thức được ai nữa.</string>
 </resources>

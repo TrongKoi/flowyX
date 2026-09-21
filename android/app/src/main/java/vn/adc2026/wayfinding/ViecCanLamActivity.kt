@@ -96,7 +96,11 @@ class ViecCanLamActivity : TrangCoTab() {
     private fun veVienThuoc() {
         val tt = TrangThaiFocus.doc(this)
         val bay = System.currentTimeMillis()
-        if (!tt.dem.dangChay && !tt.dem.dangDung) return
+        if (!tt.dem.dangChay && !tt.dem.dangDung) {
+            vienThuoc = null; tvVienThuoc = null; thanhVienThuoc = null
+            tayVienThuoc.removeCallbacks(nhipVienThuoc)
+            return
+        }
 
         val con = tt.dem.conLaiMs(bay)
         val phut = DemNguoc.soPhutHien(con)
@@ -117,9 +121,10 @@ class ViecCanLamActivity : TrangCoTab() {
             setColorFilter(mau(if (tt.dem.dangDung) R.color.chu_phu else R.color.cam))
             importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         }, LinearLayout.LayoutParams(dp(18), dp(18)).apply { marginEnd = dp(8) })
-        v.addView(chuTo(
+        val tvPhut = chuTo(
             if (phut == 0) getString(R.string.focus_sap_xong) else getString(R.string.gr_phut, phut), 14f)
-            .apply { includeFontPadding = false }, LinearLayout.LayoutParams(-2, -2))
+            .apply { includeFontPadding = false }
+        v.addView(tvPhut, LinearLayout.LayoutParams(-2, -2))
 
         // Thanh tien do: phan CON LAI thu nho dan, cung huong voi vong dong ho.
         val thanh = View(this).apply {
@@ -155,7 +160,69 @@ class ViecCanLamActivity : TrangCoTab() {
             })
         }
         v.contentDescription = getString(R.string.kh_dang_chay_mo_ta, phut, tt.ten ?: "")
+        vienThuoc = v
+        tvVienThuoc = tvPhut
+        thanhVienThuoc = phanCon
         them(v, 12)
+        batNhipVienThuoc()
+    }
+
+    /**
+     * ================================================================
+     * VIEN THUOC PHAI CHAY THAT (muc 4.2)
+     * ================================================================
+     *
+     * `veVienThuoc()` chi duoc goi tu `ve()`, tuc la mot lan moi khi mo
+     * tab. Ngoi lai tab Ke hoach hai muoi phut thi vien thuoc van ghi y
+     * nguyen con so luc vua vao, va thanh tien do dung im.
+     *
+     * Do la loi te nhat mot dong ho co the mac voi nguoi mu thoi gian:
+     * no KHONG sai han - no chi lac hau - nen khong co gi bao cho biet
+     * dung tin no. Nguoi dung lay so do lam moc, roi tre.
+     *
+     * Nhip 10 giay la du: vien thuoc chi hien SO PHUT, nen cap nhat day
+     * hon khong doi gi tren man hinh, ma lai ton pin. Chay khi tab dang
+     * mo va dung ngay khi tab bi che.
+     */
+    private var vienThuoc: View? = null
+    private var tvVienThuoc: TextView? = null
+    private var thanhVienThuoc: FrameLayout? = null
+    private val tayVienThuoc = android.os.Handler(android.os.Looper.getMainLooper())
+
+    private val nhipVienThuoc = object : Runnable {
+        override fun run() {
+            capNhatVienThuoc()
+            tayVienThuoc.postDelayed(this, 10_000)
+        }
+    }
+
+    private fun batNhipVienThuoc() {
+        tayVienThuoc.removeCallbacks(nhipVienThuoc)
+        tayVienThuoc.postDelayed(nhipVienThuoc, 10_000)
+    }
+
+    private fun capNhatVienThuoc() {
+        val v = vienThuoc ?: return
+        val tt = TrangThaiFocus.doc(this)
+        // Phien vua ket thuc hoac bi dung -> ve lai ca trang, vi vien
+        // thuoc phai bien mat va bo cuc ben duoi doi theo.
+        if (!tt.dem.dangChay && !tt.dem.dangDung) { lamMoi(); return }
+        val bay = System.currentTimeMillis()
+        val phut = DemNguoc.soPhutHien(tt.dem.conLaiMs(bay))
+        tvVienThuoc?.text =
+            if (phut == 0) getString(R.string.focus_sap_xong) else getString(R.string.gr_phut, phut)
+        v.contentDescription = getString(R.string.kh_dang_chay_mo_ta, phut, tt.ten ?: "")
+        thanhVienThuoc?.let { khung ->
+            val rong = (khung.width * tt.dem.tyLe(bay)).toInt()
+            khung.getChildAt(1)?.layoutParams =
+                FrameLayout.LayoutParams(rong.coerceAtLeast(dp(6)), dp(7))
+            khung.requestLayout()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        tayVienThuoc.removeCallbacks(nhipVienThuoc)
     }
 
     // ---------------------------------------------------------------
