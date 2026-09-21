@@ -560,4 +560,38 @@
     <string name="bb_khong_ten">Untitled meeting</string>
     <string name="motd_small_beginning">A small beginning is still a beginning.</string>
     <string name="motd_no_perfection">It doesn’t have to be perfect, just get something done.</string>
+
+    <!-- Daily message (motd_*): one per day, never repeats yesterday.
+         Wording rules - no commands, no comparison with other people,
+         no "cheer up". Guarded by LoiNhanNgayTest.khongCoCauRaLenh,
+         which reads this file directly. -->
+    <string name="motd_moving_standing">A five-minute step still gets you further than standing still.</string>
+    <string name="motd_brain_not_lazy">Your brain is not lazy. It just needs an easier way in.</string>
+    <string name="motd_forget_then_return">Forgetting and then coming back is a skill too.</string>
+    <string name="motd_rest_day">A day off breaks nothing.</string>
+    <string name="motd_slower_than_planned">Going slower than planned is allowed.</string>
+    <string name="motd_the_first_minutes">The hardest part is usually the first two minutes.</string>
+    <string name="motd_partial_done">Partly done is still partly done.</string>
+    <string name="motd_app_initiate">You opened the app. That was already a good choice.</string>
+    <string name="motd_focus_then_leave">Focus comes and goes. All you do is invite it back.</string>
+    <string name="motd_partial_progress">No need to do everything. Pick one thing.</string>
+    <string name="motd_rest_is_work">Resting is part of working.</string>
+    <string name="motd_yesterday_is_yesterday">Yesterday was yesterday. Today starts here.</string>
+    <string name="motd_divide_and_conquer">Breaking it up is not doing less. It is doing it at all.</string>
+    <string name="motd_ready_to_begin">Feeling ready is not a requirement for starting.</string>
+    <string name="motd_return_to_work">Every return to an unfinished task counts as a win.</string>
+    <string name="motd_time_blindness">Time is hard to feel passing. The ring remembers for you.</string>
+    <string name="motd_divide_down">Writing it down already makes it half as heavy.</string>
+    <string name="motd_peace_in_chaos">A messy day can still hold one quiet hour.</string>
+    <string name="motd_personal_work_style">You are learning how to work in your own way.</string>
+    <string name="motd_smallest_step">Asking &quot;what is the smallest step?&quot; always has an answer.</string>
+    <string name="motd_stop_to_breathe">Stopping to breathe costs no progress.</string>
+    <string name="motd_do_things_twice">Doing the same thing twice is still progress.</string>
+    <string name="motd_today_easy">It is fine if today only holds the easy things.</string>
+    <string name="motd_rearrange_surroundings">You do not need fixing. Just rearrange what is around you.</string>
+    <string name="motd_change_of_plans">A plan that changed halfway is still a plan.</string>
+    <string name="motd_focus_over_force">Ten real minutes are worth more than an hour of forcing.</string>
+    <string name="motd_task_procrastination">The task you avoid longest is usually smaller than you think.</string>
+    <string name="motd_endured_harder">You have come through many days harder than this one.</string>
+    <string name="motd_persistence_over_speed">Slow and coming back beats fast and giving up.</string>
 </resources>
