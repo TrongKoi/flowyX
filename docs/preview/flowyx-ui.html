@@ -1073,45 +1073,6 @@ const MAN = [
 ];
 
 /* ============================================================
-   DỰNG TRANG
-   ============================================================ */
-const TEN_TS = { moi: 'mới', sua: 'sửa', xong: 'giữ' };
-function ve() {
-  document.getElementById('luoi').innerHTML = MAN.map(([ten, ts, ghi, noi]) => {
-    const h = noi();
-    return `<div class="o"><h2>${ten}<span class="nhan-ts ts-${ts}">${TEN_TS[ts]}</span></h2>
-      <p class="ghi">${ghi}</p>
-      <div class="may${h.includes('class="tab"') || h.includes('class="splash"') || h.includes('class="sheet"') ? '' : ' thap'}">${h}</div></div>`;
-  }).join('');
-  document.querySelectorAll('.tab').forEach(noiTab);
-  document.querySelectorAll('.dh-khung').forEach(noiDongHo);
-  // `ve()` dung lai ca luoi bang innerHTML, nen moi nut van ban deu
-  // moi va da ve tieng Viet. Dich lai neu dang o ban tieng Anh.
-  if (typeof nnHienTai !== 'undefined' && nnHienTai === 'en') {
-    nnHienTai = 'vi';
-    doiNgonNgu('en');
-  }
-}
-ve();
-
-const nutToi = document.getElementById('nut-toi');
-nutToi.onclick = () => {
-  const bat = nutToi.getAttribute('aria-pressed') === 'true';
-  nutToi.setAttribute('aria-pressed', String(!bat));
-  document.documentElement.toggleAttribute('data-toi', !bat);
-};
-document.querySelectorAll('#nhom-font button').forEach(b => b.onclick = () => {
-  document.querySelectorAll('#nhom-font button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-  document.body.dataset.font = b.dataset.f;
-});
-document.querySelectorAll('#nhom-co button').forEach(b => b.onclick = () => {
-  document.querySelectorAll('#nhom-co button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-  document.documentElement.style.setProperty('--k', b.dataset.k);
-  document.querySelectorAll('.tab').forEach(t => t.querySelector('.vien-pill').style.width = '0px');
-  setTimeout(() => document.querySelectorAll('.tab').forEach(noiTab), 30);
-});
-
-/* ============================================================
    CHUYEN NGU VI <-> EN
    ============================================================
 
@@ -1131,6 +1092,26 @@ document.querySelectorAll('#nhom-co button').forEach(b => b.onclick = () => {
 
    Bo duyet BO QUA <script> va <style>: khong thi no se di qua ca
    ma nguon ben duoi.
+
+   ----- VI SAO KHOI NAY PHAI NAM TREN `ve()` -----
+
+   Ban dau khoi nay nam o CUOI tep, sau loi goi `ve()`. Ket qua la ca
+   trang chet: bam nut nao cung khong an, ke ca Che do toi va phong chu.
+
+   Ly do la VUNG CHET TAM THOI (temporal dead zone). `ve()` co dong
+
+       if (typeof nnHienTai !== 'undefined' && ...)
+
+   va `typeof` KHONG bao ve duoc mot bien `let` chua khoi tao - no chi
+   bao ve bien chua khai bao bao gio. Voi `let` dang trong vung chet,
+   `typeof` NEM ReferenceError. Script dung ngay tai do, nen moi thu
+   viet sau `ve();` khong bao gio chay.
+
+   Va loi nay rat de nhin nham: cac man hinh VAN hien ra day du, vi
+   `innerHTML` da duoc gan xong truoc khi dong kia nem. Nhin vao thi
+   trang co ve binh thuong, chi la khong bam duoc gi.
+
+   Dat khoi nay len tren `function ve()` thi khong con vung chet nao.
 */
 const TU_DIEN = {
  "FlowyX — preview giao diện v5": "FlowyX — UI preview v5",
@@ -1491,6 +1472,8 @@ function nutVanBan() {
   return ra;
 }
 
+/* Phai khai bao TRUOC `ve()` chay. Xem ghi chu vung chet tam thoi
+   o dau khoi nay. */
 let nnHienTai = 'vi';
 
 function doiNgonNgu(nn) {
@@ -1515,6 +1498,45 @@ document.querySelectorAll('#nhom-nn button').forEach(b => b.onclick = () => {
   document.querySelectorAll('#nhom-nn button')
     .forEach(x => x.setAttribute('aria-pressed', String(x === b)));
   doiNgonNgu(b.dataset.nn);
+});
+
+/* ============================================================
+   DỰNG TRANG
+   ============================================================ */
+const TEN_TS = { moi: 'mới', sua: 'sửa', xong: 'giữ' };
+function ve() {
+  document.getElementById('luoi').innerHTML = MAN.map(([ten, ts, ghi, noi]) => {
+    const h = noi();
+    return `<div class="o"><h2>${ten}<span class="nhan-ts ts-${ts}">${TEN_TS[ts]}</span></h2>
+      <p class="ghi">${ghi}</p>
+      <div class="may${h.includes('class="tab"') || h.includes('class="splash"') || h.includes('class="sheet"') ? '' : ' thap'}">${h}</div></div>`;
+  }).join('');
+  document.querySelectorAll('.tab').forEach(noiTab);
+  document.querySelectorAll('.dh-khung').forEach(noiDongHo);
+  // `ve()` dung lai ca luoi bang innerHTML, nen moi nut van ban deu
+  // moi va da ve tieng Viet. Dich lai neu dang o ban tieng Anh.
+  if (typeof nnHienTai !== 'undefined' && nnHienTai === 'en') {
+    nnHienTai = 'vi';
+    doiNgonNgu('en');
+  }
+}
+ve();
+
+const nutToi = document.getElementById('nut-toi');
+nutToi.onclick = () => {
+  const bat = nutToi.getAttribute('aria-pressed') === 'true';
+  nutToi.setAttribute('aria-pressed', String(!bat));
+  document.documentElement.toggleAttribute('data-toi', !bat);
+};
+document.querySelectorAll('#nhom-font button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#nhom-font button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  document.body.dataset.font = b.dataset.f;
+});
+document.querySelectorAll('#nhom-co button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#nhom-co button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  document.documentElement.style.setProperty('--k', b.dataset.k);
+  document.querySelectorAll('.tab').forEach(t => t.querySelector('.vien-pill').style.width = '0px');
+  setTimeout(() => document.querySelectorAll('.tab').forEach(noiTab), 30);
 });
 
 </script>
