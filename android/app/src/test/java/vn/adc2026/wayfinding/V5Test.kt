@@ -32,10 +32,22 @@ class DongHoV5Test {
         assertEquals(0, truoc)
     }
 
-    @Test fun phimTatDungNamMocTheoBrief() {
-        assertEquals(listOf(5, 15, 30, 60, 120), DemNguoc.PHIM_TAT)
+    /**
+     * Ba muc chon nhanh, khong phai nam.
+     *
+     * Bai nay truoc day khoa cung nam moc. Da rut con ba (5 / 15 / 30):
+     * 60 va 120 la hai con so lon dung canh ba con so nho, va o mot man
+     * hinh danh cho nguoi dang kho bat dau thi moi lua chon them la mot
+     * lan phai can nhac.
+     *
+     * Phan quan trong hon la khang dinh thu hai: bo bot CHIP khong duoc
+     * lam hep khoang dat duoc. Dong ho van phai keo tay toi 120 phut.
+     */
+    @Test fun phimTatConBaMuc_nhungTranVanLa120() {
+        assertEquals(listOf(5, 15, 30), DemNguoc.PHIM_TAT)
         assertTrue("moi moc phai nam trong khoang dat duoc",
             DemNguoc.PHIM_TAT.all { it in 1..DemNguoc.TOI_DA_PHUT })
+        assertEquals("tran keo tay khong duoc doi", 120, DemNguoc.TOI_DA_PHUT)
     }
 
     @Test fun motTiengHienLa60_khongPhai_60_00() {

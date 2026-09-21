@@ -83,6 +83,25 @@ class CaiDatActivity : Activity() {
      * ve 0.
      */
     private var cuon: ScrollView? = null
+
+    /**
+     * ----- VI SAO LA BIEN TINH, KHONG PHAI BIEN CUA DOI TUONG -----
+     *
+     * Ban truoc luu `scrollY` vao `onSaveInstanceState`. Voi `recreate()`
+     * do ngon ngu thi duoc, nhung voi doi SANG/TOI tren Android 12+ thi
+     * khong: `UiModeManager.setApplicationNightMode()` lam HE THONG dung
+     * lai Activity nhu mot doi cau hinh, va thu tu xay ra la
+     *
+     *     ve()  ->  dat lai scroll (HEN trong onGlobalLayout)
+     *            ->  he thong goi onSaveInstanceState NGAY
+     *            ->  luc do scrollY van con la 0 vi lan dat lai chua chay
+     *
+     * nen cai duoc luu lai la so 0. Man hinh giat ve dau, dung nhu bao cao.
+     *
+     * Bien tinh song qua moi lan dung lai Activity trong cung mot tien
+     * trinh, va khong phu thuoc vao thoi diem nao ca. Mot bo nghe cuon
+     * ghi lien tuc vao day, nen du di duong nao thi so cung dung.
+     */
     private var yCuon = 0
 
 
@@ -97,14 +116,15 @@ class CaiDatActivity : Activity() {
         speaker = Speaker(this) { }.also { it.setRate(s.speechRate) }
         // `recreate()` cho Activity di qua onSaveInstanceState -> onCreate,
         // nen day la cho nhan lai cho cuon cu.
-        yCuon = savedInstanceState?.getInt(KHOA_CUON) ?: 0
+        // Uu tien bien tinh; Bundle chi la luoi do khi tien trinh bi giet.
+        if (yCuonLuu == 0) yCuonLuu = savedInstanceState?.getInt(KHOA_CUON) ?: 0
         ve()
     }
 
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
-        cuon?.let { yCuon = it.scrollY }
-        out.putInt(KHOA_CUON, yCuon)
+        cuon?.let { yCuonLuu = it.scrollY }
+        out.putInt(KHOA_CUON, yCuonLuu)
     }
 
     override fun onDestroy() {
@@ -129,7 +149,7 @@ class CaiDatActivity : Activity() {
 
     private fun ve() {
         // Nho cho cuon TRUOC khi bo cay view cu di.
-        cuon?.let { yCuon = it.scrollY }
+        cuon?.let { yCuonLuu = it.scrollY }
 
         val cot = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -167,6 +187,9 @@ class CaiDatActivity : Activity() {
         val c = ScrollView(this).apply {
             id = R.id.cuon_cai_dat
             setBackgroundColor(mau(R.color.nen)); isFillViewport = true
+            // Ghi lien tuc: du man hinh dung lai bang duong nao thi so
+            // cuoi cung cung da nam san trong `yCuonLuu`.
+            setOnScrollChangeListener { _, _, y, _, _ -> yCuonLuu = y }
         }
         c.addView(cot)
         setContentView(c)
@@ -182,8 +205,8 @@ class CaiDatActivity : Activity() {
      * `scrollTo` bi kep ve 0. `post` khong du o lan ve dau tien.
      */
     private fun traLaiChoCuon(c: ScrollView) {
-        if (yCuon <= 0) return
-        val y = yCuon
+        if (yCuonLuu <= 0) return
+        val y = yCuonLuu
         c.viewTreeObserver.addOnGlobalLayoutListener(
             object : android.view.ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
@@ -481,6 +504,22 @@ class CaiDatActivity : Activity() {
         })
         cot.addView(the0, lp(10))
 
+        // --- mau dong ho Tap trung ---
+        //
+        // Chuyen tu tab Tap trung ve day theo yeu cau. Doi lai mot cho:
+        // day la noi nguoi dung di tim khi muon doi mot thu co dinh, va
+        // tab Tap trung gio khong con nut nao khong lien quan toi viec
+        // dang lam.
+        val theMau = the()
+        theMau.addView(nhanTrong(getString(R.string.dh_mau)))
+        theMau.addView(hangChip(
+            MauDongHo.BO.map { getString(it.ten) }, MauDongHo.viTri(this)) { i ->
+            s.mauDongHo = MauDongHo.BO[i].ma
+            ve()
+        })
+        theMau.addView(veDaiMau(), LinearLayout.LayoutParams(-1, -2))
+        cot.addView(theMau, lp(10))
+
         // --- ngon ngu ---
         val the1 = the()
         the1.addView(nhanTrong(getString(R.string.cd_ngon_ngu)))
@@ -526,21 +565,16 @@ class CaiDatActivity : Activity() {
         })
         cot.addView(the3, lp(10))
 
-        // --- muc rung ---
-        val the4 = the()
-        the4.addView(nhanTrong(getString(R.string.cd_muc_rung)))
-        the4.addView(thanhTruot(
-            soMuc = 4, hienTai = s.mucRung,
-            nhanTrai = getString(R.string.cd_rung_tat), nhanPhai = getString(R.string.cd_rung_manh),
-            moTa = { i -> getString(when (i) {
-                0 -> R.string.cd_rung_0; 1 -> R.string.cd_rung_1
-                2 -> R.string.cd_rung_2; else -> R.string.cd_rung_3 }) }) { i ->
-            s.mucRung = i
-            // Rung THU ngay muc vua chon - mo ta bang chu khong thay duoc
-            // "nhe" khac "vua" bao nhieu.
-            goc?.let { Rung.rung(it, i) }
-        })
-        cot.addView(the4, lp(10))
+        // ----- DA BO: "Muc rung" va "Phan hoi & giong doc" -----
+        //
+        // Hai nhom nay la cong tac TOAN CUC - bat thi bat cho moi thu, tat
+        // thi tat cho moi thu - va nhom "Nhac viec" ben duoi da thay bang
+        // nhung truc tra loi dung cau "KHI NAO thi duoc lam phien".
+        //
+        // De ca hai canh nhau thi nguoi dung gap hai bo dieu khien cho
+        // cung mot thu, khong cai nao noi ro no de len cai nao. Muc rung
+        // van con trong ma (`AppSettings.mucRung`) va van duoc ton trong;
+        // chi la khong con mot thanh truot rieng chiem cho o day.
 
         // --- nhac viec (muc 3.3) ---
         //
@@ -855,6 +889,38 @@ class CaiDatActivity : Activity() {
         contentDescription = if (phu == null) ten else "$ten, $phu"
     }
 
+    /**
+     * Ba cham mau cua bo dang chon.
+     *
+     * Ten bo ("Biển", "Rừng") khong noi duoc mau that trong ra sao, nen
+     * hang chip o tren phai di kem mot dai mau. Ba cham dung theo thu tu
+     * ba chang: con nhieu -> sap den -> di ngay.
+     */
+    private fun veDaiMau(): View {
+        val bo = MauDongHo.dangDung(this)
+        val h = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(dp(16), 0, dp(16), dp(14))
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        }
+        for (idMau in listOf(bo.conNhieu, bo.sapDen, bo.diNgay)) {
+            h.addView(View(this).apply {
+                background = GradientDrawable().apply {
+                    shape = GradientDrawable.OVAL; setColor(mau(idMau))
+                }
+            }, LinearLayout.LayoutParams(dp(16), dp(16)).apply { marginEnd = dp(6) })
+        }
+        h.addView(TextView(this).apply {
+            text = getString(R.string.dh_mau_phu)
+            textSize = 12f
+            setLineSpacing(0f, 1.35f)
+            setTextColor(mau(R.color.chu_phu))
+            setPadding(dp(6), 0, 0, 0)
+        }, LinearLayout.LayoutParams(0, -2, 1f))
+        return h
+    }
+
     /** Hang chip chon-mot: nhin thay het lua chon, khong phai mo menu. */
     private fun hangChip(ten: List<String>, dangChon: Int, doi: (Int) -> Unit): View {
         val hang = LinearLayout(this).apply {
@@ -909,13 +975,30 @@ class CaiDatActivity : Activity() {
             progress = hienTai.coerceIn(0, soMuc - 1)
             setPadding(0, dp(10), 0, dp(6))
         }
+        // ----- VI SAO CHI AP DUNG KHI NHA TAY -----
+        //
+        // Ban truoc goi `doi(p)` o MOI buoc keo. Voi thanh co chu, `doi`
+        // goi `ve()` - dung lai toan bo cay view, ke ca chinh cai SeekBar
+        // ma ngon tay dang giu. View bi go khoi cay thi cu cham dang dien
+        // ra bi huy, nen thanh truot NHAY MOT NAC ROI DUNG: keo khong duoc.
+        //
+        // Gio trong luc keo chi doi DONG CHU mo ta - phan hoi tuc thi ma
+        // khong dung toi cay view. Gia tri that chi duoc ghi khi nha tay.
+        //
+        // `onStopTrackingTouch` khong bat duoc truong hop TalkBack hoac
+        // ban phim doi gia tri (khong co cu cham nao), nen o do van phai
+        // ap dung ngay - xem `tuBanPhim`.
+        var dangKeo = false
         sb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(b: SeekBar?, p: Int, tuNguoiDung: Boolean) {
                 tv.text = moTa(p)
-                if (tuNguoiDung) doi(p)
+                if (tuNguoiDung && !dangKeo) doi(p)      // TalkBack / ban phim
             }
-            override fun onStartTrackingTouch(b: SeekBar?) = Unit
-            override fun onStopTrackingTouch(b: SeekBar?) = Unit
+            override fun onStartTrackingTouch(b: SeekBar?) { dangKeo = true }
+            override fun onStopTrackingTouch(b: SeekBar?) {
+                dangKeo = false
+                doi(b?.progress ?: return)
+            }
         })
         cot.addView(sb, LinearLayout.LayoutParams(-1, -2))
 
@@ -954,5 +1037,8 @@ class CaiDatActivity : Activity() {
 
         /** Khoa mang `scrollY` qua `recreate()` khi doi ngon ngu / phong chu. */
         const val KHOA_CUON = "y_cuon"
+
+        /** Xem ghi chu o `yCuon`. Song qua moi lan dung lai Activity. */
+        var yCuonLuu = 0
     }
 }

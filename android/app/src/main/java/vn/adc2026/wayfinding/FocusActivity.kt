@@ -55,7 +55,6 @@ class FocusActivity : TrangCoTab() {
     private var nutDung: TextView? = null
     /** Trang thai hien tai cua "+1 phút", de khong chay lai hoat hinh moi 500 ms. */
     private var them1DangHien: Boolean? = null
-    private var tvGoiY: TextView? = null
     private val tay = Handler(Looper.getMainLooper())
 
     private val nhip = object : Runnable {
@@ -86,7 +85,7 @@ class FocusActivity : TrangCoTab() {
             if (Build.VERSION.SDK_INT >= 26) tooltipText = getString(R.string.go_roi_nut)
             minWidth = dp(44); minHeight = dp(44)
             setCompoundDrawablesRelativeWithIntrinsicBounds(
-                getDrawable(R.drawable.ic_cau)?.mutate()?.apply {
+                getDrawable(R.drawable.ic_cong)?.mutate()?.apply {
                     setTint(mau(R.color.chu)); setBounds(0, 0, dp(22), dp(22))
                 }, null, null, null)
             setPadding(dp(11), 0, dp(11), 0)
@@ -205,14 +204,12 @@ class FocusActivity : TrangCoTab() {
             LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = dp(12); marginStart = dp(20); marginEnd = dp(20) })
 
-        tvGoiY = chuPhu("", 13f).apply { gravity = Gravity.CENTER }
-        them(tvGoiY!!, 4)
-
         // Chip nhanh - chi khi chua bat dau
         if (tt.dem.chuaBatDau) {
             val cuon = HorizontalScrollView(this).apply { isHorizontalScrollBarEnabled = false }
             val hang = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
             val dangChon = (tt.dem.tongMs / 60_000L).toInt()
+            // CHI ba muc. Xem `DemNguoc.PHIM_TAT`.
             for (p in DemNguoc.PHIM_TAT) {
                 hang.addView(TextView(this).apply {
                     text = Lich.moTaPhut(p, this@FocusActivity)
@@ -235,7 +232,6 @@ class FocusActivity : TrangCoTab() {
             }
             cuon.addView(hang)
             them(cuon, 12)
-            veChonMau()
         }
 
         // Nut chinh
@@ -281,70 +277,11 @@ class FocusActivity : TrangCoTab() {
         if (tt.dem.daHet(bay)) hetGio()
     }
 
-    /**
-     * ----- CHON MAU VONG DONG HO -----
-     *
-     * Dat o day chu khong phai trong Cai dat, va do la co y: nguoi dung
-     * doi mau vi mau HIEN TAI dang lam ho kho chiu, va luc do ho dang
-     * nhin thang vao cai vong do. Bat ho di tim trong Cai dat roi quay
-     * lai xem co vua mat khong la ba lan chuyen man hinh cho mot viec
-     * dang le thay ngay.
-     *
-     * CHI hien khi chua bat dau. Dang dem nguoc ma con chon mau la mot
-     * viec khong lien quan xen vao dung luc can tap trung - va chinh no
-     * se thanh mot cho de tri hoan.
-     *
-     * Moi chip la ba cham mau cua bo do, khong phai ten bo: "Biển" hay
-     * "Rừng" khong noi duoc mau that trong ra sao, con ba cham thi noi
-     * duoc ngay. Ten van co, nhung o duoi va nho.
-     */
-    private fun veChonMau() {
-        val cuon = HorizontalScrollView(this).apply { isHorizontalScrollBarEnabled = false }
-        val hang = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
-        val dangChon = MauDongHo.viTri(this)
-
-        for ((i, bo) in MauDongHo.BO.withIndex()) {
-            val o = LinearLayout(this).apply {
-                orientation = LinearLayout.VERTICAL
-                gravity = Gravity.CENTER
-                minimumHeight = dp(56)
-                setPadding(dp(10), dp(6), dp(10), dp(6))
-                background = getDrawable(R.drawable.chip)
-                isSelected = i == dangChon
-                isClickable = true
-            }
-            val chamHang = LinearLayout(this).apply {
-                orientation = LinearLayout.HORIZONTAL
-                gravity = Gravity.CENTER
-            }
-            for (idMau in listOf(bo.conNhieu, bo.sapDen, bo.diNgay)) {
-                chamHang.addView(View(this).apply {
-                    background = android.graphics.drawable.GradientDrawable().apply {
-                        shape = android.graphics.drawable.GradientDrawable.OVAL
-                        setColor(mau(idMau))
-                    }
-                }, LinearLayout.LayoutParams(dp(12), dp(12)).apply { marginEnd = dp(3) })
-            }
-            o.addView(chamHang, LinearLayout.LayoutParams(-2, -2))
-            o.addView(chuPhu(getString(bo.ten), 11f).apply {
-                includeFontPadding = false
-                setPadding(0, dp(4), 0, 0)
-            }, LinearLayout.LayoutParams(-2, -2))
-            o.contentDescription = getString(bo.ten) +
-                if (i == dangChon) ", " + getString(R.string.dang_chon) else ""
-            o.setOnClickListener {
-                Rung.nhe(it)
-                AppSettings(this).mauDongHo = bo.ma
-                lamMoi()
-            }
-            hang.addView(o, LinearLayout.LayoutParams(-2, -2).apply { marginEnd = dp(8) })
-        }
-        cuon.addView(hang)
-        them(cuon, 10)
-        them(chuPhu(getString(R.string.dh_mau_phu), 11.5f).apply {
-            setLineSpacing(0f, 1.35f)
-        }, 6)
-    }
+    // Hang chon mau da chuyen sang Cai dat -> Giao dien.
+    //
+    // Ly do doi y: tab Tap trung chi nen co nhung thu lien quan toi viec
+    // dang lam. Mot hang chon mau o day la mot cho de tri hoan - dung
+    // thu man hinh nay sinh ra de chong.
 
     private fun veKetQua() {
         val phut = tt.ketQuaPhut ?: return
@@ -455,9 +392,6 @@ class FocusActivity : TrangCoTab() {
             else -> R.string.bat_dau
         })
         hienNutThem1(d.dangChay)
-        tvGoiY?.text = if (d.dangChay) getString(R.string.focus_xong_luc,
-            java.text.SimpleDateFormat("HH:mm", java.util.Locale.US).format(java.util.Date(d.ketThucLuc!!)))
-            else ""
         if (d.daHet(bay)) hetGio()
     }
 

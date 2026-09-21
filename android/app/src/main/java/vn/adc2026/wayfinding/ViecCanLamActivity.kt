@@ -773,6 +773,11 @@ class ViecCanLamActivity : TrangCoTab() {
                 paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
         }, LinearLayout.LayoutParams(0, -2, 1f))
+        // Viec da xong: mo CA THE di, khong chi rieng dong ten. Mot the
+        // sang nguyen voi mot dong chu bi gach doc ra nhu loi hien thi;
+        // ca the mo di thi no lui han ve sau, dung cho cua mot viec khong
+        // con can nghi toi nua.
+        if (xong) t.alpha = 0.6f
         cot.addView(hangTen, LinearLayout.LayoutParams(-1, -2))
         cot.addView(chuPhu("${Lich.gioPhut(kh.batDau)}–${Lich.gioPhut(kh.ketThuc)} · " +
             Lich.moTaPhut(kh.thoiLuong, this) +
