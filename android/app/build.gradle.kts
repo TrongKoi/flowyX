@@ -19,7 +19,7 @@ android {
         // cung gi dac biet - khong ARCore, khong camera.
         minSdk = 24
         targetSdk = 34
-        versionCode = 5
+        versionCode = 6
         versionName = "0.5.1"
 
         // ================================================================

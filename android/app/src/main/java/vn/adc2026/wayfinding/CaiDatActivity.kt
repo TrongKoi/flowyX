@@ -1,5 +1,6 @@
 package vn.adc2026.wayfinding
 
+import android.annotation.TargetApi
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -735,9 +736,15 @@ class CaiDatActivity : Activity() {
         else -> 0
     }
 
-    private fun phienBan(): String = try {
-        packageManager.getPackageInfo(packageName, 0).versionName ?: "5.0"
-    } catch (_: Exception) { "5.0" }
+    @TargetApi(Build.VERSION_CODES.P)
+    private fun phienBan(): String {
+        try {
+            val versionInfo = packageManager.getPackageInfo(packageName, 0)
+            return "${versionInfo.versionName} build ${versionInfo.longVersionCode}"
+        } catch (_: Exception) {
+            return "(unknown)"
+        }
+    }
 
     // ================================================================
     // QUYEN (giu nguyen tu v4)
