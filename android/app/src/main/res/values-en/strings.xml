@@ -529,4 +529,6 @@
     <string name="nh_lap_lai_hang_ngay">Daily</string>
     <string name="nh_lap_lai_hang_tuan">Weekly</string>
     <string name="nh_lap_lai_theo_thu">Custom days</string>
+    <string name="motd_small_beginning">A small beginning is still a beginning.</string>
+    <string name="motd_no_perfection">It doesn’t have to be perfect, just get something done.</string>
 </resources>

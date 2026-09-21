@@ -655,6 +655,37 @@
     <string name="nh_lap_lai_hang_ngay">Hằng ngày</string>
     <string name="nh_lap_lai_hang_tuan">Hằng tuần</string>
     <string name="nh_lap_lai_theo_thu">Theo thứ</string>
+    <string name="motd_small_beginning">Bắt đầu nhỏ vẫn là bắt đầu.</string>
+    <string name="motd_no_perfection">Hôm nay không cần hoàn hảo. Chỉ cần có mặt.</string>
+    <string name="motd_moving_standing">Một bước năm phút vẫn đưa bạn đi xa hơn đứng yên.</string>
+    <string name="motd_brain_not_lazy">Não bạn không lười. Nó chỉ cần một điểm vào dễ hơn.</string>
+    <string name="motd_forget_then_return">Quên mất rồi quay lại cũng là một kỹ năng.</string>
+    <string name="motd_rest_day">Ngày nghỉ không làm đứt gì cả.</string>
+    <string name="motd_slower_than_planned">Bạn được phép làm chậm hơn kế hoạch.</string>
+    <string name="motd_the_first_minutes">Việc khó nhất thường là hai phút đầu.</string>
+    <string name="motd_partial_done">Xong một phần vẫn là xong một phần.</string>
+    <string name="motd_app_initiate">Bạn đã mở app. Đó đã là một lựa chọn tốt.</string>
+    <string name="motd_focus_then_leave">Tập trung đến rồi đi. Bạn chỉ cần mời nó quay lại.</string>
+    <string name="motd_partial_progress">Không cần làm hết. Chọn một việc thôi.</string>
+    <string name="motd_rest_is_work">Nghỉ cũng là một phần của làm việc.</string>
+    <string name="motd_yesterday_is_yesterday">Hôm qua là hôm qua. Hôm nay bắt đầu từ đây.</string>
+    <string name="motd_divide_and_conquer">Chia nhỏ không phải là làm ít. Là làm được.</string>
+    <string name="motd_ready_to_begin">Bạn không cần cảm thấy sẵn sàng mới bắt đầu.</string>
+    <string name="motd_return_to_work">Mỗi lần quay lại việc đang dở là một lần thắng.</string>
+    <string name="motd_time_blindness">Thời gian trôi khó cảm nhận. Vòng đồng hồ sẽ nhớ hộ bạn.</string>
+    <string name="motd_divide_down">Viết ra được là đã nhẹ đi một nửa.</string>
+    <string name="motd_peace_in_chaos">Một ngày rối vẫn có thể có một giờ yên.</string>
+    <string name="motd_personal_work_style">Bạn đang học cách làm việc theo kiểu của mình.</string>
+    <string name="motd_smallest_step">Hỏi \"bước nhỏ nhất là gì?\" luôn có câu trả lời.</string>
+    <string name="motd_stop_to_breathe">Dừng lại để thở không làm mất tiến độ.</string>
+    <string name="motd_do_things_twice">Làm cùng một việc hai lần vẫn là tiến bộ.</string>
+    <string name="motd_today_easy">Không sao nếu hôm nay chỉ làm được việc dễ.</string>
+    <string name="motd_rearrange_surroundings">Bạn không phải sửa mình. Chỉ cần sắp lại xung quanh.</string>
+    <string name="motd_change_of_plans">Một kế hoạch đổi giữa chừng vẫn là một kế hoạch.</string>
+    <string name="motd_focus_over_force">Mười phút tập trung thật quý hơn một giờ ép mình.</string>
+    <string name="motd_task_procrastination">Việc bạn né lâu nhất thường nhỏ hơn bạn nghĩ.</string>
+    <string name="motd_endured_harder">Bạn đã đi qua nhiều ngày khó hơn hôm nay.</string>
+    <string name="motd_persistence_over_speed">Chậm mà quay lại vẫn hơn nhanh mà bỏ cuộc.</string>
 
 
 </resources>

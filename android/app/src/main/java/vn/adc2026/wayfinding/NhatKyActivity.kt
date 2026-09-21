@@ -73,7 +73,7 @@ class NhatKyActivity : TrangCoTab() {
     private fun veLoiNhan() {
         val t = the(nenVang = true, tren = 12)
         t.addView(nhan(getString(R.string.nk_loi_nhan_hom_nay), camMau = false))
-        t.addView(chuTo(LoiNhanNgay.cua(SoLich.homNay()), 16f).apply {
+        t.addView(chuTo(getString(LoiNhanNgay.cua(SoLich.homNay())), 16f).apply {
             setPadding(0, dp(6), 0, 0); setLineSpacing(0f, 1.3f)
         })
     }
