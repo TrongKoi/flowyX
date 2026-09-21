@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.Typeface
 import android.os.Bundle
@@ -112,7 +111,6 @@ class VongTapTrungView @JvmOverloads constructor(
     }
     private val butNhan = Paint(Paint.ANTI_ALIAS_FLAG).apply { textAlign = Paint.Align.CENTER }
     private val oVanh = RectF()
-    private val duong = Path()
 
     private var nhanGiua = "25"
     private var nhanDuoi = "PHÚT"
@@ -398,16 +396,39 @@ class VongTapTrungView @JvmOverloads constructor(
             butTay.style = Paint.Style.STROKE
             butTay.strokeWidth = d * 0.011f
             canvas.drawCircle(tx, ty, rTay, butTay)
-            // mui ten nho chi chieu keo
-            duong.reset()
-            val a = Math.toRadians(gioDau / 60.0 * 360.0)
-            val mui = rTay * 0.45f
-            duong.moveTo(tx - mui * cos(a).toFloat() - mui * sin(a).toFloat(),
-                         ty - mui * sin(a).toFloat() + mui * cos(a).toFloat())
-            duong.lineTo(tx + mui * cos(a).toFloat() - mui * sin(a).toFloat() * 0f,
-                         ty + mui * sin(a).toFloat())
-            butTay.strokeWidth = d * 0.009f
-            canvas.drawPath(duong, butTay)
+            // ----- TAY NAM: HAI VACH NGAN, KHONG PHAI MOT MUI TEN -----
+            //
+            // Ban truoc ve mot "mui ten" bang hai diem, va no sai ba cho:
+            //
+            //   1. `val a = Math.toRadians(gioDau / 60.0 * 360.0)` thieu
+            //      `- 90.0` ma `goc` o tren co. Hai goc lech nhau dung mot
+            //      phan tu vong, nen hinh ve khong lien quan gi toi huong
+            //      cua tay nam.
+            //   2. `- mui * sin(a).toFloat() * 0f` - nhan voi KHONG. Mot
+            //      so hang chet, gan nhu chac chan la ma sot lai.
+            //   3. Hai diem do khong doi xung qua tam, nen ke ca khi goc
+            //      dung thi no van ra mot gach xien lech chu khong phai
+            //      mui ten.
+            //
+            // Thay bang hai vach ngan song song, vuong goc voi chieu keo -
+            // dung kieu tay nam cua mot thanh truot. Ve theo vector ban
+            // kinh va vector tiep tuyen nen DUNG O MOI GOC, khong co cho
+            // nao de lech nua.
+            val bkx = cos(goc).toFloat()          // huong ban kinh
+            val bky = sin(goc).toFloat()
+            val ttx = -sin(goc).toFloat()         // huong tiep tuyen
+            val tty = cos(goc).toFloat()
+            val nua = rTay * 0.40f                // nua chieu dai mot vach
+            val lech = rTay * 0.30f               // khoang cach hai vach
+            butTay.strokeWidth = d * 0.008f
+            butTay.strokeCap = Paint.Cap.ROUND
+            for (k in intArrayOf(-1, 1)) {
+                val ox = tx + ttx * lech * k
+                val oy = ty + tty * lech * k
+                canvas.drawLine(ox - bkx * nua, oy - bky * nua,
+                                ox + bkx * nua, oy + bky * nua, butTay)
+            }
+            butTay.strokeCap = Paint.Cap.BUTT
             butTay.style = Paint.Style.FILL
         }
     }

@@ -223,6 +223,7 @@ class ViecCanLamActivity : TrangCoTab() {
     override fun onPause() {
         super.onPause()
         tayVienThuoc.removeCallbacks(nhipVienThuoc)
+        dungCuon()
     }
 
     // ---------------------------------------------------------------
@@ -477,10 +478,62 @@ class ViecCanLamActivity : TrangCoTab() {
      */
     private var theDangKeo: View? = null
 
+    /**
+     * Bong keo NHAC LEN, khong phai mot ban sao phang.
+     *
+     * `View.DragShadowBuilder` mac dinh chup the o dung kich thuoc va dat
+     * duoi ngon tay - khong co gi noi rang no dang duoc nhac khoi mat
+     * phang. Ket qua la nguoi dung khong chac minh da bat duoc the chua.
+     *
+     * Ban nay phong to 6% va ve mot lop bong do mem ben duoi: the trong
+     * nhu dang lo lung tren danh sach. Cung thu Material goi la
+     * "elevation", chi la o day phai tu ve vi bong keo la mot Canvas
+     * rieng, khong nam trong cay view nen khong co `elevation`.
+     */
+    private class BongNhacLen(v: View, private val doPhong: Float = 1.06f) :
+        View.DragShadowBuilder(v) {
+
+        private val butBong = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG)
+
+        override fun onProvideShadowMetrics(kichThuoc: android.graphics.Point, cham: android.graphics.Point) {
+            val v = view ?: return
+            val r = (v.width * doPhong).toInt()
+            val c = (v.height * doPhong).toInt()
+            kichThuoc.set(r + VIEN * 2, c + VIEN * 2)
+            // Ngon tay o giua the, khong o goc tren-trai.
+            cham.set(kichThuoc.x / 2, kichThuoc.y / 2)
+        }
+
+        override fun onDrawShadow(canvas: android.graphics.Canvas) {
+            val v = view ?: return
+            canvas.save()
+            // Bong do mem: ve trung tam lech xuong mot chut.
+            butBong.color = 0x33000000
+            butBong.maskFilter = android.graphics.BlurMaskFilter(
+                VIEN.toFloat(), android.graphics.BlurMaskFilter.Blur.NORMAL)
+            val w = v.width * doPhong
+            val h = v.height * doPhong
+            canvas.drawRoundRect(
+                VIEN.toFloat(), VIEN.toFloat() + 3f,
+                VIEN + w, VIEN + h + 3f, 20f, 20f, butBong)
+            canvas.restore()
+
+            canvas.save()
+            canvas.translate(VIEN.toFloat(), VIEN.toFloat())
+            canvas.scale(doPhong, doPhong)
+            v.draw(canvas)
+            canvas.restore()
+        }
+
+        private companion object { const val VIEN = 12 }
+    }
+
     private fun batKeoTha(the: View, kh: KeHoach) {
         the.setOnLongClickListener { v ->
-            Rung.nhe(v)
-            val bong = View.DragShadowBuilder(v)
+            // Nhip manh hon `nhe`: day la luc the ROI KHOI cho cua no,
+            // va nguoi dung can biet dieu do da xay ra truoc khi di chuyen.
+            Rung.rung(v, 2)
+            val bong = BongNhacLen(v)
             val du = android.content.ClipData.newPlainText("ke_hoach", kh.id)
             @Suppress("DEPRECATION")
             val ok = if (android.os.Build.VERSION.SDK_INT >= 24)
@@ -502,21 +555,72 @@ class ViecCanLamActivity : TrangCoTab() {
         theDangKeo = null
     }
 
+    /**
+     * ================================================================
+     * HAI LOI THAT, TIM RA KHI CHAY TREN MAY
+     * ================================================================
+     *
+     * ----- 1. CRASH / DO MAN HINH KHI THA -----
+     *
+     * `ACTION_DROP` goi thang `doiUuTien`, ma ham do goi `lamMoi()`, ma
+     * `lamMoi()` goi `noiDung.removeAllViews()`.
+     *
+     * Tuc la: dang O TRONG mot lan dispatch su kien keo cua chinh view
+     * `vung`, ta go bo chinh view do khoi cay. Khung keo-tha sau do con
+     * phai gui tiep `ACTION_DRAG_ENDED` toi cac view da dang ky - gio
+     * chung da mo coi. Ket qua tuy may: hoac nem ngoai le, hoac phien keo
+     * khong bao gio ket thuc va man hinh dung im.
+     *
+     * Chua bang `post`: hoan viec dung lai cay view sang khung hinh sau,
+     * khi lan dispatch nay da xong han.
+     *
+     * ----- 2. KHONG KEO SANG NHOM KHAC DUOC -----
+     *
+     * Trang nay nam trong mot `ScrollView` (`R.id.cuon_trang`), va ba
+     * nhom uu tien xep doc. Voi the tom tat, the bien ban va vien thuoc o
+     * tren, nhom "Thap" gan nhu luon nam duoi mep man hinh.
+     *
+     * Android KHONG tu cuon trong luc keo-tha. Nguoi dung keo the toi sat
+     * mep duoi, va o do khong co gi xay ra ca - vung can tha thi o ngoai
+     * man hinh, con tay thi khong keo xuong duoc nua.
+     *
+     * Nen phai tu cuon: khi ngon tay vao vung 96dp sat mep tren hoac mep
+     * duoi, trang tu truot theo, cang sat mep cang nhanh. Khong co no thi
+     * tinh nang chi dung duoc khi ca ba nhom tinh co cung vua man hinh.
+     */
     private fun batVungTha() {
-        // Luoi do: tha ra NGOAI ca ba vung (len thanh tab, ra le man hinh)
-        // thi khong vung nao nhan duoc su kien, nhung goc man hinh thi luon
-        // nhan `ACTION_DRAG_ENDED`. Thieu no, keo ra ngoai roi tha se de lai
-        // dung cai bong mo ma ta vua di sua.
+        val cuon = findViewById<android.widget.ScrollView>(R.id.cuon_trang)
+
+        // Luoi do o goc man hinh: tha ra NGOAI ca ba vung (len thanh tab,
+        // ra le man hinh) thi khong vung nao nhan duoc su kien, nhung goc
+        // thi luon nhan `ACTION_DRAG_ENDED`.
         window.decorView.setOnDragListener { _, e ->
-            if (e.action == android.view.DragEvent.ACTION_DRAG_ENDED) thoiKeo()
+            when (e.action) {
+                // Vi tri ngon tay chi den o day khi khong vung nao nhan -
+                // tuc la dung luc can cuon nhat.
+                android.view.DragEvent.ACTION_DRAG_LOCATION ->
+                    tuCuon(cuon, e.y - cuonTren(cuon))
+                android.view.DragEvent.ACTION_DRAG_ENDED -> { dungCuon(); thoiKeo() }
+            }
             true
         }
+
         for ((u, vung) in vungUuTien) {
             vung.setOnDragListener { v, e ->
                 when (e.action) {
                     android.view.DragEvent.ACTION_DRAG_ENTERED -> {
                         v.background = getDrawable(R.drawable.nen_vung_tha)
-                        Rung.nhe(v); true
+                        // Mot nac ro rang: the se roi vao day neu tha bay gio.
+                        Rung.rung(v, 1)
+                        true
+                    }
+                    android.view.DragEvent.ACTION_DRAG_LOCATION -> {
+                        // `e.y` o day tinh theo goc cua `vung`, phai doi ve
+                        // toa do man hinh truoc khi so voi mep tren/duoi.
+                        val xy = IntArray(2)
+                        v.getLocationOnScreen(xy)
+                        tuCuon(cuon, e.y + xy[1] - cuonTren(cuon))
+                        true
                     }
                     // EXITED chi la "ngon tay roi khoi vung nay" - keo van
                     // dang tiep dien, nen KHONG duoc tra alpha o day.
@@ -526,14 +630,19 @@ class ViecCanLamActivity : TrangCoTab() {
                     }
                     android.view.DragEvent.ACTION_DRAG_ENDED -> {
                         v.background = null
+                        dungCuon()
                         thoiKeo()
                         true
                     }
                     android.view.DragEvent.ACTION_DROP -> {
                         v.background = null
+                        dungCuon()
                         thoiKeo()
                         val id = e.localState as? String ?: return@setOnDragListener false
-                        doiUuTien(id, u)
+                        // HOAN sang khung hinh sau - xem muc 1 o ghi chu tren.
+                        // Dung lai cay view ngay giua lan dispatch nay la
+                        // dung cai lam app crash / dung im.
+                        v.post { doiUuTien(id, u) }
                         true
                     }
                     android.view.DragEvent.ACTION_DRAG_STARTED -> true
@@ -541,6 +650,54 @@ class ViecCanLamActivity : TrangCoTab() {
                 }
             }
         }
+    }
+
+    // ---------------------------------------------------------------
+    // Tu cuon khi keo toi sat mep
+    // ---------------------------------------------------------------
+
+    private val tayCuon = android.os.Handler(android.os.Looper.getMainLooper())
+    private var vanTocCuon = 0
+
+    /** Toa do Y cua mep tren `ScrollView` tren man hinh. */
+    private fun cuonTren(cuon: android.widget.ScrollView?): Int {
+        val v = cuon ?: return 0
+        val xy = IntArray(2)
+        v.getLocationOnScreen(xy)
+        return xy[1]
+    }
+
+    private val nhipCuon = object : Runnable {
+        override fun run() {
+            if (vanTocCuon == 0) return
+            findViewById<android.widget.ScrollView>(R.id.cuon_trang)?.scrollBy(0, vanTocCuon)
+            tayCuon.postDelayed(this, 16)
+        }
+    }
+
+    /**
+     * @param y toa do ngon tay tinh theo goc tren cua `ScrollView`.
+     *
+     * Toc do tang dan theo do sat mep: vao ria thi bo nhe, sat han thi
+     * nhanh. Mot toc do co dinh se hoac qua cham de toi duoc nhom cuoi,
+     * hoac qua nhanh de dung lai dung cho.
+     */
+    private fun tuCuon(cuon: android.widget.ScrollView?, y: Float) {
+        val v = cuon ?: return
+        val ria = dp(96).toFloat()
+        val cao = v.height.toFloat()
+        vanTocCuon = when {
+            y < ria -> -(((ria - y) / ria) * dp(18)).toInt().coerceAtLeast(1)
+            y > cao - ria -> (((y - (cao - ria)) / ria) * dp(18)).toInt().coerceAtLeast(1)
+            else -> 0
+        }
+        tayCuon.removeCallbacks(nhipCuon)
+        if (vanTocCuon != 0) tayCuon.post(nhipCuon)
+    }
+
+    private fun dungCuon() {
+        vanTocCuon = 0
+        tayCuon.removeCallbacks(nhipCuon)
     }
 
     /**
