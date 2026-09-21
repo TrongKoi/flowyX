@@ -42,7 +42,7 @@ import kotlin.math.min
  * TINH, NHUNG KHONG DUNG YEN: TU THE DOI THUA VA ROI RAC
  * --------------------------------------------------------------------
  *
- * Xem docs/NHAN_VAT_BRIEF.md muc 2.6. Nhan vat TU LAM viec cua no, va
+ * Xem docs/luu-tru/NHAN_VAT_BRIEF.md muc 2.6. Nhan vat TU LAM viec cua no, va
  * doi tu the moi 3-8 phut (8-15 phut khi nguoi dung dang tap trung).
  *
  * Khong phai hoat hinh chay lien tuc: chuyen dong lap lai trong tam

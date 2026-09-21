@@ -101,7 +101,7 @@ class PhoneUpdate:
     # Nguoi dung vua CHAM vao nhan vat dong hanh.
     #
     # Nhan vat khong bao gio chu dong bat chuyen (xem
-    # docs/NHAN_VAT_BRIEF.md muc 2.4). Cu cham nay la loi moi DUY NHAT
+    # docs/luu-tru/NHAN_VAT_BRIEF.md muc 2.4). Cu cham nay la loi moi DUY NHAT
     # de app len tieng.
     cham_nhan_vat: bool = False
 
@@ -157,7 +157,7 @@ class BridgeReply:
 
     # Chi so tu the "dang ban" cua nhan vat. Dien thoai doi hinh khi so
     # nay doi. Doi THUA va roi rac, khong phai hoat hinh chay lien tuc -
-    # xem docs/NHAN_VAT_BRIEF.md muc 2.6.
+    # xem docs/luu-tru/NHAN_VAT_BRIEF.md muc 2.6.
     tu_the: int = 0
 
     # Cau hoi dang cho nguoi dung tra loi. Khac `say` o cho no DOI mot

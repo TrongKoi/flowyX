@@ -69,7 +69,7 @@ object Payload {
      *   nhang" o boi canh nay.
      * @param chamNhanVat nguoi dung vua cham vao nhan vat. Cu cham la
      *   loi moi DUY NHAT de app len tieng voi mot cau hoi - xem
-     *   docs/NHAN_VAT_BRIEF.md muc 2.4.
+     *   docs/luu-tru/NHAN_VAT_BRIEF.md muc 2.4.
      * @param lichSu so thoi luong cua CONG VIEC DANG LAM. Dien thoai so
      *   huu tep luu; laptop chi muon phan can cho lan tinh nay.
      */
@@ -320,7 +320,7 @@ data class Reply(
      * Chi so tu the "dang ban" cua nhan vat.
      *
      * Doi THUA va roi rac, khong phai hoat hinh chay lien tuc - xem
-     * docs/NHAN_VAT_BRIEF.md muc 2.6.
+     * docs/luu-tru/NHAN_VAT_BRIEF.md muc 2.6.
      */
     val tuThe: Int = 0,
 

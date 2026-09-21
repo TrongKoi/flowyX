@@ -90,11 +90,26 @@ python3 run_flowy.py               # in ra địa chỉ cho điện thoại
 
 ## Giới hạn hiện tại — nói thẳng
 
-- **Chưa thử với người dùng ADHD thật.**
-- **Bản iOS chưa được biên dịch** — viết trên máy không có Xcode, đã kiểm cú pháp. Cần một lần build trên Mac trước ngày thi.
-- **Bản Android chưa build lại APK** sau giao diện v2 — đã type-check toàn bộ với Android API 34.
-- Các hằng số (ngưỡng "bị kẹt", mốc nhắc) là giá trị tạm, chưa hiệu chỉnh bằng số đo thực tế.
-- Phần quy tắc cần laptop khi test/demo (xem trên).
+Cập nhật 21/09/2026.
+
+- **Chưa thử với người dùng ADHD thật.** Đây là giới hạn lớn nhất, và
+  không có cách nào vòng qua nó bằng kỹ thuật.
+- **Bản iOS chưa từng chạy trên máy thật.** Đã biên dịch sạch trên CI
+  (Xcode 26, 47 file Swift), nhưng ký và nạp lên iPhone bắt buộc phải có
+  Xcode trên macOS — nhóm hiện không có máy Mac. CI chỉ build cho
+  Simulator.
+- **Bản Android chưa chạy trên máy thật kể từ giao diện v5.** Lần cắm máy
+  gần nhất là Galaxy Tab S7 FE với bản trước v5. APK build được và tải
+  thẳng từ tab Actions.
+- Các hằng số (ngưỡng “bị kẹt”, mốc nhắc) là giá trị tạm, **chưa hiệu
+  chỉnh bằng số đo thực tế**.
+- Luồng hỏi–đáp dẫn dắt vẫn cần laptop trong giai đoạn thử nghiệm. Lịch,
+  lời nhắc, nhật ký, đồng hồ Tập trung thì không.
+- **Phần tài khoản có máy chủ.** Mục “dữ liệu ở lại trên máy” ở trên nói
+  về *lịch, lời nhắc và nhật ký* — ba sổ đó không bao giờ rời điện thoại,
+  và `bridge.py` có một bảng cấm mang chúng lên đường truyền. Tài khoản
+  đăng nhập là đường riêng. Mật khẩu băm bằng PBKDF2-HMAC-SHA256, không
+  bao giờ lưu dạng thường.
 
 > Flowy là công cụ hỗ trợ tự quản lý, **không phải thiết bị y tế**: không chẩn đoán,
 > không theo dõi triệu chứng, không đưa lời khuyên điều trị. Xem `docs/FLOWY_THIET_KE.md` §4.

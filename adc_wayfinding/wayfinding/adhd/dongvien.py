@@ -232,7 +232,7 @@ class SoChuoi:
 # chuyen dong lap lai trong tam nhin ngoai vi la nguon phan tam, ma day
 # la app cho nguoi kho tap trung.
 #
-# Xem docs/NHAN_VAT_BRIEF.md muc 2.4 va 2.6.
+# Xem docs/luu-tru/NHAN_VAT_BRIEF.md muc 2.4 va 2.6.
 
 # Khoang cach doi tu the, giay. Ngau nhien trong khoang chu khong deu:
 # mot nhip deu dan tu no thanh cai dong ho, va nguoi dung se bat dau

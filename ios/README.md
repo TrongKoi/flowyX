@@ -2,20 +2,23 @@
 
 SwiftUI, **iOS 16 trở lên**. Một app chạy cả iPhone (một cột) và iPad (hai cột).
 
-> ⚠️ **Chưa được biên dịch.** Mã được viết trên máy không có Xcode. Đã kiểm
-> cú pháp toàn bộ 22 file và đối chiếu tên giữa các file, nhưng lỗi kiểu chỉ
-> Xcode mới bắt được. **Cần một lần build trên Mac trước ngày thi** — gửi lỗi
-> build vào [`BAO_LOI/`](../BAO_LOI/README.md) nếu có.
-
-> **Trạng thái 17/09/2026:** đã theo giao diện **v4** — năm tab (Kế hoạch, Lịch,
-> Tập trung, Nhật ký, Biên bản), bảng màu FlowyX sáng/tối khớp từng mã với
-> Android, đồng hồ tập trung mặt 60 phút, vuốt để xoá/xong, xuất Word hai bản,
-> nhập biên bản Meety. Chi tiết quyết định: `docs/GIAO_DIEN_V4.md`.
+> ✅ **Đã biên dịch sạch — 21/09/2026.** Toàn bộ 47 file Swift qua được
+> trình biên dịch lần đầu tiên, trên CI (`macos-latest`, Xcode 26). Xem
+> [`.github/workflows/build.yml`](../.github/workflows/build.yml).
 >
-> ⚠️ **Vẫn chưa từng biên dịch.** Mã được viết trên máy không có Xcode. Đã kiểm
-> cấu trúc bằng `python3 ios/tools_kiem_swift.py` (ngoặc cân, ký hiệu tồn tại,
-> `@EnvironmentObject` đều được cấp), nhưng lỗi kiểu chỉ Xcode bắt được. Lần đầu
-> mở trên Mac hãy ghi mọi lỗi build vào `BAO_LOI/`.
+> Hai lỗi thật đã lộ ra và đã sửa trong lần chạy đầu:
+>
+> 1. `FlowyModel.guiLenh` **không hề tồn tại** — bảy chỗ gọi nó, không chỗ
+>    nào định nghĩa. `tools_kiem_swift.py` chỉ đếm ngoặc và đối chiếu tên
+>    *trong từng file*, nên một ký hiệu thiếu hẳn như thế nó không thấy.
+> 2. `ManHinhBienBan` dùng `nhieuDong ? 3... : 1...1` — `PartialRangeFrom`
+>    và `ClosedRange` là hai kiểu khác nhau.
+
+> ⚠️ **Nhưng vẫn chưa từng chạy trên máy thật.** Biên dịch được không có
+> nghĩa là cài được: ký và nạp app lên iPhone bắt buộc phải có Xcode trên
+> macOS. Nhóm hiện không có máy Mac. CI chỉ build cho **Simulator** —
+> không cần chứng chỉ ký, và bắt đủ mọi lỗi kiểu, nhưng không bắt được
+> lỗi lúc ký.
 
 ## Mở và chạy
 

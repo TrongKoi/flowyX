@@ -52,7 +52,7 @@ VA APP VAN KHONG CHU DONG BAT CHUYEN
 
 Day la cho de nham nhat trong ca buoc nay.
 
-docs/NHAN_VAT_BRIEF.md muc 2.4: nhan vat chi tuong tac khi duoc cham.
+docs/luu-tru/NHAN_VAT_BRIEF.md muc 2.4: nhan vat chi tuong tac khi duoc cham.
 Nhung dung luc can hoi nhat - luc nguoi dung dang ket - ho lai it kha
 nang chu dong cham vao nhat.
 

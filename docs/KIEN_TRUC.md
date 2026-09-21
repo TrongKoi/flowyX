@@ -1,219 +1,163 @@
 # Kiến trúc Flowy
 
-Gộp từ hai tài liệu cũ (`PIPELINE.md` — luồng dữ liệu, và `BANDO_MA_NGUON.md`
-— nhiệm vụ từng file), vì cả hai đều trả lời cùng một câu hỏi: *hệ thống
-gồm những gì và chúng nối với nhau ra sao*.
+Hệ thống gồm những gì, file nào làm việc gì, và dữ liệu chảy đi đâu.
+Đọc file này trước khi mở bất cứ file mã nguồn nào.
+
+> **Viết lại 21/09/2026.** Bản trước mô tả *“BoussoleX — hai chế độ, ADHD
+> và khiếm thị, ba nhánh `adhd/` `khiemthi/` `loi_chung/`”*. Điều đó đã
+> không còn đúng từ 15/09, ngày hai sản phẩm tách ra: phần khiếm thị
+> chuyển sang repo [opticguard](https://github.com/TrongKoi/opticguard).
+> Repo này chỉ còn **Flowy**, và chỉ còn **hai** nhánh mã nguồn.
 
 ---
 
-## 1. Hai chế độ, một lõi
+## 1. Một sản phẩm, ba lần hiện thực
 
-BoussoleX phục vụ **hai nhóm người dùng có nhu cầu gần như ngược nhau**:
+Flowy là trợ thủ quản lý thời gian cho người ADHD. Cùng một bộ quy tắc
+được viết ba lần, và **bản Python là bản gốc**:
 
-| | Người ADHD / neurodivergent | Người khiếm thị |
-|---|---|---|
-| Nhìn thấy đường? | Có | Không |
-| Kênh chính | Hình ảnh (timer, lộ trình) | Giọng nói |
-| Cầm máy thế nào | Cầm tay, dùng lúc cần | Đeo cố định trên ngực |
-| Vấn đề cần giải | Mù thời gian, mất mạch, quên mục đích | Không biết mình ở đâu, có gì chắn đường |
+| Nơi | Vai trò |
+|---|---|
+| `adc_wayfinding/` | **Bản gốc.** Quy tắc + test. Sửa quy tắc thì sửa ở đây trước |
+| `android/` | Bản dịch thứ nhất — Kotlin |
+| `ios/` | Bản dịch thứ hai — SwiftUI |
 
-Vì nhu cầu khác nhau như vậy, mã nguồn chia **ba nhánh**, và chiều phụ
-thuộc chỉ đi một chiều:
-
-```
-        adhd/  ─────┐
-                    ├──▶  loi_chung/
-    khiemthi/  ─────┘
-
-    KHÔNG có chiều ngược lại.
-```
-
-`loi_chung/` không bao giờ được `import` từ `adhd/` hay `khiemthi/`. Vi
-phạm điều này sẽ làm hai chế độ dính vào nhau, và sửa một bên sẽ vô tình
-làm hỏng bên kia.
+Viết quy tắc ở ba nơi nghĩa là có ba bản phải giữ khớp nhau bằng tay, và
+chúng **sẽ** lệch. Nên có một bài test riêng canh việc đó:
+`android/app/src/test/.../DoiChieuBanPythonTest.kt` chạy cùng một gói tin
+qua cả hai bản và so kết quả.
 
 ---
 
-## 2. `wayfinding/loi_chung/` — dùng cho cả hai chế độ
+## 2. Cái gì chạy trên máy, cái gì cần laptop
 
-Đây là phần **phải port** sang Kotlin/Swift khi chạy độc lập trên điện
-thoại. Các module này chỉ nhận số và trả số — không import ARCore, ARKit
-hay OpenCV — nhờ vậy cùng một logic chạy được trên cả ba ngôn ngữ và kiểm
-thử được không cần thiết bị.
+Đây là chỗ hay hiểu nhầm nhất.
+
+| Tính năng | Cần laptop? |
+|---|---|
+| Lịch, kế hoạch, lời nhắc, nhật ký, đồng hồ Tập trung, Meety | **Không.** Chạy trọn trên điện thoại |
+| Luồng hỏi–đáp dẫn dắt (ý định thực thi, khôi phục mạch, Gỡ rối) | Có, trong giai đoạn thử nghiệm |
+
+Phần quy tắc chạy trên laptop **chỉ để phát triển**: sửa thuật toán rồi
+chạy lại test trong vài giây, thay vì build lại APK mỗi lần. Bản phát
+hành sẽ port phần này sang Kotlin/Swift.
+
+---
+
+## 3. `wayfinding/adhd/` — quy tắc riêng của Flowy
 
 | File | Nhiệm vụ |
 |---|---|
-| `geometry.py` | Hình học SE(2): phép biến đổi 2D. Nền móng của mọi tính toán vị trí |
-| `localizer.py` | **Lõi an toàn.** Ghép VIO với mốc neo, kiểm tính hợp lý, quyết định độ tin cậy. Mọi nguồn vị trí đều đi qua đây |
-| `routing.py` | Tìm đường trên đồ thị tầng (Dijkstra), có hỗ trợ trọng số cạnh tuỳ chỉnh |
-| `guidance.py` | Sinh câu chỉ dẫn theo hệ quy chiếu gắn thân người ("rẽ phải"), xử lý đi lạc |
-| `floormap.py` | Đọc và kiểm tra file bản đồ tầng |
-| `bridge.py` | Cầu nối điện thoại ↔ laptop qua WiFi. Định nghĩa `PhoneUpdate`, `BridgeReply` |
-| `announce.py` | Chọn câu nào được nói khi nhiều kênh cùng muốn nói. Mỗi kênh có bộ đệm chống lặp **riêng** |
-| `depth.py` | Phân loại ô lưới độ sâu: `TRONG` / `CO_VAT` / `CHUA_BIET` |
-| `objects.py` | Ghép nhãn vật thể với độ sâu, quyết định nói gì |
-| `anchors.py` | Đọc biển báo và số phòng bằng OCR, tính khoảng cách theo mô hình lỗ kim |
-| `signtext.py` | Chuẩn hoá và so khớp chữ trên biển báo (bỏ dấu rồi so khớp mờ) |
-| `floors.py` | Biết đang ở tầng mấy bằng khí áp kế |
-| `power.py` | Điều tiết nhịp xử lý — giảm độ trễ **và** giảm hao pin |
-| `profile.py` | Hồ sơ người dùng và hình học cách đeo máy |
+| `timeblind.py` | **Chống mù thời gian.** Neo mọi câu vào giờ thật trên đồng hồ, tính mốc phải bắt đầu, so ước lượng với thời gian thực tế |
+| `thoiluong.py` | Sổ thời lượng: người này ước bao lâu, thật ra mất bao lâu |
+| `mach.py` | Khôi phục mạch sau khi bị cắt ngang: đang làm gì, còn mấy bước, bước trước mắt |
+| `cauhoi.py` | Ý định thực thi — hỏi đủ *việc gì / khi nào / ở đâu* trước khi bắt đầu |
+| `phien.py` | Một phiên làm việc: các bước, bước đang làm, tạm dừng |
+| `dongvien.py` | Câu phản hồi. **Không bao giờ thể hiện thất vọng** |
+| `nhacviec.py` | Lời nhắc hằng ngày do người dùng tự đặt tên |
+| `nhatky.py` | Nhật ký bằng chữ của người dùng. App không chấm điểm, không diễn giải |
+| `meety.py` | Gọi Meety tóm tắt biên bản, xuất `.md` / `.docx` |
+
+## 4. `wayfinding/loi_chung/` — hạ tầng, không mang quy tắc
+
+| File | Nhiệm vụ |
+|---|---|
+| `bridge.py` | Giao thức điện thoại ↔ laptop. **Bảng ở đầu file quy định dữ liệu nào không bao giờ được rời máy** |
+| `announce.py` | Nhiều nguồn cùng muốn nói thì nói câu nào |
 | `speech.py` | Đầu ra giọng nói và mã rung |
-| `session.py` | Ghi lại buổi đi thử để **phát lại** — công cụ quan trọng nhất khi gỡ lỗi tại chỗ |
-| `health.py` | Theo dõi sức khoẻ hệ thống lúc chạy: pin, tỷ lệ nhận diện sụt |
-| `metrics.py` | Ghi và tính chỉ số nghiệm thu. Chỉ số chưa đo báo "chưa đo", không bao giờ báo đạt |
+| `session.py` | Ghi lại phiên để phát lại khi gỡ lỗi |
+| `health.py` | Pin, độ trễ, tình trạng lúc chạy |
+| `metrics.py` | Chỉ số nghiệm thu. Chỉ số chưa đo thì báo **“chưa đo”**, không bao giờ báo đạt |
 
-**Vì sao `depth`, `objects`, `anchors` nằm ở lõi chung dù thiên về khiếm
-thị:** `bridge.py` là giao thức chung cho cả hai chế độ và cần cấu trúc dữ
-liệu `DepthGrid`, `VatNhinThay`; `localizer.py` cần `AnchorSighting`. Để
-chúng ở nhánh khiếm thị sẽ sinh phụ thuộc ngược.
+## 5. Ranh giới dữ liệu — đọc trước khi thêm trường vào gói tin
 
----
+Bảng ở đầu `bridge.py`:
 
-## 3. `wayfinding/adhd/` — riêng cho người ADHD
-
-| File | Nhiệm vụ |
+| Được mang | **KHÔNG BAO GIỜ** được mang |
 |---|---|
-| `timeblind.py` | **Chống mù thời gian.** Neo lộ trình vào giờ hẹn thật, tính buffer an toàn, báo trước mốc khởi hành. Chứa cả `uoc_phut()` — bộ ước lượng thời gian đi |
-| `mach.py` | Khôi phục mạch sau khi bị phân tâm: dựng lại "đang đi đâu, để làm gì, bước tiếp theo" |
-| `dongvien.py` | Bạn đồng hành — phản hồi tích cực, **không bao giờ thể hiện thất vọng** |
-| `meety.py` | Gọi Meety tóm tắt biên bản cuộc họp, xuất ra tệp `.md`/`.docx` |
-| `places.py` | Đánh dấu địa điểm cá nhân ("bàn của tôi"), có chống nhầm chỗ cũ thành chỗ mới |
+| đang làm việc gì | nhật ký cảm xúc |
+| còn bao nhiêu phút | ghi chú về triệu chứng |
+| lệnh hiển thị | tên các lời nhắc người dùng tự đặt |
+| câu nói, mã rung | sổ thời lượng (lịch sử làm việc) |
+
+Nên `SoNhac` và `SoNhatKy` **không được chạm vào** `Payload` hay
+`BridgeClient`. Đây là thứ rất dễ vô tình phá: thêm một dòng `import` cho
+tiện là đủ. Mã hỏng kiểu đó không làm test nào đổ, không làm app sập — nó
+chỉ lặng lẽ đưa dữ liệu cá nhân lên đường truyền.
 
 ---
 
-## 4. `wayfinding/khiemthi/` — riêng cho người khiếm thị
+## 6. `android/` — bản dịch Kotlin
 
-| File | Nhiệm vụ |
+Năm tab: **Kế hoạch · Lịch · Tập trung · Sức khỏe · Meety**. Mỗi tab là
+một Activity riêng; thanh tab nối ở một chỗ duy nhất (`ThanhTab.kt`) và
+viên thuốc kính trượt qua ranh giới giữa hai Activity.
+
+Không dùng Jetpack Compose — lý do ở `UIUX_QUYET_DINH.md`.
+
+| Nhóm | File tiêu biểu |
 |---|---|
-| `braille.py` | Xác nhận vị trí bằng biển chữ nổi — người dùng sờ và đọc, hệ thống nghe |
-| `backdrop.py` | Bản nền độ sâu: phân biệt vật cố định với vật tạm thời, và dùng làm nguồn vị trí |
-| `corridor.py` | Điểm tụ hành lang (sửa hướng) và luồng quang (bắt lỗi VIO) |
-| `shapes.py` | Phát hiện vật cản bằng hình học |
-| `stabilize.py` | Chống rung: lọc khung mờ, chọn khung nét nhất |
-| `vio.py` | Lớp đo chuyển động, tách giao diện để thay backend |
-| `arcore.py` | Chuyển tư thế ARCore 6 bậc tự do sang gói tin cầu nối |
-| `reader.py` | Kịch bản C — đọc biển, tài liệu, bảng trắng |
-| `desk.py` | Kịch bản B — tìm chỗ ngồi hot-desk |
-| `panel.py` | Kịch bản D — dùng thiết bị màn hình cảm ứng |
-| `audit.py` | Kịch bản F — khảo sát độ tiếp cận cho quản lý toà nhà |
+| Màn hình | `ViecCanLamActivity`, `LichActivity`, `FocusActivity`, `NhatKyActivity`, `MeetyActivity`, `CaiDatActivity` |
+| Sổ trên máy | `SoLich`, `SoNhac`, `SoNhatKy`, `SoThoiLuong`, `SoBienBan`, `SoTienDo` |
+| Tài khoản | `TaiKhoan`, `KhoDuLieu`, `MaHoa`, `DangNhapActivity`, `DangKyActivity` |
+| Giao diện | `GiaoDien` (font + bọc Context), `CheDoToi` (sáng/tối), `NgonNgu` (vi/en) |
+| Vào ra | `Speaker`, `VoiceInput`, `Rung`, `KiemQuyen`, `DocIcs`, `DocxViet` |
 
----
+## 7. `ios/` — bản dịch SwiftUI
 
-## 5. Luồng dữ liệu khi đang chạy
+iOS 16+, chạy cả iPhone (một cột) và iPad (hai cột). Mỗi file Swift có
+bản Kotlin cùng vai trò trong `android/`. Sửa quy tắc hay câu chữ ở một
+bên thì sửa cả bên kia.
 
-```
-  ĐIỆN THOẠI                          LAPTOP (bộ não)
-  ──────────                          ───────────────
-  ARCore → pose         ─┐
-  Depth API → lưới      ─┤
-  ML Kit → vật thể      ─┼─ POST /update ─▶  bridge.parse_update()
-  Khí áp kế → áp suất   ─┤    ~8 lần/giây          │
-  Micro → câu nói       ─┘                         ▼
-                                        localizer  (tôi ở đâu)
-                                              │
-                          ┌───────────────────┼───────────────────┐
-                          ▼                   ▼                   ▼
-                    khiemthi/            loi_chung/            adhd/
-                    depth, backdrop      routing, guidance     timeblind
-                    braille, corridor    floors                mach, preview
-                          │                   │                   │
-                          └───────────────────┼───────────────────┘
-                                              ▼
-                                       announce  (nói câu nào)
-                                              │
-                        ◀── BridgeReply ───────┘
-  Speaker → giọng nói
-  Rung
-```
-
----
-
-## 6. Chương trình chạy — `adc_wayfinding/`
-
-| File | Nhiệm vụ |
-|---|---|
-| `run_bridge.py` | **Đường chạy demo thật.** Điện thoại làm cảm biến, laptop làm bộ não |
-| `run_scan.py` | Quét dựng bản nền độ sâu cho một tầng (làm một lần mỗi tầng) |
-| `run_sim.py` | Chạy thử toàn bộ bằng mô phỏng, không cần camera lẫn điện thoại |
-| `run_live.py` | Chạy với webcam laptop |
-| `run_audit.py`, `run_reader.py`, `run_panel.py` | Kịch bản phụ F, C, D |
-
-## 7. Công cụ — `adc_wayfinding/tools/`
-
-| File | Nhiệm vụ |
-|---|---|
-| `phone_sim.py` | Giả lập điện thoại khi chưa có máy thật |
-| `android_sim.py` | Giả lập sâu hơn: sinh tư thế ARCore 6 bậc tự do |
-| `build_map.py` | Dựng bản đồ tầng từ số đo thực địa |
-| `validate_map.py` | **Kiểm tra bản đồ trước khi demo.** Chạy vào sáng ngày thi |
-| `check_device.py` | Đo năng lực thiết bị: có ARCore không, có Depth API không |
-| `check_mount.py`, `check_profile.py` | Kiểm tra cách đeo máy theo chiều cao |
-| `measure_drift.py` | Đo tỷ lệ trôi thật của VIO |
-| `calibrate.py` | Hiệu chỉnh camera — **tuỳ chọn**, hệ thống chạy ngay không cần |
-| `replay.py` | Phát lại một buổi đi thử đã ghi |
-| `eval_report.py` | Sinh bảng nghiệm thu từ các lần chạy đã ghi |
-
----
-
-## 8. Kiểm thử — chia đúng theo ba nhánh
-
-```
-tests/
-  loi_chung/    định vị, tìm đường, cầu nối, pin, tầng, thông báo
-  adhd/         chống mù thời gian, mạch, đồng hành, Meety
-  khiemthi/     độ sâu, bản nền, chữ nổi, điểm tụ, hình dạng, OCR
-```
-
-Chạy: `cd adc_wayfinding && python3 -m pytest tests/ -q`
-
-Phải đứng đúng trong `adc_wayfinding/` — một test dùng đường dẫn tương đối.
-
----
-
-## 9. `meety/` — dự án con, chép hẳn vào repo
+## 8. `meety/` — dự án con, chép hẳn vào repo
 
 Hệ tóm tắt biên bản cuộc họp, gọi qua tiến trình con từ
 `wayfinding/adhd/meety.py`.
 
 Đã **cắt bỏ** `frontend/`, `server/`, `run_server.py` của Meety: chúng
-dùng để hiện biên bản trên web, mà BoussoleX **không hiện UI biên bản** —
-Meety xuất thẳng ra tệp `.md`/`.docx` cho người dùng đọc.
+dùng để hiện biên bản trên web, mà Flowy không hiện UI biên bản — Meety
+xuất thẳng ra `.md` / `.docx`.
 
-Chạy thử độc lập:
+> Vì đã cắt, `meety/tests/test_api_*.py`, `test_server_api.py`,
+> `test_store_unit.py`, `test_jobs_unit.py`, `test_security_unit.py` và
+> `tests/unit/test_frontend_contract.py` là **test mồ côi** — chúng kiểm
+> phần mã không còn ở đây. Chạy sẽ đỏ. Đó là chuyện đã biết, không phải
+> lỗi mới.
+
+Chạy phần còn dùng được:
 
 ```bash
 cd meety
-python3 main.py --input sample_transcript.json --skip-stt \
-                --date 2026-07-22 --mock --format json,md --output /tmp/ra
+python -m pytest tests/unit tests/integration -q
 ```
 
 ---
 
-## 10. `frontend/` — giao diện Android, module Gradle riêng
+## 9. Kiểm thử
 
-Tách khỏi `android/app` để phần hiển thị không lẫn với phần cảm biến. Xem
-`docs/UIUX_QUYET_DINH.md` để biết vì sao chọn View thuần thay vì Compose,
-và cách chuyển giữa hai chế độ.
+```bash
+cd adc_wayfinding && python -m pytest tests -q          # 442 test, lõi quy tắc
+cd android && ./gradlew :app:testDebugUnitTest          # 162 test Kotlin, cần JDK 17
+cd meety && python -m pytest tests/unit -q              # Meety
+```
+
+`adc_wayfinding` phải đứng đúng trong thư mục đó — một test dùng đường
+dẫn tương đối. Android cần **JDK 17**: AGP 8.5.2 từ chối JDK 25 với một
+câu báo lỗi khó hiểu (`What went wrong: 25.0.2`).
+
+Cả ba chạy tự động trên CI mỗi lần đẩy code — xem
+[`.github/workflows/build.yml`](../.github/workflows/build.yml). Job
+Android còn **xuất APK tải về được** từ tab Actions.
 
 ---
+
+## 10. `phan_khiem_thi/` — bản sao đã ngừng bảo trì
+
+Không nằm trong đường chạy của Flowy. `adc_wayfinding/` không import gì từ
+đây. Bản đang được bảo trì nằm ở repo **opticguard**; sửa ở đây sẽ không
+đi đâu cả.
 
 ## 11. `thu_nghiem/` — code đã cất
 
-**Không nằm trong đường chạy của app.** Không có gì trong
-`adc_wayfinding/` import từ đây, và `pytest` không quét thư mục này.
-
-| Thư mục | Nội dung | Vì sao cất |
-|---|---|---|
-| `xem_truoc_lo_trinh/` | Đọc lộ trình chia theo khối | Là cách trình bày tốt hơn, không phải năng lực mới — chưa đủ mạnh cho bản thi |
-
-Mỗi thư mục có `README.md` riêng ghi cách lấy lại.
-
----
-
-## 12. Hằng số còn để tạm — cần đo thực địa
-
-| Hằng số | File | Cần gì để đặt đúng |
-|---|---|---|
-| `BAN_KINH_HOP_LY_M` | `khiemthi/braille.py` | Đo độ trôi VIO thật trên quãng 50 m |
-| `text_h` từng biển | `config/map_floor3.json` | Đo chiều cao chữ thật tại RMIT |
-| Bản đồ tầng | `config/map_floor3.json` | Đang là bản mẫu, **chưa đo thật** |
+Không nằm trong đường chạy của app, `pytest` không quét. Mỗi thư mục con
+có `README.md` riêng ghi cách lấy lại.

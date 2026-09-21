@@ -27,7 +27,7 @@ Bon viec, theo dung thu tu uu tien khi nhieu viec cung muon len tieng:
 NHAN VAT KHONG BAO GIO CHU DONG BAT CHUYEN
 --------------------------------------------------------------------
 
-Xem docs/NHAN_VAT_BRIEF.md muc 2.4. Cu cham la loi moi DUY NHAT de app
+Xem docs/luu-tru/NHAN_VAT_BRIEF.md muc 2.4. Cu cham la loi moi DUY NHAT de app
 len tieng voi mot cau hoi.
 
 Phan biet hai thu de lan:

@@ -20,13 +20,21 @@ App làm đúng ba việc:
 
 ## Trạng thái
 
+Cập nhật 21/09/2026.
+
 | | |
 |---|---|
-| Giao diện v2 (sáng/tối, tablet 2 cột, Lịch) | ✅ viết xong 16/09 — xem `docs/GIAO_DIEN_V2.md` |
-| Type-check toàn bộ Kotlin với Android API 34 | ✅ sạch |
-| Unit test Kotlin | Đã thêm `DocGioTest`, `LichTest` — **chạy lại `testDebugUnitTest`** |
-| Build APK sau giao diện v2 | ❌ **chưa** — cần một lần build trên máy có Android SDK |
-| Chạy trên máy thật | Galaxy Tab S7 FE (bản trước v2). Lỗi: [`BAO_LOI/`](../BAO_LOI/README.md) |
+| Giao diện v5 (năm tab, bảng màu đêm viết lại) | ✅ xem [`docs/GIAO_DIEN_V5.md`](../docs/GIAO_DIEN_V5.md) |
+| Biên dịch Kotlin, Android API 34 | ✅ sạch |
+| Test đơn vị Kotlin | ✅ **162 bài qua** |
+| Build APK | ✅ CI xuất APK mỗi lần đẩy code — tải từ tab **Actions** |
+| Sáng / Tối / Theo máy | ✅ `CheDoToi.kt` |
+| Tiếng Việt / English | ✅ cả hai |
+| Chạy trên máy thật | Galaxy Tab S7 FE (bản trước v5). Lỗi: [`BAO_LOI/`](../BAO_LOI/README.md) |
+
+> **Cách nhanh nhất để lấy bản mới lên máy thật:** vào tab **Actions** trên
+> GitHub, mở lần chạy mới nhất, tải artifact `flowyx-debug-apk`. Không cần
+> cài Android Studio, không cần JDK, không cần ai build hộ.
 
 ## Chạy thử
 

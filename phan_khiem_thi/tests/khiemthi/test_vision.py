@@ -5,7 +5,7 @@ Cac test cua lop ma ArUco da bi go cung voi chinh lop do: khong con dan
 ma len tuong nen lop nhan dien ma khong con duong chay nao. Giu lai test
 cho code da xoa chi lam bo test phinh ra ma khong bao ve gi.
 
-Lich su day du xem docs/THAYDOI_2026-09-12.md.
+Lich su day du xem docs/luu-tru/THAYDOI_2026-09-12.md.
 """
 
 from __future__ import annotations

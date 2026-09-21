@@ -1,7 +1,7 @@
 # Nhật ký code Flowy
 
 Ghi lại **đã viết gì, xoá gì, và vì sao** trong đợt làm lại sau khi bỏ
-điều hướng. Thiết kế nằm ở [`FLOWY_THIET_KE.md`](./FLOWY_THIET_KE.md);
+điều hướng. Thiết kế nằm ở [`FLOWY_THIET_KE.md`](../FLOWY_THIET_KE.md);
 file này là phần thực thi.
 
 > **Đợt 1 — 15/09/2026.** Test: 540 → **230**. Giảm là đúng: phần lớn
