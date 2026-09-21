@@ -63,6 +63,8 @@ class TrongCuonView @JvmOverloads constructor(
 
     private val but = Paint(Paint.ANTI_ALIAS_FLAG).apply { textAlign = Paint.Align.CENTER }
     private val truot = Scroller(context)
+    /** Tam nem toi da tinh bang pixel - du xa de khong bao gio cham tran. */
+    private val TAM_NEM = 100_000
     private var doDoi = 0f                       // lech so voi vi tri chuan, don vi px
     private var yTruoc = 0f
     private var dangKeo = false
@@ -141,10 +143,7 @@ class TrongCuonView @JvmOverloads constructor(
                 } else {
                     vt?.computeCurrentVelocity(1000, vToiDa)
                     val v = vt?.yVelocity ?: 0f
-                    // Quan tinh: van toc cao thi troi them vai dong roi bam nam cham.
-                    val them = (-v / caoDong / 4f).roundToInt().coerceIn(-12, 12)
-                    if (them != 0) doi(them)
-                    bamNamCham()
+                    nem(v)
                 }
                 vt?.recycle(); vt = null
                 dangKeo = false
@@ -169,9 +168,75 @@ class TrongCuonView @JvmOverloads constructor(
         chiSo = i
     }
 
-    private fun bamNamCham() {
-        doDoi = 0f
+    /**
+     * ================================================================
+     * QUAN TINH THAT, KHONG PHAI MOT CU NHAY (muc 5.3)
+     * ================================================================
+     *
+     * Ban truoc tinh van toc roi NHAY thang `them` dong mot cai, sau do
+     * bam nam cham ngay:
+     *
+     *     val them = (-v / caoDong / 4f).roundToInt()
+     *     if (them != 0) doi(them)
+     *     bamNamCham()
+     *
+     * Ket qua la trong khong bao gio QUAY. Ngon tay roi ra, con so nhay
+     * sang mot gia tri khac roi dung phat - khong co giam toc, khong co
+     * gi noi cho biet no da di qua bao nhieu dong. Cam giac "khung co
+     * hoc" nam o day: mat nguoi doi mot vat dang chuyen dong thi cham
+     * dan, va khi no khong cham dan thi nao doc ra la "hong" chu khong
+     * phai "nhanh".
+     *
+     * Gio dung `Scroller` - dung bo giam toc cua he thong, cung duong
+     * cong ma moi danh sach Android dung. `computeScroll()` duoc goi moi
+     * khung hinh cho toi khi dung han, va MOI DONG DI QUA deu co mot
+     * nhip rung: tai nghe duoc trong dang cham lai.
+     *
+     * `Scroller` da nam san trong tep nay tu dau, chi la chua ai goi toi.
+     */
+    private fun nem(vanToc: Float) {
+        // Duoi nguong nay thi coi nhu tha tay, khong phai nem.
+        if (abs(vanToc) < caoDong * 1.2f) { bamNamCham(); return }
+        yTruot = 0
+        truot.fling(
+            0, 0, 0, vanToc.roundToInt(),
+            0, 0, -TAM_NEM, TAM_NEM)
+        postInvalidateOnAnimation()
+    }
+
+    /** Vi tri cuon o khung hinh truoc, de tinh phan da di duoc. */
+    private var yTruot = 0
+
+    override fun computeScroll() {
+        if (!truot.computeScrollOffset()) {
+            if (doDoi != 0f) bamNamCham()
+            return
+        }
+        val y = truot.currY
+        doDoi += (y - yTruot).toFloat()
+        yTruot = y
+        chuanHoa()
         invalidate()
+        postInvalidateOnAnimation()
+    }
+
+    /**
+     * Ve dong dang chon.
+     *
+     * Goi khi nem da dung han. Truoc day ham nay dat thang `doDoi = 0`,
+     * nghia la dong dang do do bi giat ve dung cho. Gio chay not doan
+     * ngan con lai trong 140 ms - trong "do" vao dung nac thay vi bi
+     * giat vao.
+     */
+    private fun bamNamCham() {
+        if (doDoi == 0f) { invalidate(); return }
+        val tu = doDoi
+        android.animation.ValueAnimator.ofFloat(tu, 0f).apply {
+            duration = 140
+            interpolator = android.view.animation.DecelerateInterpolator(1.6f)
+            addUpdateListener { doDoi = it.animatedValue as Float; invalidate() }
+            start()
+        }
     }
 
     // --- Tro nang ---

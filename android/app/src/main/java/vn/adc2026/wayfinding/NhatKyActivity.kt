@@ -51,6 +51,95 @@ class NhatKyActivity : TrangCoTab() {
 
     override fun tab() = ThanhTab.NHAT_KY
 
+    /**
+     * ================================================================
+     * BANG SUC KHOE (muc 7.2)
+     * ================================================================
+     *
+     * Chi hien khi nguoi dung DA dong y ket noi. Chua ket noi thi mot
+     * the moi gon, dan sang man hinh dong y - khong ep, va khong hien so
+     * gia de "cho thay se dep the nao".
+     *
+     * Ba con so, va mot cau nhan xet CHI xuat hien khi du lieu that su
+     * du - xem `SucKhoeBang`.
+     */
+    private fun veBangSucKhoe() {
+        if (!SucKhoe.coNguon(this)) return          // may khong co nguon nao
+
+        if (!SucKhoe.dangBat(this)) {
+            val t = the()
+            t.addView(nhan(getString(R.string.sk_bang_tieu_de)))
+            t.addView(chuPhu(getString(R.string.sk_bang_moi), 13f).apply {
+                setPadding(0, dp(4), 0, dp(10)); setLineSpacing(0f, 1.4f)
+            })
+            t.addView(nutChuSucKhoe(getString(R.string.sk_bang_ket_noi)) {
+                startActivity(Intent(this, SucKhoeActivity::class.java))
+            })
+            them(t, 12)
+            return
+        }
+
+        val ds = SucKhoeBang.ghep(SucKhoe.doc(this)) { n -> soTienDo.soViec(n) }
+        if (ds.isEmpty()) return
+
+        val t = the()
+        t.addView(nhan(getString(R.string.sk_bang_tieu_de)))
+
+        val hang = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(0, dp(10), 0, 0)
+        }
+        fun oSo(nhanChu: String, gt: String?, donVi: String) {
+            val cot = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                gravity = Gravity.CENTER_HORIZONTAL
+            }
+            cot.addView(chuTo(gt ?: "—", 20f).apply { includeFontPadding = false })
+            cot.addView(chuPhu(if (gt == null) "" else donVi, 11f).apply {
+                includeFontPadding = false
+            })
+            cot.addView(chuPhu(nhanChu, 11.5f).apply {
+                setPadding(0, dp(3), 0, 0); gravity = Gravity.CENTER
+            })
+            // O khong co so VAN chiem cho: bang giu nguyen hinh dang du
+            // hom nay thieu mot chi so - nguyen tac "vi tri co dinh".
+            cot.contentDescription = nhanChu + " " + (gt ?: getString(R.string.sk_chua_co))
+            hang.addView(cot, LinearLayout.LayoutParams(0, -2, 1f))
+        }
+        oSo(getString(R.string.sk_o_ngu),
+            SucKhoeBang.trungBinh(ds.map { it.nguPhut })?.let { Lich.moTaPhut(it, this) }, "")
+        oSo(getString(R.string.sk_o_buoc),
+            SucKhoeBang.trungBinh(ds.map { it.buocChan })?.toString(),
+            getString(R.string.sk_don_vi_buoc))
+        oSo(getString(R.string.sk_o_nhip_tim),
+            SucKhoeBang.trungBinh(ds.map { it.nhipTimNghi })?.toString(),
+            getString(R.string.sk_don_vi_nhip))
+        t.addView(hang, LinearLayout.LayoutParams(-1, -2))
+
+        val cau = when (SucKhoeBang.lienHeNguVaViec(ds)) {
+            SucKhoeBang.LienHe.NGU_NHIEU_XONG_NHIEU -> R.string.sk_lien_he_thuan
+            SucKhoeBang.LienHe.NGU_NHIEU_XONG_IT_HON -> R.string.sk_lien_he_nghich
+            // Chua du du lieu -> KHONG hien cau nao. Mot cau nhan xet sai
+            // ve chinh minh te hon la khong co cau nao, va nguoi dung doc
+            // man hinh nay vao luc de ton thuong.
+            SucKhoeBang.LienHe.KHONG_RO -> null
+        }
+        cau?.let {
+            t.addView(chuPhu(getString(it), 13f).apply {
+                setPadding(0, dp(12), 0, 0); setLineSpacing(0f, 1.4f)
+            })
+        }
+        them(t, 12)
+    }
+
+    private fun nutChuSucKhoe(chu: String, khi: () -> Unit) = TextView(this).apply {
+        text = chu; textSize = 14.5f
+        typeface = Typeface.DEFAULT_BOLD
+        minHeight = dp(44); includeFontPadding = false
+        setTextColor(mau(R.color.chu_lien_ket))
+        setOnClickListener { Rung.nhe(it); khi() }
+    }
+
     override fun ve() {
         soNhatKy = SoNhatKy.doc(this)
         soTienDo = SoTienDo.doc(this)
@@ -59,6 +148,7 @@ class NhatKyActivity : TrangCoTab() {
         veLoiNhan()
         veTomTat()
         veTuan()
+        veBangSucKhoe()
 
         if (!dangChon) {
             them(nutChinh(getString(R.string.nk_viet_moi)) {

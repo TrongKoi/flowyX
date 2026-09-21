@@ -64,11 +64,35 @@ class VongTapTrungView @JvmOverloads constructor(
     /** Cho phep keo dat gio. Dang chay thi tat, de cham nham khong doi gio. */
     var choKeo: Boolean = true
 
+    /**
+     * ----- KEO NGAY TRONG LUC DANG CHAY (muc 6.2) -----
+     *
+     * Dat gio xong roi moi nhan ra "minh can them muoi phut nua" la
+     * chuyen thuong xuyen. Truoc day muon doi thi phai dung phien lai -
+     * ma dung phien la mat luon cai da vao duoc.
+     *
+     * Nen luc dang chay VAN keo duoc, nhung sieu chat hon mot bac:
+     *
+     *   · Phai cham dung vao VANH, khong phai giua mat. Cham giua mat
+     *     luc dang chay la cham nham (cat tui, dat may xuong), va no
+     *     khong duoc doi gio.
+     *   · Moi phut keo qua co mot nhip rung rieng - `khiKeoQuaPhut`.
+     *     Dem bang ngon tay, khong can nhin so.
+     *   · Chi keo DAI RA duoc, khong rut ngan. Rut ngan trong luc dang
+     *     chay la mot duong ra khoi phien ma nguoi dung khong co y
+     *     chon; muon dung thi da co nut Dung lai.
+     */
+    var choKeoKhiChay: Boolean = true
+
+    /** Goi moi khi keo qua mot phut trong luc dang chay. */
+    var khiKeoQuaPhut: (() -> Unit)? = null
+
     private var conLaiPhut: Float = 25f
     private var dangChay: Boolean = false
 
     // Mau - Activity bom vao tu res/values(-night)/colors.xml.
     private var mauMat = Color.WHITE
+    private var mauMatKhiKeo = Color.WHITE
     private var mauVachKhac = Color.WHITE
     private var mauRanh = Color.LTGRAY
     private var mauChu = Color.DKGRAY
@@ -76,6 +100,7 @@ class VongTapTrungView @JvmOverloads constructor(
     private var mauConNhieu = Color.parseColor("#4A4470")
     private var mauSapDen = Color.parseColor("#E8A200")
     private var mauDiNgay = Color.parseColor("#F0663A")
+    private var mauDangKeo = Color.parseColor("#5B50B8")
 
     private val butMat = Paint(Paint.ANTI_ALIAS_FLAG)
     private val butVanh = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE }
@@ -96,17 +121,53 @@ class VongTapTrungView @JvmOverloads constructor(
     private var gocTruoc = 0.0
     private var phutKeo = 25.0
     private var mocTruoc = 5
+    private var dangKeo = false
+    private var phutKeoTruoc = 25
+
+    /**
+     * ----- NHIP THO (muc 6.1) -----
+     *
+     * Mot vong sang rat mo quanh vanh, phinh ra va thu vao theo chu ky
+     * BON GIAY - dung nhip mot hoi tho binh thuong cua nguoi lon.
+     *
+     * Vi sao can: mat dong ho khong hien giay (quyet dinh 2 o tren), nen
+     * nhin vao mot dong ho dang chay va mot dong ho dang tam dung thay y
+     * het nhau cho toi khi so phut doi - co the hai muoi giay sau. Nguoi
+     * dung bam Bat dau roi khong chac no da chay chua, va bam lai - thanh
+     * ra tam dung.
+     *
+     * Vi sao la hoi tho chu khong phai nhap nhay: nhap nhay keo mat va
+     * gay lo au, dung thu Flowy tranh khap noi. Bon giay mot nhip cham
+     * toi muc khong bat mat, nhung liec qua la biet no dang song.
+     *
+     * Bien do co y rat nho (3% ban kinh) va alpha toi da 46/255.
+     */
+    private var phaTho = 0f
+    private var hoiTho: android.animation.ValueAnimator? = null
+    private val butTho = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE }
 
     init {
         isFocusable = true
         importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_YES
     }
 
-    fun datMau(mat: Int, vachKhac: Int, ranh: Int, chu: Int, chuPhu: Int,
-               conNhieu: Int, sapDen: Int, diNgay: Int) {
-        mauMat = mat; mauVachKhac = vachKhac; mauRanh = ranh
+    /**
+     * @param matKhiKeo mau mat trong LUC DANG XOAY (muc 6.1).
+     *
+     * O ban sang, mat dong ho luc xoay toi hin lai gan nhu den - no lay
+     * mau cua vanh dang duoc to dam, va o bang mau ngay thi vanh do rat
+     * dam. Giua mot man hinh giay kem, mot dia den dot ngot la dung thu
+     * keo su chu y di khoi viec nguoi dung dang lam: chon do dai.
+     *
+     * Nen luc xoay, mat doi sang mot sac RIENG - sang hon nen mot chut,
+     * du de thay "dang o che do dat gio" ma khong hut mat.
+     */
+    fun datMau(mat: Int, matKhiKeo: Int, vachKhac: Int, ranh: Int, chu: Int, chuPhu: Int,
+               conNhieu: Int, sapDen: Int, diNgay: Int, dangKeoMau: Int) {
+        mauMat = mat; mauMatKhiKeo = matKhiKeo; mauVachKhac = vachKhac; mauRanh = ranh
         mauChu = chu; mauChuPhu = chuPhu
         mauConNhieu = conNhieu; mauSapDen = sapDen; mauDiNgay = diNgay
+        mauDangKeo = dangKeoMau
         invalidate()
     }
 
@@ -124,10 +185,42 @@ class VongTapTrungView @JvmOverloads constructor(
      */
     fun dat(conLai: Float, chay: Boolean, giua: String, duoi: String) {
         conLaiPhut = conLai.coerceIn(0f, TOI_DA)
+        val doiTrangThai = dangChay != chay
         dangChay = chay
         nhanGiua = giua; nhanDuoi = duoi
         contentDescription = "$giua $duoi"
+        if (doiTrangThai) if (chay) batTho() else tatTho()
         invalidate()
+    }
+
+    private fun batTho() {
+        if (hoiTho != null) return
+        hoiTho = android.animation.ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 4000                       // mot hoi tho
+            repeatCount = android.animation.ValueAnimator.INFINITE
+            repeatMode = android.animation.ValueAnimator.REVERSE
+            interpolator = android.view.animation.AccelerateDecelerateInterpolator()
+            addUpdateListener { phaTho = it.animatedValue as Float; invalidate() }
+            start()
+        }
+    }
+
+    private fun tatTho() {
+        hoiTho?.cancel(); hoiTho = null
+        phaTho = 0f
+        invalidate()
+    }
+
+    // Man hinh tat / view roi khoi cay -> dung hoat hinh. Khong co hai dong
+    // nay thi `ValueAnimator` cu chay va ve vao mot view khong con ai nhin.
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        tatTho()
+    }
+
+    override fun onVisibilityChanged(changed: View, visibility: Int) {
+        super.onVisibilityChanged(changed, visibility)
+        if (visibility != VISIBLE) tatTho() else if (dangChay) batTho()
     }
 
     /** Dong bo khi so phut doi tu ngoai (chip chon nhanh). */
@@ -136,10 +229,39 @@ class VongTapTrungView @JvmOverloads constructor(
         mocTruoc = (phutKeo / 5).toInt()
     }
 
+    /**
+     * ----- MAU DOI THEO CHANG (muc 6.1) -----
+     *
+     * Bon bac, khong phai ba. Bac moi o giua la mot buoc chuyen DAN tu
+     * lanh sang vang trong khoang 45 -> 20 phut, thay vi nhay mot cai o
+     * dung moc 45.
+     *
+     * Ly do: moc nhay lam mau thanh mot TIN HIEU BAO DONG - dang yen roi
+     * bong doi. Chuyen dan lam mau thanh mot THUOC DO - liec vao la uoc
+     * duoc con bao nhieu, ma khong co giay phut nao giat minh. Voi nguoi
+     * mu thoi gian, cai can la thuoc do.
+     *
+     * Duoi 10 phut moi chuyen han sang cam, va o do thi dut khoat: day
+     * dung la luc can biet "sap het that roi".
+     */
     private fun mauChang(): Int = when {
-        !dangChay || conLaiPhut > 45f -> mauConNhieu
+        // Dang xoay -> mau rieng. Xem ghi chu `dh_dang_keo` trong colors.xml.
+        dangKeo -> mauDangKeo
+        !dangChay -> mauConNhieu
+        conLaiPhut > 45f -> mauConNhieu
+        conLaiPhut > 20f -> tron(mauConNhieu, mauSapDen, (45f - conLaiPhut) / 25f)
         conLaiPhut > 10f -> mauSapDen
         else -> mauDiNgay
+    }
+
+    /** Tron hai mau theo ty le 0..1, tung kenh mot. */
+    private fun tron(a: Int, b: Int, t: Float): Int {
+        val k = t.coerceIn(0f, 1f)
+        fun lerp(x: Int, y: Int) = (x + (y - x) * k).toInt().coerceIn(0, 255)
+        return Color.rgb(
+            lerp(Color.red(a), Color.red(b)),
+            lerp(Color.green(a), Color.green(b)),
+            lerp(Color.blue(a), Color.blue(b)))
     }
 
     override fun onMeasure(w: Int, h: Int) {
@@ -188,6 +310,15 @@ class VongTapTrungView @JvmOverloads constructor(
                 cx + r2 * cos(goc).toFloat(), cy + r2 * sin(goc).toFloat(), butVach)
         }
 
+        // 3b. Nhip tho - mot quang sang rat mo quanh vanh, chi khi dang chay.
+        if (dangChay && hoiTho != null) {
+            butTho.color = mau
+            butTho.alpha = (18 + 28 * phaTho).toInt()
+            butTho.strokeWidth = dayVanh * (0.55f + 0.30f * phaTho)
+            canvas.drawCircle(cx, cy, rVanh + dayVanh * (0.62f + 0.03f * phaTho), butTho)
+            butTho.alpha = 255
+        }
+
         // 4. Gio thu hai: vanh mong ben ngoai
         val gioHai = (conLaiPhut - 60f).coerceAtLeast(0f)
         if (gioHai > 0f) {
@@ -202,8 +333,8 @@ class VongTapTrungView @JvmOverloads constructor(
             butVanh.strokeCap = Paint.Cap.BUTT
         }
 
-        // 5. Mat tron o giua
-        butMat.color = mauMat
+        // 5. Mat tron o giua - doi mau trong luc dang xoay (muc 6.1)
+        butMat.color = if (dangKeo) mauMatKhiKeo else mauMat
         canvas.drawCircle(cx, cy, rMat, butMat)
 
         // 6. Bon moc gio tren mat - CHI 15 / 30 / 45 / 60
@@ -218,16 +349,45 @@ class VongTapTrungView @JvmOverloads constructor(
         }
 
         // 7. So phut o giua
+        //
+        // ----- "Sap xong" khong duoc de len moc 15 va 45 (muc 6.2) -----
+        //
+        // Ban truoc dung MOT nguong duy nhat: dai hon 3 ky tu thi thu nho
+        // con 0,115d. Nhung "Sắp xong" la tam ky tu, va o co chu 0,115d no
+        // rong hon khoang trong giua hai moc 15 (ben phai) va 45 (ben
+        // trai) - hai con so do bi chu de len, dung vao phut cuoi cung, la
+        // luc nguoi dung nhin man hinh nhieu nhat.
+        //
+        // Gio co chu tinh theo CHO CON TRONG THAT: do be ngang chu roi thu
+        // cho toi khi no lot giua hai moc, tru mot khoang ho hai ben.
+        //
+        // Va khi la chu (khong phai so phut) thi BO LUON dong nhan duoi.
+        // Ban cu ghi "Sắp xong" roi ngay duoi lai ghi "CÒN LẠI" - hai dong
+        // noi cung mot y, va chinh dong thu hai day chu xuong cham vanh.
+        val laChu = nhanGiua.length > 3
         butGiua.color = mauChu
-        butGiua.textSize = if (nhanGiua.length > 3) d * 0.115f else d * 0.215f
-        canvas.drawText(nhanGiua, cx, cy + butGiua.textSize * 0.33f, butGiua)
-        butNhan.color = mauChuPhu
-        butNhan.textSize = d * 0.048f
-        butNhan.letterSpacing = 0.14f
-        canvas.drawText(nhanDuoi, cx, cy + butGiua.textSize * 0.33f + d * 0.085f, butNhan)
+        if (laChu) {
+            // Cho trong giua hai moc 15 va 45, tru ho hai ben.
+            val choTrong = (rMat - d * 0.055f) * 2f - d * 0.10f
+            var co = d * 0.105f
+            butGiua.textSize = co
+            while (butGiua.measureText(nhanGiua) > choTrong && co > d * 0.055f) {
+                co -= d * 0.004f
+                butGiua.textSize = co
+            }
+            // Khong co dong nhan duoi -> can giua theo chieu doc cho can.
+            canvas.drawText(nhanGiua, cx, cy - (butGiua.descent() + butGiua.ascent()) / 2, butGiua)
+        } else {
+            butGiua.textSize = d * 0.215f
+            canvas.drawText(nhanGiua, cx, cy + butGiua.textSize * 0.33f, butGiua)
+            butNhan.color = mauChuPhu
+            butNhan.textSize = d * 0.048f
+            butNhan.letterSpacing = 0.14f
+            canvas.drawText(nhanDuoi, cx, cy + butGiua.textSize * 0.33f + d * 0.085f, butNhan)
+        }
 
         // 8. Tay cam o dau vanh - chi hien khi dang dat gio
-        if (choKeo && !dangChay) {
+        if ((choKeo && !dangChay) || (dangChay && choKeoKhiChay)) {
             val goc = Math.toRadians(gioDau / 60.0 * 360.0 - 90.0)
             val tx = cx + rVanh * cos(goc).toFloat()
             val ty = cy + rVanh * sin(goc).toFloat()
@@ -262,18 +422,44 @@ class VongTapTrungView @JvmOverloads constructor(
         return (a + 360.0) % 360.0
     }
 
+    /** Cham co roi vao VANH khong (khong phai giua mat, khong phai ngoai ria). */
+    private fun chamVaoVanh(x: Float, y: Float): Boolean {
+        val d = min(width, height).toFloat()
+        val r = Math.hypot((x - width / 2f).toDouble(), (y - height / 2f).toDouble()).toFloat()
+        val rNgoai = d / 2f - d * 0.02f
+        val dayVanh = d * 0.096f
+        val rVanh = rNgoai - dayVanh / 2f - d * 0.022f
+        // Rong hon be day that mot chut moi cham trung duoc bang ngon tay.
+        return abs(r - rVanh) <= dayVanh * 1.15f
+    }
+
     override fun onTouchEvent(e: MotionEvent): Boolean {
-        if (!choKeo || dangChay || !isEnabled) return super.onTouchEvent(e)
+        if (!isEnabled) return super.onTouchEvent(e)
+        // Dang dat gio: keo o dau cung duoc. Dang chay: CHI tren vanh, va
+        // chi keo dai ra - xem ghi chu o `choKeoKhiChay`.
+        val duocKeo = if (dangChay) choKeoKhiChay else choKeo
+        if (!duocKeo) return super.onTouchEvent(e)
+
         when (e.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
+                if (dangChay && !chamVaoVanh(e.x, e.y)) return super.onTouchEvent(e)
                 parent?.requestDisallowInterceptTouchEvent(true)
+                dangKeo = true
                 val g = gocCua(e.x, e.y)
-                // Cham xuong la NHAY toi goc do trong vong hien tai: cham vao
-                // "vi tri 20 phut" thi duoc 20 phut, khong phai keo tu 25 ve.
-                val vong = if (phutKeo > 60.0) 60.0 else 0.0
-                phutKeo = (vong + g / 6.0).coerceIn(1.0, TOI_DA.toDouble())
+                if (!dangChay) {
+                    // Cham xuong la NHAY toi goc do trong vong hien tai: cham vao
+                    // "vi tri 20 phut" thi duoc 20 phut, khong phai keo tu 25 ve.
+                    val vong = if (phutKeo > 60.0) 60.0 else 0.0
+                    phutKeo = (vong + g / 6.0).coerceIn(1.0, TOI_DA.toDouble())
+                    bao()
+                } else {
+                    // Dang chay thi KHONG nhay: mot cu cham nham se cat phut
+                    // xuong mot cach khong the hoan tac. Chi keo tu cho hien tai.
+                    phutKeo = conLaiPhut.toDouble().coerceIn(1.0, TOI_DA.toDouble())
+                    phutKeoTruoc = phutKeo.roundToInt()
+                }
                 gocTruoc = g
-                bao()
+                invalidate()
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
@@ -282,17 +468,31 @@ class VongTapTrungView @JvmOverloads constructor(
                 if (delta > 180) delta -= 360
                 if (delta < -180) delta += 360
                 gocTruoc = g
-                phutKeo = (phutKeo + delta / 6.0).coerceIn(1.0, TOI_DA.toDouble())
-                bao()
+                if (dangChay) {
+                    // CHI DAI RA. Keo nguoc lai khong rut ngan phien.
+                    if (delta <= 0) return true
+                    phutKeo = (phutKeo + delta / 6.0).coerceIn(1.0, TOI_DA.toDouble())
+                    val p = phutKeo.roundToInt()
+                    if (p != phutKeoTruoc) {
+                        phutKeoTruoc = p
+                        khiKeoQuaPhut?.invoke()     // mot nhip rung moi phut
+                        khiDoiPhut?.invoke(p)
+                    }
+                } else {
+                    phutKeo = (phutKeo + delta / 6.0).coerceIn(1.0, TOI_DA.toDouble())
+                    bao()
+                }
                 return true
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 parent?.requestDisallowInterceptTouchEvent(false)
-                if (e.actionMasked == MotionEvent.ACTION_UP) {
+                dangKeo = false
+                if (e.actionMasked == MotionEvent.ACTION_UP && !dangChay) {
                     phutKeo = phutKeo.roundToInt().toDouble()
                     bao()
                     performClick()
                 }
+                invalidate()
                 return true
             }
         }

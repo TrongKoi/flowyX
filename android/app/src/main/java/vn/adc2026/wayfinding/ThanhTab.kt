@@ -1,6 +1,7 @@
 package vn.adc2026.wayfinding
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.view.MotionEvent
@@ -69,6 +70,7 @@ object ThanhTab {
         Tab(R.id.tab_meety, R.id.tab_meety_pill, R.id.tab_meety_icon, R.id.tab_meety_nhan, MeetyActivity::class.java),
     )
 
+    @SuppressLint("ClickableViewAccessibility")
     fun noi(a: Activity, dangChon: Int) {
         val vienThuoc = a.findViewById<View>(R.id.tab_vien_thuoc)
 
@@ -86,6 +88,22 @@ object ThanhTab {
                 if (chon) R.string.tab_dang_chon else R.string.tab_chua_chon,
                 a.findViewById<TextView>(t.nhan)?.text ?: "")
             khoi.setOnClickListener { if (!chon) { Rung.nhe(it); mo(a, i) } }
+
+            // Cham giu -> vien thuoc phinh nhe. Chi cho tab DANG CHON:
+            // vien thuoc nam o day, phinh no khi nguoi dung dang giu mot
+            // tab khac se la mot chuyen dong o sai cho.
+            if (chon && vienThuoc != null) {
+                khoi.setOnTouchListener { v, e ->
+                    when (e.actionMasked) {
+                        MotionEvent.ACTION_DOWN -> nhanGiu(vienThuoc, true)
+                        MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL ->
+                            nhanGiu(vienThuoc, false)
+                    }
+                    // KHONG nuot su kien: `onClick` va bo keo ngang o
+                    // `batKeo` van phai chay binh thuong.
+                    false
+                }
+            }
         }
 
         if (vienThuoc == null) return
@@ -116,10 +134,7 @@ object ThanhTab {
                         // Bat dau o cho tab CU roi truot toi - xem ghi chu
                         // dau file ve viec truot qua ranh gioi Activity.
                         vienThuoc.translationX = xCuaTab(a, tu) ?: x
-                        vienThuoc.animate().translationX(x)
-                            .setDuration(260)
-                            .setInterpolator(DecelerateInterpolator(1.6f))
-                            .start()
+                        truotKinhLong(vienThuoc, x, Math.abs(den - tu))
                     }
                 }
             })
@@ -130,6 +145,90 @@ object ThanhTab {
         val khoi = a.findViewById<View>(TAB[i].khoi) ?: return null
         if (khoi.width == 0) return null
         return (khoi.x + pill.x)
+    }
+
+    /**
+     * ================================================================
+     * TRUOT KIEU "KINH LONG" (muc 1.3)
+     * ================================================================
+     *
+     * Ban truoc truot bang mot `translationX` deu voi
+     * `DecelerateInterpolator`. Dung ky thuat, nhung nhin ra la mot HINH
+     * KHOI DI CHUYEN - mot vien thuoc cung truot tu cho nay sang cho kia.
+     *
+     * Chat long thi khac: no BI KEO CANG ra theo huong di, roi DON lai
+     * khi dung. Day la thu mat nguoi nhan ra ngay ma khong goi ten duoc,
+     * va cung la thu iOS lam voi tab bar cua no.
+     *
+     * Ba phan chay cung luc:
+     *
+     *   · `translationX` toi cho moi, giam toc.
+     *   · `scaleX` phinh len giua duong roi ve 1 - vien thuoc dai ra
+     *     trong luc bay, ngan lai khi ha canh.
+     *   · `scaleY` mong di mot chut cung luc - giu cho the tich trong
+     *     nhu khong doi, dung cach chat long bi keo.
+     *
+     * Bien do TY LE VOI QUANG DUONG: nhay mot tab thi gan nhu khong gian
+     * ra, nhay bon tab thi gian ro. Mot bien do co dinh se lam cu nhay
+     * ngan trong giat cuc.
+     *
+     * Toan bo van trong 300 ms va khong co nhap nhay - xem nguyen tac
+     * chuyen dong o `GIAO_DIEN_V5.md`.
+     */
+    private fun truotKinhLong(v: View, den: Float, soTab: Int) {
+        val muc = (soTab.coerceIn(1, 4)) / 4f          // 0,25 .. 1
+        val gian = 1f + 0.26f * muc
+        val det = 1f - 0.10f * muc
+
+        v.animate().cancel()
+        v.animate().translationX(den)
+            .setDuration(300)
+            .setInterpolator(DecelerateInterpolator(1.7f))
+            .start()
+
+        // Phinh roi don: mot ValueAnimator chay 0 -> 1 -> 0 bang
+        // `sin(pi * t)`, nen dinh roi dung vao GIUA duong bay.
+        ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 300
+            interpolator = DecelerateInterpolator(1.2f)
+            addUpdateListener {
+                val t = it.animatedValue as Float
+                val cung = Math.sin(Math.PI * t).toFloat()
+                v.scaleX = 1f + (gian - 1f) * cung
+                v.scaleY = 1f + (det - 1f) * cung
+            }
+            addListener(object : android.animation.AnimatorListenerAdapter() {
+                override fun onAnimationEnd(a: android.animation.Animator) {
+                    v.scaleX = 1f; v.scaleY = 1f
+                }
+            })
+            start()
+        }
+    }
+
+    /**
+     * ----- CHAM GIU: VIEN THUOC PHINH NHE (muc 1.3) -----
+     *
+     * Dat ngon tay len mot tab va giu: vien thuoc phinh ra mot chut va o
+     * yen do cho toi khi nha tay. Hai viec cung luc:
+     *
+     *   · Bao rang cham DA DUOC NHAN - tren mot thanh tab khong co hieu
+     *     ung nhan (`ripple` bi tat de man hinh yen tinh), truoc day
+     *     khong co gi phan hoi cho toi khi man hinh moi hien ra.
+     *   · Cho mot khoanh de DOI Y: keo ngon tay ra ngoai truoc khi nha
+     *     thi khong co gi xay ra.
+     *
+     * Bien do 6% - du de thay bang duoi mat, khong du de doc ra la mot
+     * chuyen dong.
+     */
+    private fun nhanGiu(v: View, giu: Boolean) {
+        v.animate().cancel()
+        v.animate()
+            .scaleX(if (giu) 1.06f else 1f)
+            .scaleY(if (giu) 1.06f else 1f)
+            .setDuration(if (giu) 120 else 160)
+            .setInterpolator(DecelerateInterpolator(1.3f))
+            .start()
     }
 
     /** Vien thuoc "no" nhe khi trang vua hien - chuyen dong mo dau cua v4. */

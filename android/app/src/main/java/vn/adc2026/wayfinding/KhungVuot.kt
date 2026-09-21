@@ -66,6 +66,18 @@ class KhungVuot(
     private val khiGhim: (() -> Unit)? = null,
     private val nhanXong: String = ctx.getString(R.string.vuot_xong),
     private val nhanGhim: String = ctx.getString(R.string.vuot_ghim),
+    /**
+     * Viec nay DA xong chua (muc 5.4).
+     *
+     * Xong roi thi nut ben trai khong con la "Xong" nua - no la "Đánh dấu
+     * chưa xong". Cung mot cu vuot, cung mot vi tri, nhung noi dung theo
+     * trang thai that. Ban truoc luon ghi "Xong": vuot mot viec da xong
+     * thi thay mot nut moi ho lam cai viec ho vua lam roi.
+     *
+     * Mau doi theo: xanh la "vua hoan thanh", con quay ve chua xong thi
+     * dung mau ghim - mot thao tac binh thuong, khong phai mot thanh tuu.
+     */
+    private val daXong: Boolean = false,
 ) : FrameLayout(ctx) {
 
     private val nenTrai = LinearLayout(ctx).apply {          // lo ra khi vuot TRAI
@@ -114,19 +126,61 @@ class KhungVuot(
 
     private fun dungNen() {
         nenTrai.removeAllViews()
-        khiXong?.let { nenTrai.addView(nutNen(R.drawable.ic_tick, nhanXong, R.color.xanh_xong) { dong(); it() }) }
-        khiXoa?.let { nenTrai.addView(nutNen(R.drawable.ic_thung_rac, context.getString(R.string.xoa), R.color.do_xoa) { dong(); it() }) }
+        // Nut NGOAI CUNG ben phai moi bo goc phai; nut giua giu canh vuong
+        // de hai nut dinh lien nhau, khong ho khe.
+        val coXoa = khiXoa != null
+        khiXong?.let {
+            nenTrai.addView(nutNen(
+                if (daXong) R.drawable.ic_quay_lai else R.drawable.ic_tick,
+                nhanXong,
+                if (daXong) R.color.ghim else R.color.xanh_xong,
+                boPhai = !coXoa) { dong(); it() })
+        }
+        khiXoa?.let {
+            nenTrai.addView(nutNen(R.drawable.ic_thung_rac, context.getString(R.string.xoa),
+                R.color.do_xoa, boPhai = true) { dong(); it() })
+        }
         nenPhai.removeAllViews()
         khiGhim?.let {
-            nenPhai.addView(nutNen(R.drawable.ic_ghim, nhanGhim, R.color.ghim, chiNhin = true))
+            nenPhai.addView(nutNen(
+                R.drawable.ic_ghim, nhanGhim, R.color.ghim,
+                chiNhin = true, boTrai = true))
+        }
+    }
+
+    /**
+     * ----- BO GOC KHOP VOI THE (muc 5.4) -----
+     *
+     * `setBackgroundColor` cho ra mot hinh chu nhat vuong vuc. The ke
+     * hoach nam de len tren thi bo goc, nen luc vuot he lo ra bon goc
+     * nhon tho ra ngoai duong bo - trong nhu hai lop khong thuoc ve nhau.
+     *
+     * Cung ban kinh voi `nen_the.xml` (`@dimen/bo_goc_the`), va bo goc
+     * CHI o dau NGOAI: nut Xong nam giua nen phai vuong o canh phai de
+     * dinh lien vao nut Xoa, con nut Xoa - nut ngoai cung - moi bo goc
+     * ben phai. Bo goc ca hai dau thi giua hai nut lai ho ra mot khe.
+     */
+    private fun nenNut(mauId: Int, boTrai: Boolean, boPhai: Boolean): GradientDrawable {
+        val r = context.resources.getDimension(R.dimen.bo_goc_the)
+        val goc = floatArrayOf(
+            if (boTrai) r else 0f, if (boTrai) r else 0f,      // tren-trai
+            if (boPhai) r else 0f, if (boPhai) r else 0f,      // tren-phai
+            if (boPhai) r else 0f, if (boPhai) r else 0f,      // duoi-phai
+            if (boTrai) r else 0f, if (boTrai) r else 0f,      // duoi-trai
+        )
+        return GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            setColor(mau(mauId))
+            cornerRadii = goc
         }
     }
 
     private fun nutNen(icon: Int, nhan: String, mauId: Int, chiNhin: Boolean = false,
+                       boTrai: Boolean = false, boPhai: Boolean = false,
                        khiBam: (() -> Unit)? = null) = LinearLayout(context).apply {
         orientation = LinearLayout.VERTICAL
         gravity = Gravity.CENTER
-        setBackgroundColor(mau(mauId))
+        background = nenNut(mauId, boTrai, boPhai)
         layoutParams = LinearLayout.LayoutParams(dp(RONG_NUT), LinearLayout.LayoutParams.MATCH_PARENT)
         addView(ImageView(context).apply {
             setImageResource(icon)

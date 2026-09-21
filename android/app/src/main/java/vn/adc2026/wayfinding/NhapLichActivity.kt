@@ -75,13 +75,23 @@ class NhapLichActivity : Activity() {
             setTextColor(mau(R.color.chu_phu))
         }, lp(4))
 
+        // ----- MUC 5.1: CHI HIEN DUONG CUA NEN TANG DANG CHAY -----
+        //
+        // Ban Android nay truoc day liet ke ca Google Calendar lan Apple
+        // Calendar. Nhung huong dan Apple la "mo Lich tren iPhone, chia
+        // se, xuat .ics" - mot chuoi thao tac KHONG LAM DUOC tren chinh
+        // cai may dang mo man hinh nay. Nguoi dung doc xong roi moi nhan
+        // ra, va do la mot vong lang phi dung luc ho dang muon xong viec.
+        //
+        // Ban iOS hien ca hai (`ManHinhCaiDat.swift`): tren iPhone thi ca
+        // hai duong deu di duoc that.
+        //
+        // Duong ".ics" ben duoi van nhan tep xuat tu Apple Calendar,
+        // Outlook hay bat cu dau - nen khong mat kha nang nao, chi bot
+        // mot muc khong dung duoc o day.
         val t = the()
         t.addView(hang(R.drawable.ic_cau, getString(R.string.nl_google), getString(R.string.nl_cach_lay)) {
             huongDan(R.string.nl_google, R.string.nl_google_cach)
-        })
-        t.addView(vach())
-        t.addView(hang(R.drawable.ic_lich_nho, getString(R.string.nl_apple), getString(R.string.nl_cach_lay)) {
-            huongDan(R.string.nl_apple, R.string.nl_apple_cach)
         })
         khoi.addView(t, lp(14))
 

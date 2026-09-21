@@ -225,7 +225,7 @@
     <string name="tab_lich">Lịch</string>
     <string name="tab_focus">Tập trung</string>
     <string name="tab_nhat_ky">Sức khỏe</string>
-    <string name="tab_meety">Biên bản</string>
+    <string name="tab_meety">Meety</string>
 
     <!-- ================ trang Nhật ký ================ -->
 
@@ -262,9 +262,9 @@
     <string name="dv_gio">giờ</string>
     <string name="dv_ngay">ngày</string>
     <string name="kh_hom_nay">Kế hoạch hôm nay</string>
-    <string name="kh_tt_viec">việc</string>
-    <string name="kh_tt_tong">tổng thời gian</string>
-    <string name="kh_tt_con">còn lại</string>
+    <string name="kh_tt_viec">Việc</string>
+    <string name="kh_tt_tong">Tổng thời gian</string>
+    <string name="kh_tt_con">Còn lại</string>
     <string name="kh_tt_mo_ta">Hôm nay có %1$d việc, tổng %2$s, còn %3$d việc, đã xong %4$d.</string>
     <string name="kh_uu_tien_dem">%1$s · %2$d</string>
     <string name="kh_uu_tien_mo_ta">Ưu tiên %1$s: %2$d việc</string>
@@ -440,7 +440,7 @@
     <string name="gr_khong_sai">Chạm một ô. Không có câu trả lời sai.</string>
     <string name="gr_buoc_phu">Nhỏ tới mức làm xong là được phép dừng.</string>
     <string name="gr_bao_lau_phu">Kéo vòng. Hết giờ là bạn được dừng.</string>
-    <string name="gr_cam_ket">“Mình chỉ %1$s trong %2$d phút. Xong là được phép dừng.”</string>
+    <string name="gr_cam_ket">%1$s · %2$d phút. Xong là được phép dừng.</string>
     <string name="gr_viec_nay">bắt đầu việc này</string>
     <string name="nk_da_xong_hom_nay">việc xong hôm nay</string>
     <string name="nk_chuoi_mo_ta">Chuỗi ngày: %1$d ngày liên tiếp</string>
@@ -717,4 +717,50 @@
 
     <!-- Bien ban Meety khuyet tieu de (muc 8.2) -->
     <string name="bb_khong_ten">Cuộc họp không tên</string>
+
+    <!-- Buoc 3 cua Go roi: o nhap them (muc 6.3) -->
+    <string name="gr_hint_buoc_them">Rồi tới bước nào nữa?</string>
+    <string name="gr_them_buoc">+ Thêm bước</string>
+    <!-- Hop thoai xung dot phien (muc 6.3) -->
+    <string name="gr_dang_chay_tieu_de">Đang có đồng hồ chạy</string>
+    <string name="gr_dang_chay_hoi">“%1$s” còn %2$d phút. Bắt đầu việc mới ngay bây giờ?</string>
+    <string name="gr_dang_chay_bat_dau">Bắt đầu việc mới</string>
+    <string name="gr_dang_chay_giu">Giữ phiên đang chạy</string>
+
+    <!-- Vuot trai tren mot viec DA xong (muc 5.4) -->
+    <string name="vuot_chua_xong">Chưa xong</string>
+    <string name="vuot_bo_ghim">Bỏ ghim</string>
+
+    <!-- Bo chon thang/nam (muc 5.2) -->
+    <string name="thang_truoc">Tháng trước</string>
+    <string name="thang_sau">Tháng sau</string>
+    <string name="o_ngay_co_viec">Ngày %d, có kế hoạch</string>
+    <string name="o_ngay_trong">Ngày %d</string>
+    <string name="lich_mo_chon_thang">Chọn tháng và ngày</string>
+
+    <!-- Nhac viec (muc 3.3) -->
+    <string name="cd_nhom_nhac">Nhắc việc</string>
+    <string name="cd_gio_yen">Giờ yên tĩnh</string>
+    <string name="cd_gio_yen_phu">Trong khung giờ này Flowy không phát tiếng và không đọc lên. Vẫn rung, vẫn hiện trên màn hình khoá.</string>
+    <string name="cd_gio_yen_tu">Bắt đầu</string>
+    <string name="cd_gio_yen_den">Kết thúc</string>
+    <string name="cd_nhac_truoc">Nhắc trước giờ bắt đầu</string>
+    <string name="cd_nhac_dung_gio">Đúng giờ</string>
+    <string name="cd_nhac_lai">Nhắc lại nếu chưa động tới</string>
+    <string name="cd_khong_nhac_lai">Không nhắc lại</string>
+    <string name="cd_am_khan">Âm báo khẩn cho việc đã trễ</string>
+    <string name="cd_am_khan_phu">Để tắt thì hơn: một âm báo kêu cho mọi việc trễ sẽ thành tiếng ồn nền, và khi cần thật thì nó không đánh thức được ai nữa.</string>
+
+    <!-- Bang suc khoe trong tab Suc khoe (muc 7.2) -->
+    <string name="sk_bang_tieu_de">Bảy ngày gần đây</string>
+    <string name="sk_bang_moi">Nối Flowy với dữ liệu sức khoẻ trên máy để xem giấc ngủ đặt cạnh số việc bạn làm xong. Số liệu ở lại trên máy, giữ bảy ngày rồi tự xoá.</string>
+    <string name="sk_bang_ket_noi">Xem cách kết nối</string>
+    <string name="sk_o_ngu">Ngủ</string>
+    <string name="sk_o_buoc">Bước chân</string>
+    <string name="sk_o_nhip_tim">Nhịp tim nghỉ</string>
+    <string name="sk_don_vi_buoc">bước/ngày</string>
+    <string name="sk_don_vi_nhip">nhịp/phút</string>
+    <string name="sk_chua_co">chưa có số</string>
+    <string name="sk_lien_he_thuan">Những hôm bạn ngủ nhiều hơn, bạn xong nhiều việc hơn. Đây là quan sát trên bảy ngày của riêng bạn, không phải một lời khuyên.</string>
+    <string name="sk_lien_he_nghich">Bảy ngày qua, những hôm ngủ nhiều hơn lại xong ít việc hơn. Một tuần thì chưa nói lên điều gì — có thể đó đúng là những ngày bạn cần nghỉ.</string>
 </resources>

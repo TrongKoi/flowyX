@@ -373,11 +373,16 @@ class CaiDatActivity : Activity() {
         }, LinearLayout.LayoutParams(-1, -2))
         the.addView(vach())
 
-        the.addView(dong(getString(R.string.cd_nhap_lich),
-            getString(R.string.cd_nhap_lich_phu)) {
-            startActivity(Intent(this, NhapLichActivity::class.java))
-        })
-        the.addView(vach())
+        // MUC 3.4 - "Nhap lich" da chuyen han sang tab Lich.
+        //
+        // Truoc day no nam o CA HAI cho: mot nut tren thanh tieu de cua
+        // tab Lich, va mot dong o day. Hai duong vao cho cung mot viec
+        // nghia la nguoi dung phai nho no nam o dau - va dat trong Cai dat
+        // con gui sai tin hieu: nhap lich khong phai mot tuy chon he
+        // thong, no la mot thao tac lam voi lich, ngay o cho co lich.
+        //
+        // Cai dat giu lai nhung thu lam MOT LAN roi thoi. Nhap lich la
+        // viec lap lai moi hoc ky, moi du an.
 
         the.addView(dong(getString(R.string.cd_suc_khoe),
             getString(if (SucKhoe.dangBat(this)) R.string.cd_dang_bat
@@ -536,6 +541,68 @@ class CaiDatActivity : Activity() {
             goc?.let { Rung.rung(it, i) }
         })
         cot.addView(the4, lp(10))
+
+        // --- nhac viec (muc 3.3) ---
+        //
+        // Mot nhom rieng, dat TREN "phan hoi & giong doc". Hai muc duoi
+        // do tra loi cau "app phan hoi thao tac cua toi the nao"; nhom nay
+        // tra loi cau khac han: "khi nao app duoc lam phien toi". Truoc
+        // day ca hai tron lam mot, va ket qua la muon tat mot cai thi tat
+        // luon ca cai kia.
+        val theNhac = the()
+        theNhac.addView(nhanTrong(getString(R.string.cd_nhom_nhac)))
+
+        // Gio yen tinh
+        theNhac.addView(dongCongTac(getString(R.string.cd_gio_yen),
+            getString(R.string.cd_gio_yen_phu), s.gioYenBat) { bat ->
+            s.gioYenBat = bat; ve()
+        })
+        if (s.gioYenBat) {
+            theNhac.addView(vach())
+            theNhac.addView(dong(getString(R.string.cd_gio_yen_tu),
+                Lich.gioPhut(s.gioYenTu)) {
+                BoChonGio.hien(this, getString(R.string.cd_gio_yen_tu), s.gioYenTu) { p ->
+                    s.gioYenTu = p; ve()
+                }
+            })
+            theNhac.addView(vach())
+            theNhac.addView(dong(getString(R.string.cd_gio_yen_den),
+                Lich.gioPhut(s.gioYenDen)) {
+                BoChonGio.hien(this, getString(R.string.cd_gio_yen_den), s.gioYenDen) { p ->
+                    s.gioYenDen = p; ve()
+                }
+            })
+        }
+
+        // Nhac truoc phien
+        theNhac.addView(vach())
+        theNhac.addView(nhanTrong(getString(R.string.cd_nhac_truoc)))
+        theNhac.addView(hangChip(
+            NhacCaiDat.TRUOC_PHIEN.map {
+                if (it == 0) getString(R.string.cd_nhac_dung_gio) else Lich.moTaPhut(it, this)
+            },
+            NhacCaiDat.TRUOC_PHIEN.indexOf(s.nhacTruocPhien).coerceAtLeast(0)) { i ->
+            s.nhacTruocPhien = NhacCaiDat.TRUOC_PHIEN[i]
+        })
+
+        // Nhac lai
+        theNhac.addView(vach())
+        theNhac.addView(nhanTrong(getString(R.string.cd_nhac_lai)))
+        theNhac.addView(hangChip(
+            NhacCaiDat.NHAC_LAI.map {
+                if (it == 0) getString(R.string.cd_khong_nhac_lai) else Lich.moTaPhut(it, this)
+            },
+            NhacCaiDat.NHAC_LAI.indexOf(s.nhacLai).coerceAtLeast(0)) { i ->
+            s.nhacLai = NhacCaiDat.NHAC_LAI[i]
+        })
+
+        // Am khan
+        theNhac.addView(vach())
+        theNhac.addView(dongCongTac(getString(R.string.cd_am_khan),
+            getString(R.string.cd_am_khan_phu), s.amKhanChoViecTre) { bat ->
+            s.amKhanChoViecTre = bat
+        })
+        cot.addView(theNhac, lp(10))
 
         // --- phan hoi & giong doc ---
         val the5 = the()
@@ -742,6 +809,49 @@ class CaiDatActivity : Activity() {
             setTextColor(mau(R.color.chu_phu))
         }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(3) })
         addView(cot, LinearLayout.LayoutParams(0, -2, 1f))
+        contentDescription = if (phu == null) ten else "$ten, $phu"
+    }
+
+    /**
+     * Mot dong co cong tac bat/tat ben phai.
+     *
+     * Dung `Switch` cua he thong chu khong ve tay: cong tac la thu nguoi
+     * dung da biet cach doc tu moi app khac, va trinh doc man hinh cung
+     * da biet doc no. Mau lay tu `colors.xml` nen ban dem tu dung.
+     *
+     * Ca dong bam duoc, khong chi rieng cai cong tac - vung cham 56dp
+     * thay vi 32dp, va khong phai ngam trung.
+     */
+    private fun dongCongTac(ten: String, phu: String?, bat: Boolean,
+                            doi: (Boolean) -> Unit) = LinearLayout(this).apply {
+        orientation = LinearLayout.HORIZONTAL
+        gravity = Gravity.CENTER_VERTICAL
+        minimumHeight = dp(56)
+        setPadding(dp(16), dp(13), dp(16), dp(13))
+        val cot = LinearLayout(this@CaiDatActivity).apply {
+            orientation = LinearLayout.VERTICAL
+        }
+        cot.addView(TextView(this@CaiDatActivity).apply {
+            text = ten
+            textSize = 15.5f
+            setTextColor(mau(R.color.chu))
+        })
+        if (phu != null) cot.addView(TextView(this@CaiDatActivity).apply {
+            text = phu
+            textSize = 12.5f
+            setLineSpacing(0f, 1.35f)
+            setTextColor(mau(R.color.chu_phu))
+        }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(3) })
+        addView(cot, LinearLayout.LayoutParams(0, -2, 1f))
+
+        val ct = android.widget.Switch(this@CaiDatActivity).apply {
+            isChecked = bat
+            contentDescription = ten
+            setOnCheckedChangeListener { v, moi -> Rung.nhe(v); doi(moi) }
+        }
+        addView(ct, LinearLayout.LayoutParams(-2, -2).apply { marginStart = dp(10) })
+        isClickable = true
+        setOnClickListener { ct.isChecked = !ct.isChecked }
         contentDescription = if (phu == null) ten else "$ten, $phu"
     }
 

@@ -5,14 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FlowyX — preview giao diện v5</title>
 <!--
-  PREVIEW GIAO DIEN FlowyX v5 (18/09/2026) — bấm đúp vào tệp để mở.
+  PREVIEW GIAO DIEN FlowyX v5.1 (21/09/2026) — bấm đúp vào tệp để mở.
 
   Không cần máy chủ, không cần mạng. Sửa tệp rồi F5 là thấy ngay.
 
   THỬ ĐƯỢC THẬT (không phải ảnh tĩnh):
-    · Đồng hồ Tập trung: kéo vòng để đặt giờ, bấm Bắt đầu, chạy thật, hết giờ có pháo hoa.
+    · Đồng hồ Tập trung: kéo vòng để đặt giờ, bấm Bắt đầu, chạy thật, hết giờ pháo hoa BAY LÊN.
     · Thanh tab: bấm để xem viên kính mờ trượt và phình theo kiểu Apple.
     · Nút trên đầu trang: Sáng/Tối, ba phông chữ, ba cỡ chữ.
+
+  MỚI TRONG v5.1 (29 màn hình):
+    · Tab "Nhật ký" -> "Sức khỏe", "Biên bản" -> "Meety".
+    · Lịch: bộ chọn tháng/năm tự vẽ; bộ chọn giờ bước 1 phút, quán tính thật.
+    · Tập trung: vành thở 4 giây; kéo dài được ngay trong lúc đang chạy.
+    · Sức khỏe: bảng bảy ngày đặt giấc ngủ cạnh số việc xong.
+    · Cài đặt: giờ yên tĩnh, nhắc trước, nhắc lại, âm khẩn; Sáng/Tối/Theo máy.
+    · Thời lượng hiện MỘT đơn vị: "75 phút", không còn "1g15′".
 
   BA THỨ CẦN BIẾT KHI SỬA TỆP NÀY
   1. Giữ đủ thẻ html/head/body. Thiếu thì Live Server chèn script tự tải lại
@@ -207,8 +215,12 @@ h3.tieu { font-size:1.5em; margin:6px 0 2px; font-weight:600; }
 .drum .cot div.giua-d { color:var(--chu); font-weight:600; }
 .lua { display:inline-block; animation:lua 1.3s ease-in-out infinite alternate; }
 @keyframes lua { from { transform:scale(1) rotate(-4deg); } to { transform:scale(1.14) rotate(5deg); } }
-.hat { position:absolute; width:8px; height:12px; border-radius:2px; top:-14px; opacity:0; }
-@keyframes roi { 0% { opacity:1; transform:translateY(0) rotate(0); } 100% { opacity:0; transform:translateY(460px) rotate(540deg); } }
+/* Muc 6.2 - hat BAY LEN tu day man hinh, khong roi tu tren xuong.
+   Mot thu roi tu tren xuong doc ra la "ket thuc", ma day la luc vua
+   LAM XONG. Va mat nguoi dung dang o giua man hinh cho dong ho: hat
+   di tu duoi len se qua tam nhin do roi tan o tren. */
+.hat { position:absolute; width:8px; height:12px; border-radius:2px; bottom:-14px; opacity:0; }
+@keyframes bay { 0% { opacity:1; transform:translateY(0) rotate(0); } 100% { opacity:0; transform:translateY(-460px) rotate(540deg); } }
 .splash { position:absolute; inset:0; display:grid; place-items:center; background:var(--nen); }
 .splash .cum { display:flex; align-items:center; gap:0; }
 .dau { height:64px; display:block; }
@@ -308,7 +320,7 @@ const thanhCon = (td, phai = '', dongX = false) =>
    <b style="font-size:1.12em">${td}</b><span class="day"></span>
    ${phai ? `<span style="color:var(--lien-ket);font-weight:600;font-size:.95em;padding-right:10px">${phai}</span>` : ''}</div>`;
 
-const TABS = [['viec', 'Kế hoạch'], ['lich', 'Lịch'], ['focus', 'Tập trung'], ['nhat_ky', 'Nhật ký'], ['meety', 'Biên bản']];
+const TABS = [['viec', 'Kế hoạch'], ['lich', 'Lịch'], ['focus', 'Tập trung'], ['nhat_ky', 'Sức khỏe'], ['meety', 'Meety']];
 
 /* ============================================================
    THANH TAB — VIÊN KÍNH MỜ (Liquid Glass)
@@ -375,7 +387,10 @@ function veDongHo(svg, phut, chay) {
       cung(121, (phut - 60) / 60 * 360, 5, mau) : '';
   const soPhut = Math.max(0, Math.ceil(phut));
   const giua = chay && soPhut <= 1
-    ? `<text x="${C}" y="${C + 6}" text-anchor="middle" font-size="26" font-weight="600" fill="var(--chu)" font-family="inherit">Sắp xong</text>`
+    /* Muc 6.2 - co chu 26 lam chu de len hai moc 15 va 45. Ha xuong 21
+       va bo luon dong nhan duoi: ban cu ghi "Sắp xong" roi ngay duoi lai
+       ghi "PHÚT CÒN LẠI", hai dong noi cung mot y. */
+    ? `<text x="${C}" y="${C + 7}" text-anchor="middle" font-size="21" font-weight="600" fill="var(--chu)" font-family="inherit">Sắp xong</text>`
     : `<text x="${C}" y="${C + 10}" text-anchor="middle" font-size="54" font-weight="600" fill="var(--chu)" font-family="inherit">${soPhut}</text>
        <text x="${C}" y="${C + 36}" text-anchor="middle" font-size="13" letter-spacing="1.5" fill="var(--chu-phu)" font-family="inherit">${chay ? 'PHÚT CÒN LẠI' : 'PHÚT'}</text>`;
   svg.innerHTML =
@@ -468,7 +483,7 @@ const gioSau = giay => {
   return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
 };
 
-/* Pháo hoa ăn mừng khi hết giờ — hạt rơi nhẹ, không chớp sáng đột ngột. */
+/* Pháo hoa ăn mừng khi hết giờ — hạt bay lên, không chớp sáng đột ngột. */
 function anMung(khung) {
   const may = khung.closest('.may'), mau = ['var(--vang)', 'var(--cam)', 'var(--ghim)', 'var(--xanh)'];
   for (let i = 0; i < 46; i++) {
@@ -476,7 +491,7 @@ function anMung(khung) {
     h.className = 'hat';
     h.style.left = (5 + Math.random() * 90) + '%';
     h.style.background = mau[i % 4];
-    h.style.animation = `roi ${1.5 + Math.random() * 1.4}s cubic-bezier(.3,.7,.5,1) ${Math.random() * .5}s forwards`;
+    h.style.animation = `bay ${1.5 + Math.random() * 1.4}s cubic-bezier(.2,.6,.4,1) ${Math.random() * .5}s forwards`;
     may.appendChild(h);
     setTimeout(() => h.remove(), 3600);
   }
@@ -666,8 +681,43 @@ const MAN = [
    <div style="font-size:.78em;color:var(--chu-phu);margin-top:6px">↑ đã thêm khoảng trắng trước “(hôm sau)”.</div>
  </div>` + thanhTab(1)],
 
+['Lịch — bộ chọn tháng/năm', 'moi',
+ 'Chạm vào thanh <b>“&lt; Tháng 9, 2026 &gt;”</b> mở lịch tháng đầy đủ. Trước đây hai mũi tên đi từng <i>tuần</i> một, nên tới một ngày cách ba tháng là ba mươi hai lần chạm — và giữa chúng không có gì cho biết đang ở đâu. Không dùng DatePicker của hệ điều hành: nó mang bảng màu riêng, mỗi hãng máy một kiểu, và quan trọng hơn là nó <b>không thể hiện được ngày nào có việc</b>. Ở đây mỗi ô có ba tầng: số ngày, một chấm cam nếu ngày đó có kế hoạch, và vòng tròn phân biệt <i>đang chọn</i> (nền đậm) với <i>hôm nay</i> (chỉ viền).',
+ () => thanhCon('Lịch') + `<div class="cuon">
+   <div class="the" style="padding:14px 12px">
+     <div style="display:flex;align-items:center;gap:6px">
+       <div style="width:40px;height:40px;display:grid;place-items:center;color:var(--chu)">${sv('quay_lai', 18)}</div>
+       <div style="flex:1;text-align:center;font-weight:600;font-size:1.05em">Tháng 9, 2026</div>
+       <div style="width:40px;height:40px;display:grid;place-items:center;color:var(--chu);transform:rotate(180deg)">${sv('quay_lai', 18)}</div>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(7,1fr);margin-top:10px;font-size:.76em;color:var(--chu-phu);text-align:center">
+       ${['T2','T3','T4','T5','T6','T7','CN'].map(t => `<div>${t}</div>`).join('')}
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-top:4px">
+       ${(() => {
+          // Thang 9/2026 bat dau vao Thu Ba -> mot o dem o dau.
+          const coViec = new Set([2, 4, 9, 15, 17, 18, 21, 24]);
+          const homNay = 21, dangChon = 18;
+          let o = '';
+          o += `<div style="height:44px"></div>`;
+          for (let d = 1; d <= 30; d++) {
+            const chon = d === dangChon, nay = d === homNay;
+            const nen = chon ? 'background:var(--nhan);color:var(--chu-tren-nhan)'
+                      : nay ? 'border:1px solid var(--nhan)' : '';
+            o += `<div style="height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                    <div style="width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:.9em;${nen}">${d}</div>
+                    <div style="width:4px;height:4px;border-radius:50%;margin-top:2px;background:${coViec.has(d) ? (chon ? 'var(--nhan)' : 'var(--cam)') : 'transparent'}"></div>
+                  </div>`;
+          }
+          return o;
+       })()}
+     </div>
+     <div style="text-align:center;color:var(--chu-lien-ket);font-weight:600;padding:12px 0 2px">Hôm nay</div>
+   </div>
+ </div>`],
+
 ['Lịch — bộ chọn giờ trống cuộn', 'moi',
- 'Thay picker mặc định của hệ điều hành bằng trống cuộn kiểu đồng hồ báo thức iOS, nhưng dùng đúng màu và bo góc của FlowyX. Tên kế hoạch một ký tự cũng lưu được — lỗi báo “quá ngắn” đã bỏ.',
+ 'Thay picker mặc định của hệ điều hành bằng trống cuộn kiểu đồng hồ báo thức iOS, nhưng dùng đúng màu và bo góc của FlowyX. <b>Bước 1 phút</b>, không còn nhảy 5 phút — cùng bộ chọn này dùng cho giờ kết thúc và mốc nhắc, mà họp 14:05 hay xe buýt 7:52 thì bước 5 phút là sai chứ không phải đơn giản hơn. Trống cuộn có <b>quán tính thật</b>: thả tay thì nó quay chậm dần rồi đỗ vào nấc, không khựng lại một cái.',
  () => thanhCon('Kế hoạch mới', 'Lưu') + `<div class="cuon">
    <div style="display:flex;gap:10px;align-items:center;margin-top:4px">
      <div style="width:52px;height:52px;border-radius:16px;background:var(--the);border:1px solid var(--vien);display:grid;place-items:center;font-size:1.6em">📚</div>
@@ -677,19 +727,18 @@ const MAN = [
      <div class="vach"></div>${hangCd('dong_ho', '<b>Bắt đầu</b>')}
      <div class="drum"><div class="chon-vach"></div>
        <div class="cot" style="left:0"><div>12</div><div>13</div><div class="giua-d">14</div><div>15</div></div>
-       <div class="cot" style="left:33.33%"><div>00</div><div>15</div><div class="giua-d">30</div><div>45</div></div>
+       <div class="cot" style="left:33.33%"><div>28</div><div>29</div><div class="giua-d">30</div><div>31</div></div>
        <div class="cot" style="left:66.66%"><div>&nbsp;</div><div>&nbsp;</div><div class="giua-d">giờ</div><div>&nbsp;</div></div>
      </div>
      <div class="vach" style="margin:10px 0 0 32px"></div>
      ${hangCd('dong_ho', 'Kết thúc', '15:20')}
-     <div style="font-size:.86em;color:var(--chu-phu);padding-left:32px">Kéo dài 1 giờ 20 phút</div></div>
+     <div style="font-size:.86em;color:var(--chu-phu);padding-left:32px">Kéo dài 80 phút</div></div>
  </div>`],
 
 ['Lịch — nhập lịch bên ngoài', 'moi',
- 'Nhận tệp .ics hoặc nối thẳng Google/Apple Calendar. Trước khi nhập, app chỉ rõ cái nào trùng giờ với kế hoạch sẵn có và cho chọn giữ bên nào — không tự ý ghi đè.',
+ 'Nhận tệp .ics — định dạng chung của Google Calendar, Apple Calendar và Outlook. Bản Android <b>chỉ hiện đường Google</b>: hướng dẫn Apple là “mở Lịch trên iPhone, chia sẻ, xuất .ics”, một chuỗi thao tác không làm được trên chính cái máy đang mở màn hình này. Đường .ics vẫn nhận tệp xuất từ Apple hay Outlook, nên không mất khả năng nào. Trước khi nhập, app chỉ rõ cái nào trùng giờ với kế hoạch sẵn có và cho chọn giữ bên nào — không tự ý ghi đè.',
  () => thanhCon('Nhập lịch') + `<div class="cuon">
-   <div class="the">${hangCd('cau', 'Google Calendar', 'Nối')}<div class="vach"></div>
-     ${hangCd('lich_nho', 'Apple Calendar', 'Nối')}<div class="vach"></div>
+   <div class="the">${hangCd('cau', 'Google Calendar', 'Cách lấy')}<div class="vach"></div>
      ${hangCd('giay', 'Mở tệp .ics', '›')}</div>
    <div class="nhan-xam">XEM TRƯỚC · 12 SỰ KIỆN</div>
    <div class="the"><div style="display:flex;gap:8px;align-items:center">
@@ -711,8 +760,8 @@ const MAN = [
    ${khoiDongHo(60)}
  </div>` + thanhTab(2)],
 
-['Tập trung — đang chạy', 'sua',
- 'Bấm Bắt đầu ở khung bên trái là nó chạy thật. Nút đổi thành “+1 phút” và “Dừng lại”. Màu vành đổi theo chặng: xanh than khi còn nhiều, vàng khi còn ít, cam khi sắp hết.',
+['Tập trung — đang chạy, vành thở', 'sua',
+ 'Một quầng sáng rất mờ quanh vành phình ra và thu vào theo chu kỳ <b>bốn giây</b> — nhịp một hơi thở người lớn. Cần nó vì mặt đồng hồ không hiện giây: một đồng hồ đang chạy và một đồng hồ đang tạm dừng trông y hệt nhau cho tới khi số phút đổi, có thể hai mươi giây sau — người dùng bấm Bắt đầu rồi không chắc nó chạy chưa, bấm lại, thành ra tạm dừng. Không nhấp nháy: nhấp nháy kéo mắt và gây lo âu.<br><br>Đang chạy vẫn <b>kéo dài thêm</b> được: chạm đúng vào vành, chỉ kéo dài ra, mỗi phút một nhịp rung riêng. Trước đây muốn đổi thì phải dừng phiên, mà dừng phiên là mất luôn cái đã vào được.',
  () => thanhTren(`<span class="nut-nho">${sv('cong', 15)}</span>`) + `<div class="cuon" style="padding-top:4px">
    <div style="text-align:center;font-size:1.25em;font-weight:600;margin:2px 0 4px">Tập trung</div>
    <div style="text-align:center;font-size:.86em;margin-bottom:2px">Đang làm: <b>viết báo cáo</b></div>
@@ -764,7 +813,7 @@ const MAN = [
      “Mình chỉ mở tệp ra trong <b>10 phút</b>. Xong là được phép dừng.”</div>
  </div>`],
 
-['Nhật ký — chuỗi ngày có lửa', 'sua',
+['Sức khỏe — chuỗi ngày có lửa', 'sua',
  'Từ 3 ngày liên tiếp trở lên, ngọn lửa bên cạnh con số bắt đầu nhấp nháy nhẹ. “Việc đã xong” là số của riêng hôm nay, tự về 0 sau 00:00 — không cộng dồn cả đời để khỏi thành áp lực.',
  () => thanhTren() + `<div class="cuon">
    <h3 class="tieu">Nhật ký</h3>
@@ -789,7 +838,7 @@ const MAN = [
      <div style="font-size:.9em;color:var(--chu-phu);margin-top:2px">Hôm nay làm xong báo cáo. Bắt đầu muộn…</div></div>
  </div>` + thanhTab(3)],
 
-['Viết nhật ký — tiêu đề và nội dung', 'sua',
+['Viết nhật ký (Diary) — tiêu đề và nội dung', 'sua',
  'Tách hẳn hai trường: tiêu đề một dòng ở trên, nội dung tự do bên dưới. Bỏ hết mẫu gợi ý — trang giấy để trống hoàn toàn cho người viết. Ổ khoá dưới chân nhắc rằng bản ghi này không rời khỏi máy.',
  () => thanhCon('Viết nhật ký', 'Xong') + `<div class="cuon">
    <div style="font-size:.86em;color:var(--chu-phu);margin-top:4px">Thứ sáu, 18/09/2026</div>
@@ -801,7 +850,7 @@ const MAN = [
      ${sv('khoa', 15)} Mã hoá và lưu trong máy này. Không gửi lên máy chủ.</div>
  </div>`],
 
-['Biên bản → thêm thẳng vào lịch', 'sua',
+['Meety → thêm thẳng vào lịch', 'sua',
  'Bấm “Thêm vào lịch” ở một việc trong biên bản là nhảy sang tab Lịch, tên việc điền sẵn, trống cuộn mở sẵn chờ chốt ngày giờ. Không phải gõ lại, không phải nhớ.',
  () => thanhCon('Thêm vào lịch') + `<div class="cuon">
    <div class="the tim" style="margin-top:4px"><div class="nhan-khoi" style="color:var(--ghim)">TỪ BIÊN BẢN SPRINT 23</div>
@@ -907,6 +956,71 @@ const MAN = [
         <span style="color:var(--xanh);flex:none;margin-top:1px">${sv('tick', 17, 2.4)}</span>
         <span style="font-size:.86em;line-height:1.45;color:var(--chu-phu)">${c}</span></div>`).join('')}
    <button class="nut" style="margin-top:22px">Tôi đồng ý, bật kết nối</button></div>`],
+
+['Sức khỏe — bảng bảy ngày', 'moi',
+ 'Tab “Nhật ký” đổi tên thành <b>Sức khỏe</b> (EN: <i>Health</i>), và nhãn <i>Entry</i> đổi thành <i>Diary</i>. Nút xuất dữ liệu rời khỏi thanh công cụ tab này — đây là chỗ yên tĩnh để ghi lại cảm nhận, một nút xuất ngay cạnh tiêu đề biến mỗi lần mở tab thành một lời mời làm việc khác.<br><br>Bảng trả lời câu mà đồng hồ nào cũng <i>không</i> trả lời được: <b>những hôm ngủ đủ, tôi có làm được nhiều hơn không?</b> Và phần quan trọng nhất ở đây là <b>sự im lặng</b> — câu nhận xét chỉ hiện khi có ít nhất bốn ngày đủ cả hai số và hai nhóm lệch từ 25% trở lên. Tuần không xong việc nào thì tuyệt đối không nói gì: đó là tuần người dùng đang chật vật nhất.',
+ () => `<div class="cuon">
+   <h3 class="tieu">Sức khỏe</h3>
+   <div class="the">
+     <div style="font-weight:600;font-size:.94em">Bảy ngày gần đây</div>
+     <div style="display:flex;margin-top:12px;text-align:center">
+       <div style="flex:1">
+         <div style="font-size:1.35em;font-weight:600">402 phút</div>
+         <div style="font-size:.72em;color:var(--chu-phu);margin-top:3px">Ngủ</div></div>
+       <div style="flex:1">
+         <div style="font-size:1.35em;font-weight:600">7.840</div>
+         <div style="font-size:.72em;color:var(--chu-phu)">bước/ngày</div>
+         <div style="font-size:.72em;color:var(--chu-phu);margin-top:3px">Bước chân</div></div>
+       <div style="flex:1">
+         <div style="font-size:1.35em;font-weight:600">58</div>
+         <div style="font-size:.72em;color:var(--chu-phu)">nhịp/phút</div>
+         <div style="font-size:.72em;color:var(--chu-phu);margin-top:3px">Nhịp tim nghỉ</div></div>
+     </div>
+     <div style="font-size:.84em;color:var(--chu-phu);margin-top:14px;line-height:1.45">
+       Những hôm bạn ngủ nhiều hơn, bạn xong nhiều việc hơn. Đây là quan sát trên bảy ngày của riêng bạn, không phải một lời khuyên.</div>
+   </div>
+   <div class="the" style="margin-top:12px">
+     <div style="font-weight:600;font-size:.94em">Diary</div>
+     <div style="font-size:.86em;color:var(--chu-phu);margin-top:6px;line-height:1.45">
+       Hôm nay xong được phần màu đêm. Mệt nhưng dễ chịu.</div>
+     <div style="font-size:.74em;color:var(--chu-phu);margin-top:8px">18/09 · 21:40</div>
+   </div>
+ </div>` + thanhTab(3)],
+
+['Cài đặt — nhắc việc & giờ yên tĩnh', 'moi',
+ 'Thay hai công tắc toàn cục cũ (“mức rung” và “đọc lên / rung / cả hai”). Cả hai đều là bật-tất-cả hoặc tắt-tất-cả, và với người ADHD đó là lựa chọn giữa hai cái đều sai: để nguyên thì buổi tối cũng bị đánh thức, tắt đi thì mất luôn những lời nhắc thật sự cần. Vì tắt là một chạm còn bật lại thì phải nhớ quay vào Cài đặt, nên kết cục gần như luôn là: tắt, rồi quên bật.<br><br>Bốn trục mới đều trả lời câu <b>“khi nào thì được làm phiền”</b>. Giờ yên tĩnh <b>vẫn rung</b> — rung không đánh thức người khác trong phòng và vẫn đọc được khi máy trong túi; chặn cả ba thì nó thành “tắt thông báo”, và khi đó không ai dám bật.',
+ () => thanhCon('Cài đặt') + `<div class="cuon">
+   <div style="font-size:.78em;color:var(--chu-phu);margin:6px 0 6px 4px;font-weight:600;letter-spacing:.4px">NHẮC VIỆC</div>
+   <div class="the" style="padding:0 14px">
+     ${hangCd('chuong', 'Giờ yên tĩnh', '<span style="color:var(--xanh)">Bật</span>')}
+     <div style="font-size:.78em;color:var(--chu-phu);padding:0 0 10px;line-height:1.4">Trong khung giờ này Flowy không phát tiếng và không đọc lên. Vẫn rung, vẫn hiện trên màn hình khoá.</div>
+     <div class="vach"></div>${hangCd('dong_ho', 'Bắt đầu', '22:00')}
+     <div class="vach"></div>${hangCd('dong_ho', 'Kết thúc', '07:00')}
+     <div class="vach"></div>
+     <div style="padding:12px 0 4px;font-size:.9em;font-weight:600">Nhắc trước giờ bắt đầu</div>
+     <div style="display:flex;gap:6px;padding-bottom:12px;flex-wrap:wrap">
+       ${['Đúng giờ','5 phút','10 phút','15 phút','30 phút'].map((t,i) =>
+         `<div class="chip${i === 2 ? ' chon' : ''}">${t}</div>`).join('')}
+     </div>
+     <div class="vach"></div>
+     <div style="padding:12px 0 4px;font-size:.9em;font-weight:600">Nhắc lại nếu chưa động tới</div>
+     <div style="display:flex;gap:6px;padding-bottom:12px;flex-wrap:wrap">
+       ${['Không nhắc lại','5 phút','10 phút','20 phút'].map((t,i) =>
+         `<div class="chip${i === 2 ? ' chon' : ''}">${t}</div>`).join('')}
+     </div>
+     <div class="vach"></div>
+     ${hangCd('chuong', 'Âm báo khẩn cho việc đã trễ', '<span style="color:var(--chu-phu)">Tắt</span>')}
+     <div style="font-size:.78em;color:var(--chu-phu);padding:0 0 12px;line-height:1.4">Để tắt thì hơn: một âm báo kêu cho mọi việc trễ sẽ thành tiếng ồn nền, và khi cần thật thì nó không đánh thức được ai nữa.</div>
+   </div>
+   <div style="font-size:.78em;color:var(--chu-phu);margin:16px 0 6px 4px;font-weight:600;letter-spacing:.4px">GIAO DIỆN</div>
+   <div class="the" style="padding:0 14px">
+     <div style="padding:12px 0 4px;font-size:.9em;font-weight:600">Giao diện</div>
+     <div style="display:flex;gap:6px;padding-bottom:6px">
+       ${['Theo máy','Sáng','Tối'].map((t,i) => `<div class="chip${i === 0 ? ' chon' : ''}">${t}</div>`).join('')}
+     </div>
+     <div style="font-size:.78em;color:var(--chu-phu);padding:0 0 12px;line-height:1.4">Chọn “Theo máy” để đổi cùng lúc với cài đặt sáng/tối của điện thoại.</div>
+   </div>
+ </div>`],
 
 ['Thanh tab — bấm thử viên kính mờ', 'sua',
  'Bấm vào các tab bên dưới: viên thuốc kính mờ trượt theo lò xo, chạm đè thì nó phình ngang rồi co lại. Icon tab tự nói chức năng, và nhãn chữ chỉ hiện ở tab đang chọn.',

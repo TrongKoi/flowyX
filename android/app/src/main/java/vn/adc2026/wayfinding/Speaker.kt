@@ -98,10 +98,24 @@ class Speaker(context: Context, private val onReady: (Boolean) -> Unit) {
         }
     }
 
-    /** Doc mot cau. `urgent` thi cat ngang cau dang doc do. */
+    /**
+     * Doc mot cau. `urgent` thi cat ngang cau dang doc do.
+     *
+     * ----- GIO YEN TINH (muc 3.3) -----
+     *
+     * Trong khung gio yen tinh thi KHONG doc len. Chan ngay o day, cho
+     * duy nhat phat ra tieng noi, thay vi di sua tung cho goi toi - thieu
+     * mot cho la app van noi giua dem, va do la loi khong ai phat hien ra
+     * cho toi khi no xay ra voi nguoi dung that.
+     *
+     * Rung KHONG bi chan: xem ghi chu dau `NhacCaiDat.kt`. Rung khong
+     * danh thuc nguoi khac trong phong, va no van doc duoc khi may de
+     * trong tui - thu can chan la tieng.
+     */
     fun say(text: String, urgent: Boolean) {
         val engine = tts ?: return
         if (!ready || text.isBlank()) return
+        if (NhacCaiDat.dangYen(appContext)) return
         val mode = if (urgent) TextToSpeech.QUEUE_FLUSH else TextToSpeech.QUEUE_ADD
         engine.speak(text, mode, null, "wf-${utteranceId++}")
     }

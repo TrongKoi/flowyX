@@ -22,7 +22,7 @@ import kotlin.random.Random
  * thi mot man chop sang la cuc hinh. Nen o day:
  *
  *   · KHONG chop sang toan man hinh, khong doi mau nen.
- *   · Hat giay roi XUONG theo trong luc, xoay cham, mo dan o cuoi.
+ *   · Hat giay BAY LEN tu day man hinh, cham dan roi tan o tren (v5.1).
  *   · Chi 1.8 giay roi tu tat han; khong lap lai.
  *   · Khong am thanh - app chua bao gio phat am thanh dot ngot.
  *   · Ton trong cai dat "Xoa hieu ung" cua he thong: he so animation
@@ -69,12 +69,22 @@ class PhaoHoaView @JvmOverloads constructor(
         } catch (_: Exception) { 1f }
         if (heSo == 0f || width == 0) { khiXong?.invoke(); return }
 
+        // ----- BAY LEN, KHONG ROI XUONG (muc 6.2) -----
+        //
+        // Ban truoc tha hat tu tren xuong. Ve mat vat ly thi giong giay vun
+        // that, nhung y nghia thi nguoc: mot thu roi tu tren xuong doc ra la
+        // "ket thuc", con day la luc nguoi dung vua LAM XONG mot viec.
+        //
+        // Bay len tu day man hinh doc ra la "di len". Va no con mot cai loi
+        // thuc te: mat nguoi dung dang o GIUA man hinh, cho dong ho vua dem
+        // ve khong. Hat di tu duoi len se di qua tam nhin do roi tan o tren;
+        // hat roi tu tren xuong thi da qua mat truoc khi kip nhin.
         for (i in 0 until 44) {
             hat += Hat(
                 x = width * (0.08f + 0.84f * r.nextFloat()),
-                y = -height * 0.04f * r.nextFloat(),
+                y = height * (1.02f + 0.06f * r.nextFloat()),
                 vx = (r.nextFloat() - 0.5f) * width * 0.16f,
-                vy = height * (0.55f + 0.5f * r.nextFloat()),
+                vy = -height * (0.62f + 0.5f * r.nextFloat()),   // am = di len
                 xoay = (r.nextFloat() - 0.5f) * 1080f,
                 mau = mauHat[i % mauHat.size],
                 rong = width * 0.018f,
@@ -104,10 +114,12 @@ class PhaoHoaView @JvmOverloads constructor(
         if (hat.isEmpty()) return
         val t = tien
         for (h in hat) {
-            // Roi co gia toc nhe, khong phai roi deu - trong tu nhien hon.
+            // Bay len roi CHAM DAN: `vy` am, gia toc duong keo nguoc lai.
+            // Cuoi hoat hinh hat gan nhu dung lai roi mo han - giong phao
+            // giay that hon la bay thang len roi bien mat.
             val x = h.x + h.vx * t
-            val y = h.y + h.vy * t + h.vy * 0.45f * t * t
-            if (y > height + h.cao) continue
+            val y = h.y + h.vy * t + (-h.vy) * 0.45f * t * t
+            if (y < -h.cao) continue
             but.color = h.mau
             but.alpha = (255 * (1f - t * t)).toInt().coerceIn(0, 255)
             canvas.save()

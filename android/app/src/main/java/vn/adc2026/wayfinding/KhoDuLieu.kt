@@ -124,13 +124,28 @@ class KhoDuLieu(ctx: Context) : SQLiteOpenHelper(ctx, TEN, null, PHIEN_BAN) {
                 buoc_chan   INTEGER,
                 thu_gian_phut INTEGER,
                 cang_thang  INTEGER,
+                nhip_tim_nghi INTEGER,
                 cap_nhat    INTEGER NOT NULL
             )""".trimIndent())
     }
 
+    /**
+     * Di tru TUNG BUOC MOT, va khong bao gio drop bang co du lieu nguoi dung.
+     *
+     * Moi buoc phai chay duoc doc lap va phai chiu duoc viec chay lai:
+     * nguoi dung co the nhay tu ban 1 thang len ban moi nhat, hoac da
+     * cai ban trung gian roi. Viet kieu `if (cu < N)` lien tiep - khong
+     * dung `when` - de mot may dang o ban 1 chay qua DU moi buoc.
+     */
     override fun onUpgrade(db: SQLiteDatabase, cu: Int, moi: Int) {
-        // Chua co ban nao ngoai 1. Khi nang cap that, viet di tru tung buoc
-        // o day; KHONG BAO GIO drop bang co du lieu nguoi dung.
+        // 1 -> 2: them nhip tim nghi (muc 7.2).
+        //
+        // `ALTER TABLE ... ADD COLUMN` giu nguyen moi hang da co, va cot
+        // moi nhan NULL - dung y, vi nhung ngay do that su khong co so do
+        // nay. `SucKhoe.Ngay.nhipTimNghi` la kieu co the null chinh vi vay.
+        if (cu < 2) {
+            db.execSQL("ALTER TABLE suc_khoe ADD COLUMN nhip_tim_nghi INTEGER")
+        }
     }
 
     override fun onConfigure(db: SQLiteDatabase) {
@@ -206,7 +221,7 @@ class KhoDuLieu(ctx: Context) : SQLiteOpenHelper(ctx, TEN, null, PHIEN_BAN) {
 
     companion object {
         const val TEN = "flowy.db"
-        const val PHIEN_BAN = 1
+        const val PHIEN_BAN = 2
 
         /** OWASP 2023 khuyen nghi cho PBKDF2-HMAC-SHA256. */
         const val VONG = 210_000

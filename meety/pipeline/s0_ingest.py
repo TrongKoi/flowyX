@@ -74,6 +74,7 @@ __all__ = [
     "IngestReport",
     "IngestOutcome",
     "detect_format",
+    "doc_docx",
     "parse_webvtt",
     "parse_srt",
     "parse_plain_text",
@@ -296,6 +297,68 @@ dấu sẽ sai. Cảnh báo được ghi lại khi phải dùng tới nó.
 """
 
 
+# Chữ ký ZIP. Mọi file .docx đều là một kho ZIP bắt đầu bằng bốn byte này.
+_ZIP_MAGIC = b"PK\x03\x04"
+
+
+def doc_docx(path: Path) -> str:
+    """Rút văn bản từ một file ``.docx`` (mục 8.1).
+
+    ``.docx`` là một kho ZIP chứa ``word/document.xml``. Hàm này mở kho,
+    đọc đúng file đó, rồi lấy nội dung từng thẻ ``<w:p>`` (một đoạn) ghép
+    lại thành các dòng.
+
+    **Vì sao không dùng ``python-docx``.** Thư viện đó kéo theo ``lxml``,
+    một gói có phần biên dịch sẵn theo từng nền tảng. Meety hiện chạy
+    được chỉ với thư viện chuẩn, và giữ được điều đó nghĩa là ai clone
+    repo về cũng chạy được ngay — không có bước "cài đặt thất bại trên
+    máy của tôi" vào đúng hôm trước ngày thi.
+
+    Thứ cần ở đây cũng rất hẹp: lấy ra dòng chữ, không phải giữ định dạng.
+    Biên bản họp dán vào Word vẫn là ``Tên: nội dung`` trên từng dòng, và
+    parser văn bản thuần đã biết đọc dạng đó.
+
+    **Cách đọc đoạn.** Mỗi ``<w:p>`` là một đoạn; văn bản nằm rải trong
+    nhiều thẻ ``<w:t>`` bên trong nó, vì Word cắt đoạn thành nhiều "run"
+    mỗi khi định dạng đổi — chỉ cần in đậm một chữ giữa câu là câu đó vỡ
+    làm ba. Nên phải ghép mọi ``<w:t>`` trong cùng một ``<w:p>`` lại, nếu
+    không thì một câu sẽ thành ba dòng và người nói ở đầu câu bị rớt.
+
+    ``<w:tab>`` và ``<w:br>`` đổi thành khoảng trắng và xuống dòng, để
+    bảng đơn giản không bị dính chữ vào nhau.
+    """
+    import xml.etree.ElementTree as ET
+    import zipfile
+
+    W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
+    try:
+        with zipfile.ZipFile(path) as kho:
+            xml = kho.read("word/document.xml")
+    except KeyError as exc:
+        raise ValueError(
+            f"{path.name} là file ZIP nhưng không chứa word/document.xml — "
+            "có thể là .zip thường hoặc .docx hỏng."
+        ) from exc
+    except zipfile.BadZipFile as exc:
+        raise ValueError(f"{path.name} không mở được như một file .docx.") from exc
+
+    goc = ET.fromstring(xml)
+    dong: list[str] = []
+    for doan in goc.iter(f"{W}p"):
+        phan: list[str] = []
+        for o in doan.iter():
+            if o.tag == f"{W}t":
+                phan.append(o.text or "")
+            elif o.tag == f"{W}tab":
+                phan.append(" ")
+            elif o.tag == f"{W}br":
+                phan.append("\n")
+        cau = "".join(phan).strip()
+        if cau:
+            dong.append(cau)
+    return "\n".join(dong)
+
+
 def read_source_text(path: Path) -> tuple[str, str]:
     """Đọc file transcript, tự dò bảng mã.
 
@@ -309,6 +372,12 @@ def read_source_text(path: Path) -> tuple[str, str]:
         Cặp ``(nội dung, tên bảng mã đã dùng)``.
     """
     raw = path.read_bytes()
+
+    # .docx trước mọi thứ khác: nó là ZIP, nên mọi bước dò bảng mã bên
+    # dưới đều vô nghĩa với nó. Nhận theo NỘI DUNG (chữ ký ZIP) chứ không
+    # chỉ theo đuôi file, cùng lý do với `detect_format`.
+    if raw.startswith(_ZIP_MAGIC) and path.suffix.lower() in (".docx", ".docm"):
+        return doc_docx(path), "docx"
 
     for bom, encoding in _BOM_ENCODINGS:
         if raw.startswith(bom):
