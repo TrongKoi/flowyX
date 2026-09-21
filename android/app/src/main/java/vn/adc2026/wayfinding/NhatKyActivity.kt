@@ -218,20 +218,16 @@ class NhatKyActivity : TrangCoTab() {
         }
         dau.addView(nhan(getString(R.string.nk_cac_muc), camMau = false),
             LinearLayout.LayoutParams(0, -2, 1f))
-        if (tatCa.isNotEmpty()) {
-            dau.addView(TextView(this).apply {
-                text = getString(if (dangChon) R.string.huy else R.string.nk_chon_de_xuat)
-                textSize = 14f; includeFontPadding = false
-                typeface = Typeface.DEFAULT_BOLD
-                setTextColor(mau(R.color.chu_lien_ket))
-                gravity = Gravity.CENTER
-                minHeight = dp(44); setPadding(dp(12), 0, dp(4), 0)
-                setOnClickListener {
-                    Rung.nhe(it)
-                    dangChon = !dangChon; daChon.clear(); lamMoi()
-                }
-            })
-        }
+        // MUC 7.1 - BO NUT XUAT KHOI THANH CONG CU CUA TAB NAY.
+        //
+        // Tab nay doi ten thanh "Suc khoe", va nhiem vu cua no la mot cho
+        // YEN TINH de nguoi dung ghi lai cam nhan. Mot nut "Chon de xuat"
+        // nam ngay canh tieu de bien moi lan mo tab thanh mot loi moi lam
+        // viec khac - dung kieu keo su chu y ma Flowy co gang khong lam.
+        //
+        // Xuat du lieu khong mat di: no nam o Cai dat -> Bao mat & du lieu,
+        // cho cua nhung thao tac lam mot lan roi thoi. Ma xuat trong tep
+        // nay (`xuatWord`, `taoKhoi`) van nguyen ven va van duoc goi tu do.
         them(dau, 20)
 
         if (tatCa.isEmpty()) {
