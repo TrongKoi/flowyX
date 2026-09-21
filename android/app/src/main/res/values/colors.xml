@@ -130,4 +130,14 @@
     <color name="kinh_nen">#F0FDFBF6</color>
     <!-- Vach bat sang o canh tren tam kinh. -->
     <color name="kinh_sang">#B3FFFFFF</color>
+    <!-- Dong ho Tap trung: mau vanh TRONG LUC DANG XOAY (muc 6.1).
+         `dh_con_nhieu` o ban sang la #2D2A42 - gan nhu den. Giua mot man
+         hinh giay kem, mot cung tron den dot ngot la thu hut mat manh
+         nhat tren man, dung luc nguoi dung dang can nhin con so do dai.
+         Tim mid-tone giu duoc "dang chinh" ma khong thanh mot mang den.
+         Tuong phan tren nen kem #FEF4EF: 5,9:1 (AA). -->
+    <color name="dh_dang_keo">#5B50B8</color>
+    <!-- Mat dong ho nhich am hon mot chut khi dang xoay - du de thay doi
+         trang thai, khong du de hut mat. -->
+    <color name="dh_mat_dang_keo">#FFFBF7</color>
 </resources>

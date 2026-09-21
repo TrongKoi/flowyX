@@ -440,7 +440,7 @@
     <string name="gr_khong_sai">Chạm một ô. Không có câu trả lời sai.</string>
     <string name="gr_buoc_phu">Nhỏ tới mức làm xong là được phép dừng.</string>
     <string name="gr_bao_lau_phu">Kéo vòng. Hết giờ là bạn được dừng.</string>
-    <string name="gr_cam_ket">“Mình chỉ %1$s trong %2$d phút. Xong là được phép dừng.”</string>
+    <string name="gr_cam_ket">%1$s · %2$d phút. Xong là được phép dừng.</string>
     <string name="gr_viec_nay">bắt đầu việc này</string>
     <string name="nk_da_xong_hom_nay">việc xong hôm nay</string>
     <string name="nk_chuoi_mo_ta">Chuỗi ngày: %1$d ngày liên tiếp</string>
@@ -717,4 +717,13 @@
 
     <!-- Bien ban Meety khuyet tieu de (muc 8.2) -->
     <string name="bb_khong_ten">Cuộc họp không tên</string>
+
+    <!-- Buoc 3 cua Go roi: o nhap them (muc 6.3) -->
+    <string name="gr_hint_buoc_them">Rồi tới bước nào nữa?</string>
+    <string name="gr_them_buoc">+ Thêm bước</string>
+    <!-- Hop thoai xung dot phien (muc 6.3) -->
+    <string name="gr_dang_chay_tieu_de">Đang có đồng hồ chạy</string>
+    <string name="gr_dang_chay_hoi">“%1$s” còn %2$d phút. Bắt đầu việc mới ngay bây giờ?</string>
+    <string name="gr_dang_chay_bat_dau">Bắt đầu việc mới</string>
+    <string name="gr_dang_chay_giu">Giữ phiên đang chạy</string>
 </resources>

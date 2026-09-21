@@ -51,6 +51,10 @@ class FocusActivity : TrangCoTab() {
     private lateinit var tt: TrangThaiFocus
     private var vong: VongTapTrungView? = null
     private var nutBatDau: TextView? = null
+    private var nutThem1: TextView? = null
+    private var nutDung: TextView? = null
+    /** Trang thai hien tai cua "+1 phút", de khong chay lai hoat hinh moi 500 ms. */
+    private var them1DangHien: Boolean? = null
     private var tvGoiY: TextView? = null
     private val tay = Handler(Looper.getMainLooper())
 
@@ -66,12 +70,26 @@ class FocusActivity : TrangCoTab() {
         tt = TrangThaiFocus.doc(this)
         nutHanhDong.apply {
             visibility = View.VISIBLE
-            text = getString(R.string.go_roi_nut)
+            // MUC 6.1 - CHI ICON, KHONG CHU.
+            //
+            // Ghi chu "quyet dinh 4" o dau tep noi nut nay co chu vi "+"
+            // tron tran khong noi no lam gi. Dung - nhung cach chua khong
+            // phai la them chu vao thanh tieu de. Thanh tieu de la cho mat
+            // luot qua dau tien moi lan mo tab; mot chu o do la mot thu
+            // phai doc truoc khi toi duoc dong ho.
+            //
+            // Nen icon doi tu "+" tron tran sang mot icon NOI DUOC no lam
+            // gi, va phan chu chuyen het vao `contentDescription` - cho
+            // TalkBack doc va cho hop thoai giu lau hien ra.
+            text = ""
             contentDescription = getString(R.string.go_roi_mo_ta)
+            if (Build.VERSION.SDK_INT >= 26) tooltipText = getString(R.string.go_roi_nut)
+            minWidth = dp(44); minHeight = dp(44)
             setCompoundDrawablesRelativeWithIntrinsicBounds(
-                getDrawable(R.drawable.ic_cong)?.mutate()?.apply {
-                    setTint(mau(R.color.chu)); setBounds(0, 0, dp(18), dp(18))
+                getDrawable(R.drawable.ic_cau)?.mutate()?.apply {
+                    setTint(mau(R.color.chu)); setBounds(0, 0, dp(22), dp(22))
                 }, null, null, null)
+            setPadding(dp(11), 0, dp(11), 0)
             setOnClickListener {
                 Rung.nhe(it)
                 @Suppress("DEPRECATION")
@@ -125,6 +143,7 @@ class FocusActivity : TrangCoTab() {
 
     override fun ve() {
         tt = TrangThaiFocus.doc(this)
+        them1DangHien = null          // cay view dung lai -> quen trang thai cu
         val bay = System.currentTimeMillis()
 
         tieuDe(getString(if (tt.laNghi) R.string.focus_dang_nghi else R.string.tab_focus))
@@ -150,18 +169,34 @@ class FocusActivity : TrangCoTab() {
         // Dong ho
         val v = VongTapTrungView(this).apply {
             // Vach khac mau NEN de trong nhu khac vao vanh (xem VongTapTrungView).
-            datMau(mau(R.color.the), mau(R.color.nen), mau(R.color.dh_ranh),
+            datMau(mau(R.color.the), mau(R.color.dh_mat_dang_keo),
+                mau(R.color.nen), mau(R.color.dh_ranh),
                 mau(R.color.chu), mau(R.color.chu_phu),
-                mau(R.color.dh_con_nhieu), mau(R.color.dh_sap_den), mau(R.color.dh_di_ngay))
+                mau(R.color.dh_con_nhieu), mau(R.color.dh_sap_den), mau(R.color.dh_di_ngay),
+                mau(R.color.dh_dang_keo))
             datFont(GiaoDien.font(this@FocusActivity, false), GiaoDien.font(this@FocusActivity, true))
             datPhutKeo((tt.dem.tongMs / 60_000L).toInt())
             // Keo cang dai, rung cang day va manh - co tran an toan trong Rung.
             khiQuaMoc = { tyLe -> Rung.luyTien(this, tyLe) }
             khiDoiPhut = { p ->
-                tt = tt.copy(dem = tt.dem.datThoiLuong(p))
+                tt = if (tt.dem.chuaBatDau) {
+                    tt.copy(dem = tt.dem.datThoiLuong(p))
+                } else {
+                    // MUC 6.2 - keo dai ngay trong luc dang chay.
+                    //
+                    // `datThoiLuong` dat lai tong va coi nhu chua bat dau,
+                    // nen khong dung duoc o day. `themPhut` moi la thu giu
+                    // nguyen moc bat dau va chi day moc ket thuc ra xa.
+                    val them = p - DemNguoc.soPhutHien(tt.dem.conLaiMs(System.currentTimeMillis()))
+                    if (them > 0) tt.copy(dem = tt.dem.themPhut(them, System.currentTimeMillis()))
+                    else tt
+                }
                 tt.luu(this@FocusActivity)
+                if (!tt.dem.chuaBatDau) FocusBao.dat(this@FocusActivity, tt.dem)
                 capNhatDongHo()
             }
+            // Moi phut keo qua trong luc dang chay: mot nhip rung rieng.
+            khiKeoQuaPhut = { Rung.rung(this, 1) }
         }
         vong = v
         noiDung.addView(v, LinearLayout.LayoutParams(
@@ -208,10 +243,35 @@ class FocusActivity : TrangCoTab() {
             // v5: "+1 phút" chu khong phai "+5 phút". Dang chay ma con 30 giay thi
             // mot phut la du de viet not cau dang dang; nam phut la bat dau mot
             // doan moi - hai viec khac nhau.
-            hang(nutPhu(getString(R.string.focus_them_1)) {
+            //
+            // ----- MUC 6.1: BA NUT VAO RA MUOT, KHONG NHAY -----
+            //
+            // Ban truoc dua "+1 phút" vao/ra bang cach ve lai CA MAN HINH.
+            // Nut bien mat tuc thi va nut "Dừng lại" nhay ngang ra chiem
+            // cho - mot cu giat ngay giua vung ngon cai, va no xay ra dung
+            // luc nguoi dung vua bam Tạm dừng, tuc la dung luc ho dang can
+            // mot khoanh khac yen.
+            //
+            // Gio hai nut duoc dung MOT LAN va giu tham chieu lai; viec
+            // hien/an chuyen thanh mot hoat hinh 200 ms tren chinh chung.
+            // `ve()` khong con dung toi chung nua.
+            //
+            // Vi sao an "+1 phút" khi tam dung: cong them phut vao mot
+            // phien dang dung la mot cau lenh khong co nghia ro rang -
+            // cong vao cai gi, khi nao no bat dau chay? Bo no di luc do
+            // vua bot mot lua chon, vua bot mot cau hoi.
+            nutThem1 = nutPhu(getString(R.string.focus_them_1)) {
                 tt = tt.copy(dem = tt.dem.themPhut(1, System.currentTimeMillis()))
                 tt.luu(this); FocusBao.dat(this, tt.dem); capNhatDongHo()
-            }, nutPhu(getString(R.string.focus_dung_lai)) { dungLai() }, 8)
+            }
+            nutDung = nutPhu(getString(R.string.focus_dung_lai)) { dungLai() }
+            val h = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+            h.addView(nutThem1, LinearLayout.LayoutParams(0, -2, 1f))
+            h.addView(nutDung, LinearLayout.LayoutParams(0, -2, 1f)
+                .apply { marginStart = dp(8) })
+            them(h, 8)
+        } else {
+            nutThem1 = null; nutDung = null
         }
 
         capNhatDongHo()
@@ -250,6 +310,48 @@ class FocusActivity : TrangCoTab() {
         })
     }
 
+    /**
+     * Dua "+1 phút" vao / ra bang hoat hinh, khong ve lai man hinh.
+     *
+     * Hai nut chia deu be ngang bang `weight`, nen an mot cai bang
+     * `GONE` se lam cai con lai NHAY ngang ra. Thay vao do, `weight`
+     * duoc chay dan tu 1 ve 0 cung luc voi alpha: nut "Dừng lại" no
+     * rong ra deu dan trong 200 ms.
+     */
+    private fun hienNutThem1(hien: Boolean) {
+        val nut = nutThem1 ?: return
+        if (them1DangHien == hien) return
+        val dau = them1DangHien == null
+        them1DangHien = hien
+        val lp = nut.layoutParams as? LinearLayout.LayoutParams ?: return
+
+        if (dau) {                                  // lan ve dau: dat thang, khong chay
+            lp.weight = if (hien) 1f else 0f
+            nut.alpha = if (hien) 1f else 0f
+            nut.visibility = if (hien) View.VISIBLE else View.GONE
+            nut.requestLayout()
+            return
+        }
+
+        nut.visibility = View.VISIBLE
+        android.animation.ValueAnimator.ofFloat(lp.weight, if (hien) 1f else 0f).apply {
+            duration = 200
+            interpolator = android.view.animation.DecelerateInterpolator(1.4f)
+            addUpdateListener {
+                val w = it.animatedValue as Float
+                lp.weight = w
+                nut.alpha = w
+                nut.requestLayout()
+            }
+            addListener(object : android.animation.AnimatorListenerAdapter() {
+                override fun onAnimationEnd(a: android.animation.Animator) {
+                    if (!hien) nut.visibility = View.GONE
+                }
+            })
+            start()
+        }
+    }
+
     private fun nutChu(chu: String, khi: () -> Unit) = TextView(this).apply {
         text = chu; textSize = 14f; gravity = Gravity.CENTER
         setTextColor(mau(R.color.chu_lien_ket))
@@ -264,6 +366,8 @@ class FocusActivity : TrangCoTab() {
         val d = tt.dem
         val con = d.conLaiMs(bay)
         v.choKeo = d.chuaBatDau
+        // Dang chay van keo duoc, nhung chi tren vanh va chi dai ra.
+        v.choKeoKhiChay = d.dangChay
         // KHONG hien giay: chi so phut. Duoi mot phut thi mot chu "Sắp xong"
         // thay cho dem lui 59, 58, 57... (xem ghi chu dau VongTapTrungView).
         val phutHien = DemNguoc.soPhutHien(con)
@@ -282,6 +386,7 @@ class FocusActivity : TrangCoTab() {
             d.dangDung -> R.string.tiep_tuc
             else -> R.string.bat_dau
         })
+        hienNutThem1(d.dangChay)
         tvGoiY?.text = if (d.dangChay) getString(R.string.focus_xong_luc,
             java.text.SimpleDateFormat("HH:mm", java.util.Locale.US).format(java.util.Date(d.ketThucLuc!!)))
             else ""

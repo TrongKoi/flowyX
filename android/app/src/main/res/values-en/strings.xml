@@ -336,7 +336,7 @@
     <string name="gr_khong_sai">Tap one. There is no wrong answer.</string>
     <string name="gr_buoc_phu">Small enough that finishing it means you may stop.</string>
     <string name="gr_bao_lau_phu">Drag the ring. When it ends, you may stop.</string>
-    <string name="gr_cam_ket">“I will just %1$s for %2$d minutes. Then I may stop.”</string>
+    <string name="gr_cam_ket">%1$s · %2$d minutes. Finishing means you may stop.</string>
     <string name="gr_viec_nay">start this</string>
     <string name="nk_da_xong_hom_nay">tasks done today</string>
     <string name="nk_chuoi_mo_ta">Streak: %1$d days in a row</string>
@@ -594,4 +594,13 @@
     <string name="motd_task_procrastination">The task you avoid longest is usually smaller than you think.</string>
     <string name="motd_endured_harder">You have come through many days harder than this one.</string>
     <string name="motd_persistence_over_speed">Slow and coming back beats fast and giving up.</string>
+
+    <!-- Unstick step 3: extra micro-step fields (item 6.3) -->
+    <string name="gr_hint_buoc_them">And then what?</string>
+    <string name="gr_them_buoc">+ Add a step</string>
+    <!-- Session conflict dialog (item 6.3) -->
+    <string name="gr_dang_chay_tieu_de">A timer is already running</string>
+    <string name="gr_dang_chay_hoi">&quot;%1$s&quot; has %2$d minutes left. Start the new task right now?</string>
+    <string name="gr_dang_chay_bat_dau">Start the new task</string>
+    <string name="gr_dang_chay_giu">Keep the running session</string>
 </resources>

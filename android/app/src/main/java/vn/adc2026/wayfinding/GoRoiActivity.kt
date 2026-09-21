@@ -58,6 +58,21 @@ class GoRoiActivity : Activity() {
 
     private lateinit var khung: FrameLayout
     private lateinit var chamTienTrinh: LinearLayout
+    private var nutQuayLai: ImageView? = null
+
+    /**
+     * Cac buoc nho. Nhieu hon mot, va do la co y (muc 6.3).
+     *
+     * Ban truoc chi co DUNG mot o. Nhung khi nguoi dung da ngoi xuong va
+     * nghi ra duoc buoc dau tien, thuong buoc thu hai va thu ba ra theo
+     * ngay lap tuc - va bat ho nho trong dau cho toi luc bat dau la lam
+     * hong dung cai vua go duoc.
+     *
+     * Toi da ba. Khong phai gioi han ky thuat: o thu tu bien man hinh nay
+     * thanh mot danh sach viec phai lap, va lap danh sach la CHINH CAI
+     * viec ma nguoi dung dang ne.
+     */
+    private val buocNhoThem = mutableListOf<String>()
 
     override fun attachBaseContext(moi: Context) {
         super.attachBaseContext(GiaoDien.boc(moi))
@@ -74,11 +89,33 @@ class GoRoiActivity : Activity() {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(mau(R.color.nen))
         }
-        // Thanh tren: CHI mot dau X, khong co nut nao khac.
+        // ----- MUC 6.3: MOI BUOC PHAI CO DUONG QUAY LAI THAY DUOC -----
+        //
+        // Ghi chu "nguyen tac 3" o dau tep noi chi nen co MOT duong thoat,
+        // va dieu do van dung - `✕` van la loi ra duy nhat. Nhung "quay
+        // lai mot buoc" khong phai la thoat: no la sua mot cau vua tra
+        // loi hoi.
+        //
+        // Truoc day chi nut Back CUNG cua may lam duoc viec do. Tren may
+        // dung cu chi vuot thi nguoi dung phai biet vuot tu mep; tren man
+        // hinh nay - noi ho vua cham ba nut lien tiep - khong co gi goi y
+        // rang lui lai duoc. Va cam giac "lo cham nham roi, khong sua
+        // duoc" la dung thu day nguoi ta ra khoi luong.
+        //
+        // Hai icon o hai dau, y nghia khac han nhau, khong nham vao nhau:
+        // `←` ben trai lui mot buoc, `✕` ben phai thoat han.
         goc.addView(LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
             minimumHeight = dp(56)
+            nutQuayLai = ImageView(this@GoRoiActivity).apply {
+                setImageResource(R.drawable.ic_quay_lai)
+                setColorFilter(mau(R.color.chu_phu))
+                val p = dp(14); setPadding(p, p, p, p)
+                contentDescription = getString(R.string.quay_lai)
+                setOnClickListener { Rung.nhe(it); lui() }
+            }
+            addView(nutQuayLai, LinearLayout.LayoutParams(dp(52), dp(52)))
             addView(View(this@GoRoiActivity), LinearLayout.LayoutParams(0, dp(1), 1f))
             addView(ImageView(this@GoRoiActivity).apply {
                 setImageResource(R.drawable.ic_dong)
@@ -104,13 +141,20 @@ class GoRoiActivity : Activity() {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        if (buoc > 0) { buoc--; ve() } else @Suppress("DEPRECATION") super.onBackPressed()
+        if (buoc > 0) lui() else @Suppress("DEPRECATION") super.onBackPressed()
+    }
+
+    private fun lui() {
+        if (buoc > 0) { buoc--; ve() } else finish()
     }
 
     // ---------------------------------------------------------------
 
     private fun ve() {
         veCham()
+        // Buoc dau chua co gi de lui ve - an di chu khong de mot nut bam
+        // vao thi khong co gi xay ra.
+        nutQuayLai?.visibility = if (buoc > 0) View.VISIBLE else View.INVISIBLE
         val noi = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(22), dp(10), dp(22), dp(22))
@@ -249,20 +293,61 @@ class GoRoiActivity : Activity() {
                 }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(18) })
             }
         }
-        val o = EditText(this).apply {
-            hint = getString(R.string.gr_hint_buoc)
-            setText(buocNho)
-            textSize = 16f
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
-            setTextColor(mau(R.color.chu)); setHintTextColor(mau(R.color.chu_phu))
-            background = getDrawable(R.drawable.o_nhap)
-            minHeight = dp(56)
-            setPadding(dp(14), dp(10), dp(14), dp(10))
+        // ----- MOT O, ROI THEM O NEU MUON (muc 6.3) -----
+        //
+        // Man hinh mo ra van chi co DUNG MOT o - giu nguyen cam giac nhe
+        // cua ban cu. O thu hai va thu ba chi xuat hien khi nguoi dung tu
+        // bam "+ Thêm bước". Ai chi can mot buoc thi khong bao gio thay
+        // cai nao khac.
+        val cacO = mutableListOf<EditText>()
+        val cotO = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+
+        fun themO(giaTri: String, dau: Boolean) {
+            val o = EditText(this).apply {
+                hint = getString(if (dau) R.string.gr_hint_buoc else R.string.gr_hint_buoc_them)
+                setText(giaTri)
+                textSize = 16f
+                inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+                setTextColor(mau(R.color.chu)); setHintTextColor(mau(R.color.chu_phu))
+                background = getDrawable(R.drawable.o_nhap)
+                minHeight = dp(56)
+                setPadding(dp(14), dp(10), dp(14), dp(10))
+            }
+            cacO += o
+            cotO.addView(o, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(10) })
         }
-        noi.addView(o, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(16) })
+
+        themO(buocNho, true)
+        for (b in buocNhoThem) themO(b, false)
+        noi.addView(cotO, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(6) })
+
+        val nutThemBuoc = TextView(this).apply {
+            text = getString(R.string.gr_them_buoc)
+            textSize = 14.5f
+            gravity = Gravity.CENTER
+            minHeight = dp(46)
+            typeface = Typeface.DEFAULT_BOLD
+            setTextColor(mau(R.color.chu_lien_ket))
+            visibility = if (cacO.size < TOI_DA_BUOC) View.VISIBLE else View.GONE
+            setOnClickListener {
+                Rung.nhe(it)
+                // Giu lai nhung gi da go truoc khi ve lai man hinh.
+                buocNho = cacO[0].text.toString().trim()
+                buocNhoThem.clear()
+                buocNhoThem += cacO.drop(1).map { e -> e.text.toString().trim() }
+                buocNhoThem += ""
+                ve()
+            }
+        }
+        noi.addView(nutThemBuoc, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(4) })
+
         noi.addView(View(this), LinearLayout.LayoutParams(-1, 0, 1f))
         noi.addView(nutChinh(getString(R.string.tiep_tuc)) {
-            buocNho = o.text.toString().trim(); buoc++; ve()
+            buocNho = cacO[0].text.toString().trim()
+            buocNhoThem.clear()
+            // O de trong thi bo di - khong bat nguoi dung phai dien cho du.
+            buocNhoThem += cacO.drop(1).map { e -> e.text.toString().trim() }.filter { t -> t.isNotBlank() }
+            buoc++; ve()
         })
         boQua(noi)
     }
@@ -272,9 +357,11 @@ class GoRoiActivity : Activity() {
     private fun buocThoiGian(noi: LinearLayout) {
         cauHoi(noi, R.string.gr_cau_bao_lau, R.string.gr_bao_lau_phu)
         val v = VongTapTrungView(this).apply {
-            datMau(mau(R.color.the), mau(R.color.nen), mau(R.color.dh_ranh),
+            datMau(mau(R.color.the), mau(R.color.dh_mat_dang_keo),
+                mau(R.color.nen), mau(R.color.dh_ranh),
                 mau(R.color.chu), mau(R.color.chu_phu),
-                mau(R.color.dh_con_nhieu), mau(R.color.dh_sap_den), mau(R.color.dh_di_ngay))
+                mau(R.color.dh_con_nhieu), mau(R.color.dh_sap_den), mau(R.color.dh_di_ngay),
+                mau(R.color.dh_dang_keo))
             datFont(GiaoDien.font(this@GoRoiActivity, false), GiaoDien.font(this@GoRoiActivity, true))
             datPhutKeo(phut)
             khiQuaMoc = { tyLe -> Rung.luyTien(this, tyLe) }
@@ -292,8 +379,17 @@ class GoRoiActivity : Activity() {
             camKet.text = getString(R.string.gr_cam_ket,
                 buocNho.ifBlank { viec.ifBlank { getString(R.string.gr_viec_nay) } }, phut)
         }
-        // Gioi han 1..30 phut o day: day la "thu mot chut", khong phai phien lam viec.
-        v.khiDoiPhut = { p -> phut = p.coerceIn(1, 30); capNhat() }
+        // ----- NOI RONG TRAN 30 PHUT (muc 6.3) -----
+        //
+        // Y dinh ban dau la "day chi la thu mot chut". Nhung tran cung o
+        // 30 phut bien mot cau dong vien thanh mot cau TU CHOI: nguoi dung
+        // keo toi 30 roi vong khong nhuc nhich nua, ma khong co gi noi vi
+        // sao. Va voi nhieu nguoi ADHD, luc cuoi cung cung vao duoc luong
+        // thi 30 phut la qua ngan de phai dung lai xin them.
+        //
+        // 90 phut la tran moi: du dai cho mot phien that, va van du ngan
+        // de khong ai vo tinh hen minh ba tieng lien.
+        v.khiDoiPhut = { p -> phut = p.coerceIn(1, TOI_DA_PHUT_GO_ROI); capNhat() }
         capNhat()
         noi.addView(v, LinearLayout.LayoutParams(-1, -2).apply {
             topMargin = dp(10); marginStart = dp(40); marginEnd = dp(40)
@@ -303,12 +399,44 @@ class GoRoiActivity : Activity() {
         noi.addView(nutChinh(getString(R.string.go_roi_bat_dau)) { xong() })
     }
 
+    /**
+     * ----- XUNG DOT PHIEN (muc 6.3) -----
+     *
+     * Dong ho dang chay cho viec A, nguoi dung mo Go roi va dat xong viec
+     * B. `xong()` cu giu nguyen `cu.dem` neu no da bat dau - nghia la ten
+     * va buoc nho doi sang B, con dong ho van dang dem cho A. Man hinh
+     * Focus khi do hien ten B ben tren mot dong ho thuoc ve A, va khong
+     * co gi noi ra dieu do.
+     *
+     * Gio hoi mot cau, DUNG MOT LAN, va chi khi that su co xung dot:
+     * khong co dong ho nao dang chay thi khong hoi gi ca - them mot hop
+     * thoai vao luong cua nguoi dang te liet la them mot buc tuong.
+     */
     private fun xong() {
         val cu = TrangThaiFocus.doc(this)
+        if (cu.dem.dangChay) {
+            val con = DemNguoc.soPhutHien(cu.dem.conLaiMs(System.currentTimeMillis()))
+            android.app.AlertDialog.Builder(this)
+                .setTitle(R.string.gr_dang_chay_tieu_de)
+                .setMessage(getString(R.string.gr_dang_chay_hoi,
+                    cu.ten ?: getString(R.string.gr_viec_nay), con))
+                // Bat dau viec moi: dong ho dat lai theo so phut vua chon.
+                .setPositiveButton(R.string.gr_dang_chay_bat_dau) { _, _ -> luuVaDong(cu, datLai = true) }
+                // Giu phien cu: chi ghi lai ten + cac buoc, dong ho khong dong toi.
+                .setNegativeButton(R.string.gr_dang_chay_giu) { _, _ -> luuVaDong(cu, datLai = false) }
+                .hien()
+            return
+        }
+        luuVaDong(cu, datLai = true)
+    }
+
+    private fun luuVaDong(cu: TrangThaiFocus, datLai: Boolean) {
         TrangThaiFocus(
-            dem = if (cu.dem.chuaBatDau) DemNguoc().datThoiLuong(phut) else cu.dem,
+            dem = if (cu.dem.chuaBatDau || datLai) DemNguoc().datThoiLuong(phut) else cu.dem,
             ten = viec.ifBlank { null },
-            buocDau = buocNho.ifBlank { null },
+            buocDau = (listOf(buocNho) + buocNhoThem)
+                .map { it.trim() }.filter { it.isNotBlank() }
+                .joinToString("\n").ifBlank { null },
             lyDo = cu.lyDo,
             keHoachId = cu.keHoachId,
         ).luu(this)
@@ -329,4 +457,11 @@ class GoRoiActivity : Activity() {
 
     private fun dp(n: Int) = (n * resources.displayMetrics.density).toInt()
     private fun mau(id: Int) = resources.getColor(id, theme)
+
+    private companion object {
+        /** Toi da ba o. Xem ghi chu o `buocNhoThem`. */
+        const val TOI_DA_BUOC = 3
+        /** Xem ghi chu tai `khiDoiPhut` cua buoc 4. */
+        const val TOI_DA_PHUT_GO_ROI = 90
+    }
 }

@@ -101,4 +101,8 @@
     <color name="kinh_nen">#EB1B1C2B</color>
     <!-- Vach bat sang: rat nhe o che do toi - mot vach trang manh tren nen muc dem da du thay, manh hon la thanh mot duong ke choi mat. -->
     <color name="kinh_sang">#1FFFFFFF</color>
+    <!-- Xem ghi chu o values/colors.xml. Ban dem dung tim oai huong - cung
+         ho mau voi `chu_lien_ket`, va tren nen #121320 dat 7,5:1 (AAA). -->
+    <color name="dh_dang_keo">#A99BF0</color>
+    <color name="dh_mat_dang_keo">#24263A</color>
 </resources>
