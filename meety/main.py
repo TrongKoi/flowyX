@@ -201,6 +201,21 @@ def _ingest_text(path: Path, config: RunConfig) -> tuple[Transcript, IngestRepor
         raise SystemExit(str(exc)) from exc
 
     _print_ingest_report(outcome.report)
+    _ghi_nho(
+        meeting_id=meeting_id,
+        tien_kiem={
+            "dinh_dang": outcome.report.source_format.value,
+            "so_cue": outcome.report.cue_count,
+            "so_segment": outcome.report.segment_count,
+            "so_nguoi_noi": outcome.report.speaker_count,
+            "so_nguoi_co_ten": outcome.report.named_speaker_count,
+            "tong_ky_tu": outcome.report.total_chars,
+            "canh_bao": [
+                {"ma": w.code, "muc": w.severity, "loi_nhan": w.message}
+                for w in outcome.report.warnings
+            ],
+        },
+    )
 
     if outcome.report.blocking and not config.force:
         raise SystemExit(
@@ -499,6 +514,64 @@ def _resolve_from_stage(config: RunConfig, artifacts: Path) -> Stage | None:
     return following
 
 
+# --------------------------------------------------------------------------- #
+# Artifact chẩn đoán khi pipeline đổ (mục 8.3, vấn đề 3)
+# --------------------------------------------------------------------------- #
+#
+# Trước đây, hỏng ở bất kỳ đâu cũng chỉ để lại đúng một dòng log rồi
+# ``return 1``. Thư mục kết quả trống trơn — không có gì để mở ra xem, và
+# càng không có gì để đính kèm khi báo lỗi. Đường CLI và đường server còn
+# hỏng theo hai kiểu khác nhau: CLI chặn sớm tại cổng B9, còn server chạy
+# sâu vào LLM rồi lỗi ngầm, mất luôn cả phần đã làm được.
+#
+# Giờ cả hai đường đều ghi ra ``<meeting>_diagnostic.json``: nguồn là gì,
+# nhận dạng ra định dạng nào, dựng được bao nhiêu segment, cảnh báo tiền
+# kiểm nào, dừng ở chặng nào, và lỗi gì. Đủ để chẩn đoán mà không cần
+# chạy lại — và chạy lại thì tốn quota.
+
+_CHAN_DOAN: dict[str, object] = {}
+
+
+def _ghi_nho(**gi) -> None:
+    """Ghi lại thứ vừa biết được, để dùng nếu lát nữa pipeline đổ."""
+    _CHAN_DOAN.update(gi)
+
+
+def _ghi_chan_doan(config: RunConfig, exc: BaseException) -> Path | None:
+    """Ghi artifact chẩn đoán. Không bao giờ được ném lỗi ra ngoài.
+
+    Hàm này chạy trên đường xử lý lỗi. Nếu nó tự đổ thì nó che mất chính
+    cái lỗi mà nó sinh ra để giải thích.
+    """
+    try:
+        import traceback
+
+        config.output_dir.mkdir(parents=True, exist_ok=True)
+        ten = _CHAN_DOAN.get("meeting_id") or "khong_ro"
+        dich = config.output_dir / f"{ten}_diagnostic.json"
+        goi = {
+            "schema": "meety.diagnostic.v1",
+            "ghi_luc": dt.datetime.now().isoformat(timespec="seconds"),
+            "duong_chay": _CHAN_DOAN.get("duong_chay", "cli"),
+            "nguon": str(config.input_path) if getattr(config, "input_path", None) else None,
+            "dung_o_chang": _CHAN_DOAN.get("chang"),
+            "loi": {
+                "kieu": type(exc).__name__,
+                "thong_diep": str(exc),
+                "vet": traceback.format_exc(limit=12),
+            },
+            "tien_kiem": _CHAN_DOAN.get("tien_kiem"),
+            "da_lam_duoc": _CHAN_DOAN.get("da_lam_duoc", []),
+        }
+        dich.write_text(
+            json.dumps(goi, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        return dich
+    except Exception:  # noqa: BLE001 - xem docstring
+        logger.debug("Không ghi được artifact chẩn đoán", exc_info=True)
+        return None
+
+
 def _print_stage_event(event: StageEvent) -> None:
     """In tiến độ ra terminal.
 
@@ -506,6 +579,11 @@ def _print_stage_event(event: StageEvent) -> None:
     hàm này bằng một lời gọi đẩy sự kiện qua websocket, dùng lại y nguyên
     phần điều phối.
     """
+    _ghi_nho(chang=event.stage.value)
+    if event.status is StageStatus.DONE:
+        da = list(_CHAN_DOAN.get("da_lam_duoc", []))
+        da.append(event.stage.value)
+        _ghi_nho(da_lam_duoc=da)
     if event.status is StageStatus.STARTED:
         return
     marks = {
@@ -826,10 +904,19 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     try:
         minutes = run_pipeline(config)
-    except SystemExit:
+    except SystemExit as exc:
+        # Cổng B9 dừng ở đây. Trước đây đó là đường ra SẠCH SẼ nhất mà
+        # cũng là đường để lại ít dấu vết nhất: thoát luôn, thư mục kết
+        # quả trống. Giờ vẫn dừng, nhưng để lại lý do đọc được.
+        duong = _ghi_chan_doan(config, exc)
+        if duong:
+            print(f"[chan doan] {duong}")
         raise
     except Exception as exc:
         logger.error("Pipeline thất bại: %s", exc, exc_info=args.verbose)
+        duong = _ghi_chan_doan(config, exc)
+        if duong:
+            print(f"[chan doan] {duong}")
         return 1
 
     config.output_dir.mkdir(parents=True, exist_ok=True)

@@ -164,7 +164,7 @@ class MeetyActivity : TrangCoTab() {
                         String(s.readBytes().take(5_000_000).toByteArray(), Charsets.UTF_8)
                     }
                 } catch (_: Exception) { null }
-                val b = chu?.let { SoBienBan.tuMeety(it) }
+                val b = chu?.let { SoBienBan.tuMeety(it, getString(R.string.bb_khong_ten)) }
                 if (b == null) {
                     ThongBao.hien(this, getString(R.string.bb_khong_phai_meety))
                 } else {

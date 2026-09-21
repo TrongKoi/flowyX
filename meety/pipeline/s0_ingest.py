@@ -262,6 +262,19 @@ _VOICE_SPAN = re.compile(r"<v(?:\.[^\s>]+)*\s+([^>]+)>(.*?)(?:</v>|$)", re.DOTAL
 _ANY_TAG = re.compile(r"</?[cvibu](?:\.[^\s>]*)?(?:\s[^>]*)?>|</[cvibu]>")
 _SRT_INDEX = re.compile(r"^\d+$")
 
+# Dau mo dau caption bao "doi nguoi noi" - khong mang noi dung.
+_CAPTION_PREFIX = re.compile(r"^(?:>{2,}|[-–—•])\s*")
+# "[Ten] noi dung" hoac "(Ten) noi dung"
+_BRACKET_SPEAKER = re.compile(r"^[\[(](?P<name>[^\])]{1,60})[\])]\s*:?\s*(?P<body>.*)$", re.DOTALL)
+# "Ten (00:12:34): noi dung" - moc thoi gian trong ngoac, roi moi toi
+# dau hai cham. Phai co mau rieng: `partition(":")` cat ngay tai dau hai
+# cham DAU TIEN, ma dau do nam trong chinh moc thoi gian.
+_NAME_TIMESTAMP = re.compile(
+    r"^(?P<name>[^:()]{1,60}?)\s*\([\d:.,\s\-]+\)\s*:\s*(?P<body>.*)$", re.DOTALL
+)
+# "Ten - noi dung" / "Ten — noi dung"
+_DASH_SPEAKER = re.compile(r"^(?P<name>[^\-–—]{1,60}?)\s+[-–—]\s+(?P<body>.+)$", re.DOTALL)
+
 
 _BOM_ENCODINGS: tuple[tuple[bytes, str], ...] = (
     (b"\xef\xbb\xbf", "utf-8-sig"),
@@ -464,6 +477,28 @@ def _split_speaker(text: str) -> tuple[str | None, str]:
     """Tách ``"Tên: nội dung"`` thành ``("Tên", "nội dung")``.
 
     Trả về ``(None, text)`` khi không tìm thấy tên đáng tin.
+
+    Bản trước chỉ nhận đúng hai kiểu: thẻ ``<v Tên>`` của Teams và
+    ``Tên: nội dung``. Mọi kiểu khác rơi hết xuống ``(None, text)``, nên
+    ``speaker_count`` bị quy về 1 và cổng B9 chặn cả file — một file
+    transcript hoàn toàn bình thường bị từ chối vì phần mềm xuất nó dùng
+    dấu ``>>`` thay vì dấu hai chấm trần.
+
+    Bốn kiểu được thêm, đều lấy từ file thật:
+
+    ``>> Tên: nội dung``
+        Zoom và phụ đề trực tiếp. Dấu ``>>`` là quy ước caption cho
+        "đổi người nói".
+
+    ``[Tên] nội dung`` / ``(Tên) nội dung``
+        Nhiều công cụ chép lời tự động, và cả bản xuất của Otter.
+
+    ``- Tên: nội dung``
+        Bản xuất dạng danh sách.
+
+    ``Tên - nội dung`` / ``Tên — nội dung``
+        Gạch ngang thay dấu hai chấm. Chỉ nhận khi vế trái ngắn và trông
+        như tên, vì gạch ngang xuất hiện rất nhiều trong câu bình thường.
     """
     stripped = text.strip()
 
@@ -472,14 +507,51 @@ def _split_speaker(text: str) -> tuple[str | None, str]:
     if voice:
         return voice.group(1).strip() or None, voice.group(2).strip()
 
-    # Dạng "Tên (00:12:34): nội dung" — bỏ phần trong ngoặc rồi xét tiếp.
+    # Dấu mở đầu của caption: ">>", ">>>", "-", "–", "•". Bỏ đi rồi xét
+    # tiếp như thường — chúng chỉ báo "đổi người nói", không mang nội dung.
+    stripped = _CAPTION_PREFIX.sub("", stripped, count=1).strip()
+
+    # "[Tên] nội dung" và "(Tên) nội dung".
+    bracket = _BRACKET_SPEAKER.match(stripped)
+    if bracket:
+        candidate = bracket.group("name").strip()
+        if _looks_like_name(candidate):
+            return candidate, bracket.group("body").strip()
+
+    # Dạng "Tên (00:12:34): nội dung".
+    #
+    # Phải xử lý TRƯỚC ``partition(":")``. Bản cũ để nó rơi xuống
+    # ``partition`` và tự tin rằng ``re.sub`` sẽ gỡ phần ngoặc ra — nhưng
+    # ``partition`` cắt tại dấu hai chấm ĐẦU TIÊN, mà dấu đó nằm ngay
+    # trong mốc thời gian: ``"Khôi (00"`` / ``"12:34): nội dung"``. Vế
+    # trái không còn dấu ngoặc đóng nên ``re.sub`` không khớp gì cả, và
+    # cả dòng rơi về ``(None, text)``. Kiểu này có trong bản xuất của
+    # Zoom, nên mọi file Zoom đều bị quy về một người nói.
+    stamped = _NAME_TIMESTAMP.match(stripped)
+    if stamped:
+        candidate = stamped.group("name").strip()
+        if _looks_like_name(candidate):
+            return candidate, stamped.group("body").strip()
+
     head, separator, tail = stripped.partition(":")
-    if not separator:
+    if separator:
+        candidate = re.sub(r"\((?:[^()]*)\)\s*$", "", head).strip()
+        if _looks_like_name(candidate):
+            return candidate, tail.strip()
         return None, stripped
 
-    candidate = re.sub(r"\((?:[^()]*)\)\s*$", "", head).strip()
-    if _looks_like_name(candidate):
-        return candidate, tail.strip()
+    # "Tên - nội dung" / "Tên — nội dung".
+    #
+    # Nguy hiểm hơn hai kiểu trên vì gạch ngang có mặt khắp nơi trong câu
+    # tiếng Việt, nên siết thêm: vế trái tối đa bốn từ và không kết thúc
+    # bằng dấu câu. "Khôi — tôi nghĩ nên hoãn" nhận; "chúng ta nên chốt —
+    # nhưng chờ Huy" không.
+    dash = _DASH_SPEAKER.match(stripped)
+    if dash:
+        candidate = dash.group("name").strip()
+        if len(candidate.split()) <= 4 and _looks_like_name(candidate):
+            return candidate, dash.group("body").strip()
+
     return None, stripped
 
 
@@ -894,14 +966,30 @@ def _run_quality_checks(
     Gemini và trả về một biên bản trông có vẻ đúng nhưng rỗng nội dung.
     """
     if report.speaker_count <= 1:
+        # CẢNH BÁO, KHÔNG CHẶN (mục 8.3).
+        #
+        # Trước đây đây là ``severity="high"``, nên ``report.blocking``
+        # khác rỗng và CLI dừng ngay trước khi gọi LLM — không có
+        # ``_minutes.json`` nào được ghi ra.
+        #
+        # Nhưng "chỉ một người nói" hầu như luôn là chuyện ĐỊNH DẠNG chứ
+        # không phải file hỏng: bản xuất không gắn nhãn người nói, hoặc
+        # gắn theo kiểu mà bộ tách chưa biết. Và kể cả khi đúng là một
+        # người thật — ghi âm ghi chú cá nhân, bài giảng — thì đó vẫn là
+        # đầu vào hợp lệ, vẫn trích được việc cần làm.
+        #
+        # Cái giá của hai hướng sai không cân nhau: chặn nhầm thì mất
+        # trắng cả buổi họp; chạy tiếp thì tốn thêm vài request và người
+        # dùng vẫn thấy cảnh báo trong báo cáo tiền kiểm.
         report.warnings.append(
             IngestWarning(
                 code="SINGLE_SPEAKER",
-                severity="high",
+                severity="medium",
                 message=(
-                    "Chỉ nhận ra một người nói. Mọi cam kết sẽ không quy được "
-                    "về ai. Hãy xuất transcript kèm tên người nói từ Zoom/Meet/"
-                    "Teams, hoặc khai báo --attendees."
+                    "Chỉ nhận ra một người nói, nên cam kết sẽ không quy được "
+                    "về ai. Vẫn chạy tiếp. Muốn quy trách nhiệm rõ ràng thì "
+                    "xuất transcript kèm tên người nói từ Zoom/Meet/Teams, "
+                    "hoặc khai báo --attendees."
                 ),
             )
         )
@@ -958,10 +1046,13 @@ def _run_quality_checks(
         )
 
     if len(segments) < 3:
+        # Chỉ chặn khi KHÔNG dựng được segment nào — lúc đó thật sự không
+        # có gì để đưa cho LLM. Một hai segment vẫn là nội dung: cuộc họp
+        # đứng ba phút, hay một ghi chú thoại, đều rơi vào đây.
         report.warnings.append(
             IngestWarning(
                 code="TOO_FEW_SEGMENTS",
-                severity="high",
+                severity="high" if not segments else "medium",
                 message=(
                     f"Chỉ dựng được {len(segments)} segment. Kiểm tra lại định "
                     "dạng file đầu vào."
@@ -1019,10 +1110,14 @@ def _run_quality_checks(
         )
 
     if report.total_chars < 200:
+        # Ngưỡng 200 ký tự là ước lượng, không phải ranh giới thật: một
+        # buổi đứng nhanh có thể chỉ 150 ký tự mà vẫn có đủ một quyết định
+        # và hai đầu việc. Chặn cứng ở đó là vứt đi những buổi họp ngắn —
+        # đúng loại mà người ADHD hay quên nhất.
         report.warnings.append(
             IngestWarning(
                 code="LOW_TEXT_VOLUME",
-                severity="high",
+                severity="high" if report.total_chars == 0 else "medium",
                 message=(
                     f"Chỉ có {report.total_chars} ký tự nội dung. Quá ít để "
                     "trích xuất quyết định và công việc."

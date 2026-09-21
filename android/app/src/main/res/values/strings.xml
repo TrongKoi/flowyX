@@ -683,4 +683,7 @@
 
     <!-- Lap theo thu: %s la danh sach thu, vd "T2, T5" -->
     <string name="lap_theo_thu_tuan">%s hằng tuần</string>
+
+    <!-- Bien ban Meety khuyet tieu de (muc 8.2) -->
+    <string name="bb_khong_ten">Cuộc họp không tên</string>
 </resources>

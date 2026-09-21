@@ -1,0 +1,21 @@
+[
+  {
+    "chunk_id": "c_all",
+    "topic": "Rà soát sprint 23 và chốt lịch phát hành version 2.4",
+    "discussion_points": [],
+    "decisions": [],
+    "action_items": [],
+    "risks": [],
+    "metrics": [],
+    "open_questions": [],
+    "extraction_notes": {
+      "audio_quality_issues": [
+        "Segment s_0021 có đoạn không nghe rõ ở đầu câu; nội dung về thời gian review của Apple độ tin cậy thấp."
+      ],
+      "ambiguities": [
+        "Segment s_0010 không nêu rõ ai chịu trách nhiệm fix môi trường staging. Đã để assignee_raw = null thay vì suy đoán.",
+        "Cả hai quyết định về ngày release đều xuất hiện trong chunk này với status 'decided'. Cần bước Reconcile phân định theo thứ tự thời gian."
+      ]
+    }
+  }
+]

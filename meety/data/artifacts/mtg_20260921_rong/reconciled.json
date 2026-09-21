@@ -1,0 +1,28 @@
+{
+  "reconcile_id": "rec_mtg_20260921_rong_v1",
+  "meeting_id": "mtg_20260921_rong",
+  "anchor": {
+    "meeting_date": "2026-09-21",
+    "timezone": "Asia/Ho_Chi_Minh"
+  },
+  "discussion_points": [],
+  "decisions": [],
+  "action_items": [],
+  "risks": [],
+  "metrics": [],
+  "open_questions": [],
+  "next_meeting": null,
+  "warnings": [
+    {
+      "code": "TRANSCRIPT_GAPS",
+      "message": "Segment s_0021 có đoạn không nghe rõ ở đầu câu; nội dung về thời gian review của Apple độ tin cậy thấp.",
+      "affected_items": [],
+      "severity": "low"
+    }
+  ],
+  "deduplication_log": [],
+  "unresolved_conflicts": [
+    "Segment s_0010 không nêu rõ ai chịu trách nhiệm fix môi trường staging. Đã để assignee_raw = null thay vì suy đoán.",
+    "Cả hai quyết định về ngày release đều xuất hiện trong chunk này với status 'decided'. Cần bước Reconcile phân định theo thứ tự thời gian."
+  ]
+}

@@ -21,6 +21,7 @@ import pytest
 
 from pipeline.s0_ingest import (
     UNKNOWN_LABEL,
+    _split_speaker,
     IngestPolicy,
     SourceFormat,
     detect_format,
@@ -405,9 +406,19 @@ class TestRunIngest:
 
 
 class TestQualityGate:
-    def test_mot_nguoi_noi_bi_canh_bao_muc_cao(self) -> None:
+    def test_mot_nguoi_noi_duoc_canh_bao_nhung_khong_bi_chan(self) -> None:
+        """Mot nguoi noi la chuyen DINH DANG, khong phai file hong (muc 8.3).
+
+        Bai nay truoc day khang dinh dieu nguoc lai - ``assert
+        outcome.report.blocking``. Do chinh la hanh vi da chan ca pipeline
+        truoc khi kip ghi ``_minutes.json``: ban xuat khong gan nhan nguoi
+        noi, hoac gan theo kieu bo tach chua biet, la mat trang ca buoi hop.
+
+        Canh bao van phai con - nguoi dung can biet cam ket se khong quy
+        duoc ve ai - nhung no khong duoc dung pipeline.
+        """
         text = "\n".join(
-            f"đoạn nói thứ {i} với đủ nội dung để không bị coi là quá ngắn quá"
+            f"doan noi thu {i} voi du noi dung de khong bi coi la qua ngan qua"
             for i in range(40)
         )
         outcome = run_ingest(
@@ -416,7 +427,32 @@ class TestQualityGate:
         codes = {w.code for w in outcome.report.warnings}
         assert "SINGLE_SPEAKER" in codes
         assert "NO_SPEAKER_NAMES" in codes
-        assert outcome.report.blocking
+        assert not outcome.report.blocking
+
+    def test_hop_ngan_khong_bi_chan(self) -> None:
+        """Ha cap ba cong khong duoc bien thanh "nuot moi thu".
+
+        Ranh gioi moi: mot buoi dung nhanh - ba luot thoai, duoi 200 ky tu -
+        van phai chay het. Day dung la loai buoi hop ma nguoi ADHD quen
+        nhieu nhat, va la loai ma nguong 200 ky tu cu vut di.
+
+        File RONG HAN thi van bi tu choi, nhung o mot lop som hon: parser
+        khong dung duoc luot thoai nao nen nem ValueError truoc khi toi
+        cong B9. Chan o do con dut khoat hon.
+        """
+        ngan = "Khoi: xong phan mau roi\nHuy: minh lo phan lich\nKhoi: chot"
+        outcome = run_ingest(
+            Path("dung_nhanh.txt"), text=ngan, meta=_meta(), meeting_id="mtg_ngan"
+        )
+        codes = {w.code for w in outcome.report.warnings}
+        assert "LOW_TEXT_VOLUME" in codes      # van canh bao
+        assert not outcome.report.blocking      # nhung khong chan
+
+    def test_file_rong_bi_tu_choi_o_lop_parser(self) -> None:
+        with pytest.raises(ValueError):
+            run_ingest(
+                Path("rong.txt"), text="   ", meta=_meta(), meeting_id="mtg_rong"
+            )
 
     def test_moc_thoi_gian_suy_ra_duoc_ghi_nhan(self) -> None:
         outcome = _ingest("plain_no_timestamp.txt")
@@ -574,3 +610,55 @@ class TestReversedTimestamps:
             Path("nguoc.vtt"), text=text, meta=_meta(), meeting_id="m"
         )
         assert "ZERO_LENGTH_SEGMENTS" in {w.code for w in outcome.report.warnings}
+
+# --------------------------------------------------------------------------- #
+
+
+class TestTachNguoiNoi:
+    """Bo tach nguoi noi - muc 8.3, van de 2.
+
+    Ban truoc chi nhan hai kieu: the ``<v Ten>`` cua Teams va
+    ``Ten: noi dung``. Moi kieu khac roi ve ``(None, text)``, nen
+    ``speaker_count`` bi quy ve 1 va cong B9 chan ca file. Nghia la mot
+    transcript binh thuong bi tu choi chi vi phan mem xuat no dung dau
+    ``>>`` thay vi dau hai cham tran.
+
+    Moi bai duoi day la mot kieu lay tu ban xuat that.
+    """
+
+    def test_teams_voice_span(self) -> None:
+        assert _split_speaker("<v Khoi>xin chao moi nguoi</v>") == ("Khoi", "xin chao moi nguoi")
+
+    def test_hai_cham_tran(self) -> None:
+        assert _split_speaker("Khoi: xin chao") == ("Khoi", "xin chao")
+
+    def test_kem_moc_thoi_gian_trong_ngoac(self) -> None:
+        assert _split_speaker("Khoi (00:12:34): xin chao") == ("Khoi", "xin chao")
+
+    def test_dau_mui_ten_kep_cua_zoom(self) -> None:
+        assert _split_speaker(">> Khoi: xin chao") == ("Khoi", "xin chao")
+        assert _split_speaker(">>> Khoi: xin chao") == ("Khoi", "xin chao")
+
+    def test_ten_trong_ngoac_vuong(self) -> None:
+        assert _split_speaker("[Khoi] xin chao") == ("Khoi", "xin chao")
+        assert _split_speaker("[Khoi]: xin chao") == ("Khoi", "xin chao")
+
+    def test_ten_trong_ngoac_don(self) -> None:
+        assert _split_speaker("(Khoi) xin chao") == ("Khoi", "xin chao")
+
+    def test_dang_danh_sach_co_gach_dau_dong(self) -> None:
+        assert _split_speaker("- Khoi: xin chao") == ("Khoi", "xin chao")
+
+    def test_gach_ngang_thay_hai_cham(self) -> None:
+        assert _split_speaker("Khoi - toi nghi nen hoan") == ("Khoi", "toi nghi nen hoan")
+        assert _split_speaker("Khoi — toi nghi nen hoan") == ("Khoi", "toi nghi nen hoan")
+
+    def test_cau_thuong_co_gach_ngang_thi_KHONG_nhan_nham(self) -> None:
+        """Gach ngang co mat khap noi trong cau, nen ve trai phai that su
+        trong nhu ten: toi da bon tu, va co chu hoa."""
+        cau = "chung ta nen chot phuong an nay - nhung con cho Huy tra loi"
+        assert _split_speaker(cau) == (None, cau)
+
+    def test_khong_co_ten_thi_tra_nguyen_cau(self) -> None:
+        assert _split_speaker("chi la mot cau binh thuong") == (
+            None, "chi la mot cau binh thuong")

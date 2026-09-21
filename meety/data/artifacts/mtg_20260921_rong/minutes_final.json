@@ -1,0 +1,135 @@
+{
+  "minutes_id": "min_mtg_20260921_rong_v1",
+  "meeting_id": "mtg_20260921_rong",
+  "version": 1,
+  "generated_at": "2026-09-21T00:13:18.052014Z",
+  "pipeline": {
+    "asr_provider": "import/plain_text",
+    "llm_provider": "mock/mock",
+    "prompt_versions": {
+      "extract": "extract.vi.v1.2",
+      "reconcile": "reconcile.vi.v1.1",
+      "compose": "compose.vi.v1.0"
+    },
+    "total_llm_requests": 1,
+    "total_tokens_estimate": 2621,
+    "cost_usd": 0.0
+  },
+  "meta": {
+    "meeting_title": "rong",
+    "date": "2026-09-21",
+    "duration_minutes": 0,
+    "meeting_type": "other",
+    "language": "en",
+    "attendees": [
+      {
+        "person_id": null,
+        "display_name": "SPEAKER_00",
+        "speaker_label": "SPEAKER_00",
+        "role": null,
+        "talk_time_pct": 100.0,
+        "identification_method": "unidentified"
+      }
+    ]
+  },
+  "executive_summary": {
+    "tldr": [
+      "Release version 2.4 được lùi từ 26/07 sang thứ ba ngày 28/07 do QA chưa hoàn tất kiểm thử.",
+      "API thanh toán đã deploy lên staging; module export báo cáo còn vướng query chậm 8 giây.",
+      "Crash rate bản beta giảm từ 4.1% xuống 2.3% so với sprint trước.",
+      "Môi trường staging lỗi đang chặn kiểm thử social login và chưa có người phụ trách.",
+      "Việc migrate dữ liệu khách hàng enterprise được hoãn sang cuộc họp tuần sau."
+    ],
+    "paragraphs": [
+      "Cuộc họp tập trung vào hai nội dung: rà soát tiến độ sprint 23 và chốt thời điểm phát hành version 2.4. Về phía backend, API thanh toán đã được merge và deploy lên môi trường staging, trong khi module export báo cáo vẫn bị chặn bởi vấn đề hiệu năng với thời gian truy vấn khoảng 8 giây trên dữ liệu một năm. Về phía QA, khoảng 70% test case đã hoàn thành và crash rate bản beta giảm còn 2.3% so với 4.1% ở sprint trước.",
+      "Kế hoạch phát hành ban đầu được đề xuất vào cuối tuần này nhằm kịp campaign marketing đầu tháng 8. Sau khi QA nêu rằng còn 30% test case chưa hoàn thành và cảnh báo nguy cơ phải rollback, cùng ý kiến của backend về khả năng timeout khi export báo cáo, cuộc họp thống nhất lùi lịch phát hành sang thứ ba ngày 28/07."
+    ]
+  },
+  "chapters": [
+    {
+      "title": "rong",
+      "start_ms": 0,
+      "end_ms": 2142,
+      "summary": "Cuộc họp ghi nhận 0 quyết định và 0 công việc được giao.",
+      "consensus_level": "unspecified"
+    }
+  ],
+  "discussion_points": [],
+  "decisions": [],
+  "action_items": [],
+  "risks": [],
+  "metrics": [],
+  "open_questions": [],
+  "next_meeting": null,
+  "quality_report": {
+    "overall_confidence": "low",
+    "needs_human_review": true,
+    "warnings": [
+      {
+        "code": "TRANSCRIPT_GAPS",
+        "message": "Segment s_0021 có đoạn không nghe rõ ở đầu câu; nội dung về thời gian review của Apple độ tin cậy thấp.",
+        "affected_items": [],
+        "severity": "low"
+      }
+    ]
+  },
+  "validation": {
+    "validated_at": "2026-09-21T00:13:18.053069Z",
+    "validator_version": "1.0.0",
+    "schema_valid": true,
+    "checks": {
+      "evidence_ids_exist": {
+        "passed": true,
+        "checked": 0,
+        "failed": 0,
+        "detail": "Mọi evidence_segment_ids phải trỏ tới segment có thật"
+      },
+      "quotes_match_transcript": {
+        "passed": true,
+        "checked": 0,
+        "failed": 0,
+        "detail": "Không có trích dẫn"
+      },
+      "assignees_in_attendees": {
+        "passed": true,
+        "checked": 0,
+        "failed": 0,
+        "detail": "Assignee phải nằm trong danh sách người tham dự"
+      },
+      "dates_within_valid_range": {
+        "passed": true,
+        "checked": 0,
+        "failed": 0,
+        "detail": "due_date phải có due_raw làm nguồn và nằm trong tương lai hợp lý"
+      },
+      "supersession_integrity": {
+        "passed": true,
+        "checked": 0,
+        "failed": 0,
+        "detail": "Quan hệ thay thế phải nhất quán hai chiều và đúng chiều thời gian"
+      },
+      "numbers_are_grounded": {
+        "passed": true,
+        "checked": 0,
+        "failed": 0,
+        "detail": "Mọi con số trong chỉ số phải xuất hiện nguyên vẹn trong transcript"
+      },
+      "prose_entities_known": {
+        "passed": true,
+        "checked": 9,
+        "failed": 0,
+        "detail": "Tên riêng giữa câu phải truy được về transcript"
+      },
+      "evidence_quality": {
+        "passed": true,
+        "checked": 0,
+        "failed": 0,
+        "detail": "Quyết định và công việc không được chỉ dựa trên segment kém tin cậy"
+      }
+    },
+    "grounding_score": 1.0,
+    "items_rejected": [],
+    "items_downgraded": [],
+    "llm_judge_invoked": false
+  }
+}

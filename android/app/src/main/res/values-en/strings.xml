@@ -555,4 +555,7 @@
 
     <!-- Repeat on weekdays: %s is the day list, e.g. "Mon, Thu" -->
     <string name="lap_theo_thu_tuan">%s weekly</string>
+
+    <!-- Bien ban Meety khuyet tieu de (muc 8.2) -->
+    <string name="bb_khong_ten">Untitled meeting</string>
 </resources>

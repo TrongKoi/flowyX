@@ -81,6 +81,13 @@ class SoBienBan private constructor(val danhSach: MutableList<BienBan>) {
         const val TOI_DA = 200
         const val NGUON_TAY = "tay"
         const val NGUON_MEETY = "meety"
+
+        /**
+         * Ten dat cho bien ban khuyet tieu de. Man hinh goi `tuMeety` nen
+         * truyen ban da dich (`R.string.bb_khong_ten`); mac dinh nay chi
+         * de test va cac duong goi khong co Context van chay duoc.
+         */
+        const val TEN_THAY_THE = "Cuộc họp không tên"
         private const val PREFS = "flowy_bien_ban"
         private const val KHOA = "danh_sach"
 
@@ -165,8 +172,56 @@ class SoBienBan private constructor(val danhSach: MutableList<BienBan>) {
          *
          * Tra ve null neu tep khong phai bien ban Meety.
          */
-        fun tuMeety(json: String): BienBan? = try {
+        /**
+         * ============================================================
+         * NHAN DANG MOT TEP CO PHAI BIEN BAN MEETY KHONG (muc 8.2)
+         * ============================================================
+         *
+         * Ban truoc chi kiem dung mot dieu: `meta.meeting_title` co rong
+         * khong. Mot cong nhu vay sai ca hai chieu:
+         *
+         *   · NHAN NHAM. Bat cu tep JSON nao tinh co co `meta.meeting_title`
+         *     deu duoc nuot, ke ca khi khong co mot quyet dinh, mot dau
+         *     viec hay mot dong tom tat nao. Nguoi dung thay mot ban bien
+         *     ban trong ron va khong hieu vi sao.
+         *
+         *   · TU CHOI NHAM. Mot bien ban day du nhung khuyet tieu de - dieu
+         *     hoan toan binh thuong voi cuoc hop khong ten - bi vut di sach
+         *     se, keo theo ca quyet dinh lan dau viec.
+         *
+         * Gio kiem CAU TRUC: phai co `meta`, VA phai co it nhat mot trong
+         * ba khoi mang y nghia (`decisions`, `action_items`,
+         * `executive_summary`). Ba khoi do la thu phan biet mot bien ban
+         * DA PHAN TICH voi mot ban ghi tho - ban ghi tho co `segments` va
+         * `speakers`, khong co khoi nao trong ba.
+         *
+         * Neu tep co `validation.schema_valid` va co la `false` thi tin
+         * theo co do: chinh pipeline Meety noi ra rang no biet tep nay hong.
+         *
+         * Tieu de rong khong con la ly do tu choi - no duoc dat ten thay.
+         */
+        fun hopLeMeety(o: JSONObject): Boolean {
+            val meta = o.optJSONObject("meta") ?: return false
+
+            // Pipeline tu bao tep hong -> tin theo, khong doan lai.
+            o.optJSONObject("validation")?.let {
+                if (it.has("schema_valid") && !it.optBoolean("schema_valid", true)) return false
+            }
+
+            val coQuyetDinh = (o.optJSONArray("decisions")?.length() ?: 0) > 0
+            val coViec = (o.optJSONArray("action_items")?.length() ?: 0) > 0
+            val coTomTat = o.optJSONObject("executive_summary") != null
+            if (!coQuyetDinh && !coViec && !coTomTat) return false
+
+            // `meta.attendees` la cua bien ban; `speakers` o goc la cua ban
+            // ghi tho. Kiem dung cai dau, dung lay cai sau ra thay the.
+            if (meta.has("attendees") && meta.optJSONArray("attendees") == null) return false
+            return true
+        }
+
+        fun tuMeety(json: String, tenThayThe: String = TEN_THAY_THE): BienBan? = try {
             val o = JSONObject(json)
+            if (!hopLeMeety(o)) throw IllegalArgumentException("khong phai bien ban Meety")
             val meta = o.getJSONObject("meta")
             val ten = meta.optString("meeting_title", "").trim()
             val luc = meta.optString("date", "").let { d ->
@@ -205,8 +260,12 @@ class SoBienBan private constructor(val danhSach: MutableList<BienBan>) {
             val cauHoi = (0 until (o.optJSONArray("open_questions")?.length() ?: 0)).mapNotNull {
                 o.getJSONArray("open_questions").optJSONObject(it)?.optString("question")
             }
-            if (ten.isEmpty()) null else BienBan(
-                luc = luc, ten = ten,
+            BienBan(
+                // Tieu de rong -> dat ten theo ngay, thay vi vut ca tep.
+                luc = luc, ten = ten.ifEmpty {
+                    "$tenThayThe · " + java.text.SimpleDateFormat(
+                        "dd/MM/yyyy", java.util.Locale.US).format(java.util.Date(luc))
+                },
                 daChot = quyetDinh.joinToString("\n"),
                 viec = viec,
                 tomTat = mang(o.optJSONObject("executive_summary"), "tldr"),
