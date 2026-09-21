@@ -775,4 +775,48 @@
 
     <!-- Hau to cho contentDescription cua muc dang duoc chon -->
     <string name="dang_chon">đang chọn</string>
+
+    <!-- ================================================================
+         HUONG DAN LAN DAU (spotlight)
+         ================================================================
+         QUY TAC VIET, co bai test canh gac o `HuongDanTest`:
+           · Tieu de toi da 34 ky tu.
+           · Noi dung toi da 110 ky tu, va la MOT-HAI cau.
+           · Cau dau luon la mot VIEC LAM DUOC, khong phai mot mo ta.
+             "Chạm để bắt đầu 25 phút" chu khong phai "Đây là đồng hồ
+             tập trung giúp bạn quản lý thời gian hiệu quả".
+           · Khong "bạn nên", "bạn phải", "hãy cố" - cung quy tac voi
+             loi nhan hang ngay. -->
+    <string name="hd_bo_qua">Bỏ qua</string>
+    <string name="hd_tiep">Tiếp</string>
+    <string name="hd_xong">Bắt đầu dùng</string>
+    <string name="hd_buoc_may">BƯỚC %1$d / %2$d</string>
+
+    <string name="hd_chao_td">Năm tab, thế thôi</string>
+    <string name="hd_chao_nd">Đi một vòng chưa tới một phút. Bỏ qua lúc nào cũng được.</string>
+
+    <string name="hd_viec_td">Kế hoạch: việc hôm nay</string>
+    <string name="hd_viec_nd">Việc trong ngày, xếp theo mức ưu tiên. Vuốt trái để xong hoặc xoá, vuốt phải để ghim lên đầu.</string>
+
+    <string name="hd_lich_td">Lịch: xem cả tuần</string>
+    <string name="hd_lich_nd">Việc dài hơn thì khối màu dài hơn. Chạm vào tháng để nhảy tới ngày bất kỳ.</string>
+
+    <string name="hd_focus_td">Tập trung: đồng hồ</string>
+    <string name="hd_focus_nd">Kéo vòng để đặt giờ, chạm Bắt đầu. Màu đổi dần khi sắp hết — không cần nhìn số.</string>
+
+    <string name="hd_goroi_td">Kẹt thì bấm dấu cộng</string>
+    <string name="hd_goroi_nd">Bốn câu hỏi ngắn, chạm để trả lời. Cuối cùng còn đúng một bước nhỏ để bắt đầu.</string>
+
+    <string name="hd_suckhoe_td">Sức khỏe: ghi lại</string>
+    <string name="hd_suckhoe_nd">Viết vài dòng về hôm nay. Không ai chấm điểm, và chữ ở lại trong máy này.</string>
+
+    <string name="hd_meety_td">Meety: biên bản họp</string>
+    <string name="hd_meety_nd">Thả bản ghi cuộc họp vào đây. Máy lọc ra việc cần làm, bạn duyệt rồi mới vào lịch.</string>
+
+    <string name="hd_caidat_td">Cài đặt ở góc này</string>
+    <string name="hd_caidat_nd">Giờ yên tĩnh, cỡ chữ, sáng tối, màu đồng hồ. Đổi lúc nào cũng được.</string>
+
+    <!-- Chay lai huong dan -->
+    <string name="cd_chay_lai_hd">Xem lại hướng dẫn</string>
+    <string name="cd_chay_lai_hd_phu">Đi lại vòng giới thiệu năm tab.</string>
 </resources>

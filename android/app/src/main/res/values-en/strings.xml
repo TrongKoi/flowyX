@@ -652,4 +652,39 @@
 
     <!-- Hau to cho contentDescription cua muc dang duoc chon -->
     <string name="dang_chon">selected</string>
+
+    <!-- First-run walkthrough (spotlight). Wording rules are guarded by
+         `HuongDanTest`: title <= 34 chars, body <= 110 chars, first
+         sentence is an ACTION not a description, and no commands. -->
+    <string name="hd_bo_qua">Skip</string>
+    <string name="hd_tiep">Next</string>
+    <string name="hd_xong">Start using</string>
+    <string name="hd_buoc_may">STEP %1$d / %2$d</string>
+
+    <string name="hd_chao_td">Five tabs, that is all</string>
+    <string name="hd_chao_nd">The tour takes under a minute. Skip whenever you like.</string>
+
+    <string name="hd_viec_td">Plan: today</string>
+    <string name="hd_viec_nd">Today by priority. Swipe left to finish or delete, swipe right to pin it to the top.</string>
+
+    <string name="hd_lich_td">Calendar: the week</string>
+    <string name="hd_lich_nd">Longer tasks get longer blocks. Tap the month to jump to any day.</string>
+
+    <string name="hd_focus_td">Focus: the clock</string>
+    <string name="hd_focus_nd">Drag the ring, tap Start. The colour shifts as time runs out, so you need not read the number.</string>
+
+    <string name="hd_goroi_td">Stuck? Tap the plus</string>
+    <string name="hd_goroi_nd">Four short questions, tap to answer. You end with one small step to begin.</string>
+
+    <string name="hd_suckhoe_td">Health: write it down</string>
+    <string name="hd_suckhoe_nd">A few lines about today. Nobody scores it, and the words stay on this phone.</string>
+
+    <string name="hd_meety_td">Meety: meeting notes</string>
+    <string name="hd_meety_nd">Drop a meeting transcript here. It pulls out the tasks; you approve before anything is saved.</string>
+
+    <string name="hd_caidat_td">Settings live here</string>
+    <string name="hd_caidat_nd">Quiet hours, text size, light or dark, clock colour. Change them any time.</string>
+
+    <string name="cd_chay_lai_hd">Replay the tour</string>
+    <string name="cd_chay_lai_hd_phu">Walk through the five tabs again.</string>
 </resources>

@@ -54,6 +54,18 @@ class ViecCanLamActivity : TrangCoTab() {
 
     override fun tab() = ThanhTab.VIEC
 
+    override fun onResume() {
+        super.onResume()
+        // Huong dan chay o day chu khong o `onCreate`: phai doi cay view
+        // dung xong VA do duoc kich thuoc thi moi biet khoet sang cho nao.
+        // `post` de chac chan da qua mot vong do.
+        if (!HuongDan.daXong(this)) {
+            noiDung.post {
+                if (!HuongDan.daXong(this)) HuongDan.hien(this, HuongDan.chuoiChuan())
+            }
+        }
+    }
+
     override fun ve() {
         soLich = SoLich.doc(this)
         val c = Calendar.getInstance()
@@ -75,9 +87,9 @@ class ViecCanLamActivity : TrangCoTab() {
         them(nutPhu(getString(R.string.kh_xem_lich)) {
             ThanhTab.mo(this, LichActivity::class.java)
         })
-        them(chuPhu(getString(R.string.kh_meo_vuot), 12f).apply {
-            gravity = Gravity.CENTER; setPadding(0, dp(10), 0, 0)
-        })
+        // Dong meo "vuot de..." da bo. Tu khi co man hinh huong dan luc
+        // dang ky, meo dung cho cua no la o do - mot dong chu nam mai o
+        // cuoi danh sach thi sau lan thu hai no chi con la nhieu thi giac.
         batVungTha()
     }
 

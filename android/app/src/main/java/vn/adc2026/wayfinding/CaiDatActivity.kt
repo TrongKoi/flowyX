@@ -520,6 +520,16 @@ class CaiDatActivity : Activity() {
         theMau.addView(veDaiMau(), LinearLayout.LayoutParams(-1, -2))
         cot.addView(theMau, lp(10))
 
+        // --- xem lai huong dan ---
+        val theHd = the()
+        theHd.addView(dong(getString(R.string.cd_chay_lai_hd),
+            getString(R.string.cd_chay_lai_hd_phu)) {
+            HuongDan.datLai(this)
+            ThongBao.hien(this, getString(R.string.cd_chay_lai_hd))
+            ThanhTab.mo(this, ViecCanLamActivity::class.java)
+        })
+        cot.addView(theHd, lp(10))
+
         // --- ngon ngu ---
         val the1 = the()
         the1.addView(nhanTrong(getString(R.string.cd_ngon_ngu)))
@@ -911,13 +921,8 @@ class CaiDatActivity : Activity() {
                 }
             }, LinearLayout.LayoutParams(dp(16), dp(16)).apply { marginEnd = dp(6) })
         }
-        h.addView(TextView(this).apply {
-            text = getString(R.string.dh_mau_phu)
-            textSize = 12f
-            setLineSpacing(0f, 1.35f)
-            setTextColor(mau(R.color.chu_phu))
-            setPadding(dp(6), 0, 0, 0)
-        }, LinearLayout.LayoutParams(0, -2, 1f))
+        // Chu thich da bo: ba cham mau tu no da noi du. Mot cau giai
+        // thich ben canh mot thu nhin phat la hieu chi lam trang nang them.
         return h
     }
 

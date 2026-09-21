@@ -384,53 +384,16 @@ class VongTapTrungView @JvmOverloads constructor(
             canvas.drawText(nhanDuoi, cx, cy + butGiua.textSize * 0.33f + d * 0.085f, butNhan)
         }
 
-        // 8. Tay cam o dau vanh - chi hien khi dang dat gio
-        if ((choKeo && !dangChay) || (dangChay && choKeoKhiChay)) {
-            val goc = Math.toRadians(gioDau / 60.0 * 360.0 - 90.0)
-            val tx = cx + rVanh * cos(goc).toFloat()
-            val ty = cy + rVanh * sin(goc).toFloat()
-            val rTay = dayVanh * 0.62f
-            butTay.color = mauMat
-            canvas.drawCircle(tx, ty, rTay, butTay)
-            butTay.color = mau
-            butTay.style = Paint.Style.STROKE
-            butTay.strokeWidth = d * 0.011f
-            canvas.drawCircle(tx, ty, rTay, butTay)
-            // ----- TAY NAM: HAI VACH NGAN, KHONG PHAI MOT MUI TEN -----
-            //
-            // Ban truoc ve mot "mui ten" bang hai diem, va no sai ba cho:
-            //
-            //   1. `val a = Math.toRadians(gioDau / 60.0 * 360.0)` thieu
-            //      `- 90.0` ma `goc` o tren co. Hai goc lech nhau dung mot
-            //      phan tu vong, nen hinh ve khong lien quan gi toi huong
-            //      cua tay nam.
-            //   2. `- mui * sin(a).toFloat() * 0f` - nhan voi KHONG. Mot
-            //      so hang chet, gan nhu chac chan la ma sot lai.
-            //   3. Hai diem do khong doi xung qua tam, nen ke ca khi goc
-            //      dung thi no van ra mot gach xien lech chu khong phai
-            //      mui ten.
-            //
-            // Thay bang hai vach ngan song song, vuong goc voi chieu keo -
-            // dung kieu tay nam cua mot thanh truot. Ve theo vector ban
-            // kinh va vector tiep tuyen nen DUNG O MOI GOC, khong co cho
-            // nao de lech nua.
-            val bkx = cos(goc).toFloat()          // huong ban kinh
-            val bky = sin(goc).toFloat()
-            val ttx = -sin(goc).toFloat()         // huong tiep tuyen
-            val tty = cos(goc).toFloat()
-            val nua = rTay * 0.40f                // nua chieu dai mot vach
-            val lech = rTay * 0.30f               // khoang cach hai vach
-            butTay.strokeWidth = d * 0.008f
-            butTay.strokeCap = Paint.Cap.ROUND
-            for (k in intArrayOf(-1, 1)) {
-                val ox = tx + ttx * lech * k
-                val oy = ty + tty * lech * k
-                canvas.drawLine(ox - bkx * nua, oy - bky * nua,
-                                ox + bkx * nua, oy + bky * nua, butTay)
-            }
-            butTay.strokeCap = Paint.Cap.BUTT
-            butTay.style = Paint.Style.FILL
-        }
+        // 8. Tay nam DA BO.
+        //
+        // Truoc day day la mot vong tron nho co hai vach, nam o dau phan
+        // da chon. Da bo theo yeu cau: mat dong ho sach han, va phan mau
+        // tren vanh tu no da du de thay dat toi dau.
+        //
+        // Danh doi: khong con gi NOI RA rang vanh keo duoc. Bu lai bang
+        // hai duong khac - chip 5/15/30 o ngay duoi, va cu cham xuong bat
+        // ky dau tren vanh cung nhay toi do luon (xem `ACTION_DOWN`), nen
+        // nguoi dung khong phai tim dung mot diem nho de bat vao.
     }
 
     // ---------------------------------------------------------------
