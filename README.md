@@ -85,7 +85,6 @@ android/     app Android — Kotlin trên Activity của nền tảng, không An
 frontend/    module Android: đồng hồ vòng, trống cuộn chọn giờ, pháo hoa
 meety/       công cụ Python: bản ghi họp -> _minutes.json cho tab Meety
 docs/        kiến trúc, thiết kế, bảo mật, bản xem trước giao diện
-research/    tài liệu nghiên cứu
 thiet_ke/    logo và bộ nhận diện
 ```
 
