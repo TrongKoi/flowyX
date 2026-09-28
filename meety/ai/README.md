@@ -2,6 +2,12 @@
 
 Bốn lớp, mỗi lớp giải một bài toán khác nhau. Đọc theo thứ tự này.
 
+> **Ghi chú 28/09/2026.** Tầng này từng được gọi qua máy chủ web của Meety
+> (các đường `GET/POST /api/...` nhắc bên dưới). Máy chủ đó đã cắt khỏi
+> repo, nên hiện `ai/` là thư viện thử nghiệm: có đủ mã và
+> `tests/test_ai_layer.py`, nhưng `main.py` không gọi tới. Chạy trực tiếp
+> được một thứ: `python -m ai.meeting_evaluator <tệp .jsonl>` (Meeting-Bench).
+
 ```
   providers/            ①  Nói chuyện với mô hình nào cũng được
     base.py                 Giao diện chung: generate_json(prompt, schema)

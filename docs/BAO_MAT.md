@@ -224,13 +224,12 @@ xuất ra vô nghĩa. Hộp thoại nói điều đó **trước** khi người 
 
 | Quyền | Vì sao |
 |---|---|
-| `INTERNET`, `ACCESS_NETWORK_STATE` | Chỉ cho chế độ "phiên có laptop" trong mạng LAN nội bộ |
+| `INTERNET` | Chỉ cho phần chia nhỏ việc gọi Gemini, khi bản cài có khoá API. Gửi đúng tên việc và mô tả người dùng gõ — không nhật ký, không sức khoẻ, không tài khoản |
 | `VIBRATE` | Phản hồi không cần âm thanh, dùng được ở chỗ đông người |
-| `RECORD_AUDIO` | Nhận dạng giọng nói **chạy trên máy** |
 | `POST_NOTIFICATIONS` | Từ API 33, thiếu nó thì `notify()` im lặng không báo lỗi |
 | `SCHEDULE_EXACT_ALARM` | Từ Android 14 tắt mặc định; thiếu nó app sập khi đặt lời nhắc |
 | `RECEIVE_BOOT_COMPLETED` | Đặt lại chuông sau khi khởi động máy |
 | `health.READ_SLEEP`, `health.READ_STEPS` | Chỉ xin khi người dùng bật kết nối sức khoẻ |
 
-**Không có** camera, vị trí, danh bạ, bộ nhớ ngoài. Danh sách quyền là bằng chứng kiểm chứng
+**Không có** camera, micro, vị trí, danh bạ, bộ nhớ ngoài. Danh sách quyền là bằng chứng kiểm chứng
 được cho những gì chính sách quyền riêng tư nói — nó khó chối hơn một đoạn văn.

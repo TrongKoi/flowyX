@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
-import android.speech.SpeechRecognizer
 
 /**
  * KIEM QUYEN - mot cho duy nhat tra loi "app con thieu gi de chay du?".
@@ -23,8 +22,8 @@ import android.speech.SpeechRecognizer
  * --------------------------------------------------------------------
  *
  * Moi quyen thieu lam hong mot tinh nang theo cach IM LANG: khong co
- * thong bao thi loi nhac khong hien, khong co micro thi nut Noi khong
- * nghe gi, khong co giong Viet thi doc thanh chuoi am vo nghia. Khong cai
+ * thong bao thi loi nhac khong hien, khong co giong Viet thi doc thanh
+ * chuoi am vo nghia. Khong cai
  * nao bao loi. Nguoi dung chi thay "app khong chay" va go di.
  *
  * Nen danh sach nay noi ro TUNG QUYEN de lam gi, bang chu cua nguoi dung,
@@ -41,11 +40,10 @@ import android.speech.SpeechRecognizer
 object KiemQuyen {
 
     const val MA_THONG_BAO = 1
-    const val MA_MICRO = 2
 
     private const val PREFS = "flowy_kiem_quyen"
 
-    enum class Loai { THONG_BAO, BAO_THUC, MICRO, GIONG_VIET, NHAN_DANG, PIN }
+    enum class Loai { THONG_BAO, BAO_THUC, GIONG_VIET, PIN }
 
     data class Muc(
         val loai: Loai,
@@ -80,18 +78,10 @@ object KiemQuyen {
             "Để lời nhắc tới đúng phút, không trễ.",
             BaoGio.coTheDatChinhXac(a))
 
-        ds += Muc(Loai.MICRO, "Micro",
-            "Để trả lời bằng giọng nói thay vì gõ.",
-            coQuyen(a, Manifest.permission.RECORD_AUDIO))
-
         val viet = speaker?.coGiongViet
         ds += Muc(Loai.GIONG_VIET, "Giọng đọc tiếng Việt",
             "Để app đọc lên đúng tiếng Việt.",
             viet == true, chuaBiet = viet == null)
-
-        ds += Muc(Loai.NHAN_DANG, "Nhận dạng giọng nói",
-            "Máy cần có dịch vụ nghe giọng nói (thường là Google).",
-            SpeechRecognizer.isRecognitionAvailable(a))
 
         ds += Muc(Loai.PIN, "Không tối ưu pin cho Flowy",
             "Khuyên dùng trên Samsung: tránh máy tự tắt lời nhắc.",
@@ -129,16 +119,7 @@ object KiemQuyen {
                         Uri.parse("package:${a.packageName}")))
                 }
 
-            Loai.MICRO ->
-                if (conXinDuoc(a, Manifest.permission.RECORD_AUDIO)) {
-                    xin(a, Manifest.permission.RECORD_AUDIO, MA_MICRO)
-                } else {
-                    moTrangApp(a)
-                }
-
             Loai.GIONG_VIET -> Speaker.moCaiDatGiongDoc(a)
-
-            Loai.NHAN_DANG -> moTrang(a, Intent(Settings.ACTION_VOICE_INPUT_SETTINGS))
 
             Loai.PIN -> moTrang(a, Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
         }
@@ -182,10 +163,6 @@ object KiemQuyen {
             .edit().putBoolean(quyen, true).apply()
         a.requestPermissions(arrayOf(quyen), ma)
     }
-
-    private fun moTrangApp(a: Activity) = moTrang(a,
-        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-            Uri.parse("package:${a.packageName}")))
 
     private fun moTrang(a: Activity, i: Intent) {
         try {

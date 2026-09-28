@@ -7,9 +7,7 @@ import org.json.JSONObject
 /**
  * LOI NHAC THEO GIO - do nguoi dung tu dat ten.
  *
- * Ban Kotlin cua `adc_wayfinding/wayfinding/adhd/nhacviec.py`. Doc phan
- * dau file do truoc khi sua gi o day: no giai thich vi sao bon thu duoi
- * KHONG duoc lam, va moi thu deu co mot bai test khoa lai ben Python.
+ * Bon thu duoi day KHONG duoc lam.
  *
  *     khong lam                     | vi sao
  *     ------------------------------|--------------------------------
@@ -19,15 +17,11 @@ import org.json.JSONObject
  *     canh bao bo lieu              | do la canh bao lam sang
  *
  * --------------------------------------------------------------------
- * LOP NAY KHONG DUOC DI QUA CAU NOI
+ * LOP NAY KHONG DUOC RA MANG
  * --------------------------------------------------------------------
  *
- * Bang trong `bridge.py` ghi ro: ten cac loi nhac nguoi dung tu dat la
- * thu KHONG BAO GIO duoc len duong truyen.
- *
- * Nen `SoNhac` khong duoc cham vao `Payload` hay `BridgeClient`. No song
- * tron ven tren may nay. Ben Python co hai bai test canh gac dieu do;
- * ben nay no nam o day duoi dang mot dong chu, va o mat nguoi review.
+ * Ten cac loi nhac nguoi dung tu dat la thu KHONG BAO GIO duoc len duong
+ * truyen. `SoNhac` song tron ven tren may nay.
  *
  * Them mot dong `import` cho tien la du de pha. Ma hong kieu do khong
  * lam app sap - no chi lang le dua du lieu ca nhan len duong truyen.

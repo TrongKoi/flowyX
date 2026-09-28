@@ -23,7 +23,7 @@ import java.util.concurrent.Executors
  * `android.health.connect.*` la API nen tang, khong phai thu vien ngoai.
  * Nho vay Flowy doc duoc du lieu suc khoe ma khong keo them mot dong
  * AndroidX nao vao ban dung - dieu quan trong voi du an nay vi toan bo
- * app duoc dung khong qua Gradle (xem tools/build_khong_gradle.sh).
+ * app duoc dung khong qua Gradle.
  *
  * ----- Vi sao tach han ra mot tep -----
  *

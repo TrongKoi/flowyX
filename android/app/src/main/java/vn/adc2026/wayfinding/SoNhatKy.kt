@@ -7,8 +7,7 @@ import org.json.JSONObject
 /**
  * NHAT KY - cua nguoi dung, va app KHONG DIEN GIAI no.
  *
- * Ban Kotlin cua `adc_wayfinding/wayfinding/adhd/nhatky.py`. Ranh gioi
- * quyet dinh ca phan phap ly lan phan thiet ke nam o mot cho:
+ * Ranh gioi quyet dinh ca phan phap ly lan phan thiet ke nam o mot cho:
  *
  *     ghi chep   nguoi dung viet, doc lai, va TU rut ra ket luan
  *     theo doi   app do luong, cham diem, va rut ra ket luan HO ho
@@ -33,12 +32,11 @@ import org.json.JSONObject
  * LOP NAY KHONG DUOC DI QUA CAU NOI
  * --------------------------------------------------------------------
  *
- * Bang trong `bridge.py`: nhat ky cam xuc khong bao gio duoc len duong
- * truyen. Giong `SoNhac` - khong cham vao `Payload` hay `BridgeClient`.
+ * Nhat ky cam xuc khong bao gio duoc len duong truyen.
  *
  * Va app khong gui no cho ai. `xuatVanBan()` tra ve mot CHUOI; buoc ghi
  * tep di qua trinh chon tep cua he dieu hanh, tuc la nguoi dung tu chon
- * cho. Xem `MainActivity.xuatNhatKy()`.
+ * cho.
  */
 class SoNhatKy private constructor(
     val muc: MutableList<Muc>,

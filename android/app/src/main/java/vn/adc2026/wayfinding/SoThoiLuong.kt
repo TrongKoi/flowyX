@@ -7,19 +7,15 @@ import org.json.JSONObject
 /**
  * SO THOI LUONG - hoc tu chinh nguoi dung, thay vi tin loi ho uoc.
  *
- * Ban Kotlin cua `adc_wayfinding/wayfinding/adhd/thoiluong.py`. Hai ban
- * phai cho CUNG MOT con so; `SoThoiLuongTest` khoa vai truong hop moc.
+ * `SoThoiLuongTest` khoa vai truong hop moc.
  *
  * --------------------------------------------------------------------
  * VI SAO BAN NAY NAM O DIEN THOAI
  * --------------------------------------------------------------------
  *
- * Xem docs/FLOWY_THIET_KE.md muc 7.3: laptop KHONG GHI GI XUONG DIA.
  * Ten cong viec la noi dung ca nhan, va mot so ghi "toi hay mat 3 tieng
- * cho viec dang le 30 phut" la thu rat rieng tu.
- *
- * Nen dien thoai so huu tep luu. Moi phien no gui phan lich su cua DUNG
- * MOT cong viec dang lam len cau noi, laptop tinh xong roi quen.
+ * cho viec dang le 30 phut" la thu rat rieng tu. Nen so nay chi nam tren
+ * dien thoai, khong gui di dau.
  *
  * --------------------------------------------------------------------
  * TRUNG VI, KHONG PHAI TRUNG BINH

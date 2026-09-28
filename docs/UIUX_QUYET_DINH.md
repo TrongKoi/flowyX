@@ -1,5 +1,11 @@
 # Quyết định UI/UX cho hai chế độ
 
+> **Ghi chú 28/09/2026.** Tài liệu này viết khi app còn hai chế độ
+> (khiếm thị và ADHD) chung một phiên ARCore. Phần khiếm thị đã tách
+> sang repo opticguard, nên **Câu 1 và Câu 2** chỉ còn là lịch sử quyết
+> định. **Câu 3, Câu 4 và mục “Những gì KHÔNG làm”** (màu, nhịp độ, mật
+> độ thông tin, vì sao không dùng Jetpack Compose) vẫn áp dụng cho FlowyX.
+
 Tài liệu này trả lời bốn câu hỏi thiết kế **trước khi** viết layout hay
 Activity nào. Mỗi câu có 2–3 phương án, so sánh, rồi chọn một kèm lý do.
 

@@ -25,10 +25,7 @@ REQUIRED_PACKAGES: list[tuple[str, str, str]] = [
 
 REQUIRED_LAYOUT: list[str] = [
     "main.py",
-    "DOC_TRUOC_TIEN.md",
-    "tai_lieu_goc/01_Blueprint_San_pham.md",
-    "tai_lieu_goc/02_Backend_Design_0d.md",
-    "tai_lieu_goc/00_Ban_giao_backend_core.md",
+    "xuat_word.py",
     "core/cache.py",
     "core/quota.py",
     "core/db.py",
@@ -68,19 +65,8 @@ REQUIRED_LAYOUT: list[str] = [
     "tests/unit/test_env.py",
     "tests/unit/test_logging.py",
     "tests/unit/test_orchestrator.py",
-    "tests/unit/test_frontend_contract.py",
     "tools/kichban_kickoff.json",
     "tools/make_test_audio.py",
-    "tools/gen_types.py",
-    "frontend/src/types/meeting.ts",
-    "frontend/src/mocks/golden_minutes.json",
-    "frontend/preview/template.html",
-    "frontend/preview/template_columns.html",
-    "frontend/preview/template_light_scroll.html",
-    "frontend/preview/template_dark_dock.html",
-    "frontend/preview/template_odylytics.html",
-    "frontend/preview/template_mmai_soft.html",
-    "tools/build_preview.py",
     "tests/integration/test_pipeline_e2e.py",
     "tests/integration/test_ingest_e2e.py",
     "tests/fixtures/ingest/zoom_sprint23.vtt",
@@ -229,7 +215,7 @@ def check_layout() -> list[str]:
     stray = sorted(
         p.name
         for p in ROOT.glob("*.py")
-        if p.name not in {"main.py", "doctor.py"}
+        if p.name not in {"main.py", "doctor.py", "xuat_word.py"}
     )
     if stray:
         print(

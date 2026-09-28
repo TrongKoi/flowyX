@@ -115,8 +115,7 @@ class SoThoiLuongTest {
 
     @Test
     fun jsonMotViecChiMangDungViecDo() {
-        // Gui ca so la dua lich su lam viec len duong truyen, va bang
-        // trong bridge.py cam dieu do.
+        // Xuat mot viec thi chi mang dung viec do, khong lo ca so.
         val so = SoThoiLuong()
         so.ghi(viec, 35.0, 20.0)
         so.ghi("dọn phòng", 15.0)

@@ -24,9 +24,7 @@ import android.content.Context
  * --------------------------------------------------------------------
  *
  * Ten ke hoach la du lieu ca nhan. Giong SoNhac va SoNhatKy, lich song
- * tron tren may. Chi khi NGUOI DUNG bam "Bat dau viec nay" thi ten do moi
- * thanh `viec_gi` cua phien - dung cot "dang lam viec gi" trong bang o
- * dau bridge.py.
+ * tron tren may.
  *
  * --------------------------------------------------------------------
  * NGAY LA SO NGAY TU 1970-01-01, KHONG PHAI java.time

@@ -1,14 +1,11 @@
 # Meety — Hệ thống Tóm tắt Cuộc họp
 
-Pipeline 6 pha xử lý từ audio hoặc transcript ra `StructuredMinutes` JSON,
-kèm giao diện web và máy chủ. Chạy hoàn toàn trên free tier: **0 VNĐ**.
+Pipeline 6 pha xử lý từ audio hoặc transcript ra `StructuredMinutes` JSON —
+tệp mà **tab Meety của app FlowyX** mở được. Chạy bằng dòng lệnh, hoàn toàn
+trên free tier: **0 VNĐ**.
 
 > **Muốn chạy ngay?** Xem [`HUONG_DAN_CHAY.md`](HUONG_DAN_CHAY.md) — hướng dẫn
 > từng bước từ máy trắng, có cả phần xử lý khi hỏng.
->
-> Ba cách chạy: nháy đúp `mm-ai-preview.html` (xem giao diện, không cần cài gì)
-> · `python main.py` (dòng lệnh) · `python run_server.py` (máy chủ web đầy đủ:
-> đăng nhập, 2FA, tải cuộc họp lên).
 
 ## Chạy thử ngay (không cần API key)
 
@@ -16,13 +13,13 @@ kèm giao diện web và máy chủ. Chạy hoàn toàn trên free tier: **0 VN�
 pip install pydantic pytest
 python main.py --input tests/fixtures/ingest/zoom_sprint23.vtt \
                --date 2026-07-22 --mock
-python -m pytest tests/ -q          # 311 test
+python -m pytest tests/ -q          # 498 test
 ```
 
 ## Xuất Word hai bản (dùng cho FlowyX)
 
 ```bash
-python xuat_word.py output/<id>_minutes.json
+python xuat_word.py data/exports/<id>_minutes.json
 #  -> <id>_bien_ban.docx          bản tiêu chuẩn (NĐ 30/2020)
 #  -> <id>_bien_ban_de_doc.docx   bản dễ đọc cho người khó đọc / ADHD
 ```
@@ -78,7 +75,8 @@ audio ─[Groq Whisper]┘                            │
 | `core/` | SQLite: cache theo băm + sổ cái quota bền vững |
 | `providers/` | Adapter — biên giới duy nhất chạm mạng |
 | `pipeline/` | Sáu pha: s0 ingest, s2 diarize, s3 chunk, s4–s7 |
-| `exporters/` | Kết xuất biên bản (hiện có Markdown) |
+| `exporters/` | Kết xuất biên bản: Markdown, Word tiêu chuẩn, Word dễ đọc |
+| `ai/` | Tầng AI thử nghiệm, chưa nối vào `main.py` — xem `ai/README.md` |
 
 ## Ba bất biến của thiết kế
 
@@ -154,7 +152,6 @@ Cảnh báo mức **cao** làm dừng pipeline. Thêm `--force` để chạy ti�
   mang một nhãn duy nhất và xưng hô không đủ để chia lượt. **Cách né hiệu
   quả nhất hiện nay là dùng transcript `.vtt` thay cho audio.**
 - **Adapter Ollama** cho `--offline`.
-- **Exporter DOCX** (đã có Markdown và JSON).
 
 ## Lưu ý quyền riêng tư
 

@@ -1,137 +1,94 @@
-# App Android của Flowy
+# App Android của FlowyX
 
-Điện thoại làm **màn hình và đầu vào**, laptop làm **bộ não**.
+Kotlin thuần trên `Activity` của nền tảng: không AndroidX, không Jetpack
+Compose (lý do ở [`docs/UIUX_QUYET_DINH.md`](../docs/UIUX_QUYET_DINH.md)).
+Mọi thứ chạy trên máy; không có máy chủ nào phải bật.
 
-Không có quy tắc nào của Flowy nằm ở đây, và đó là chủ ý. App không biết
-khi nào nên hỏi gì, khi nào nên đổi nét mặt, hay một bước coi là kẹt bao
-lâu — tất cả nằm ở `adc_wayfinding/run_flowy.py`, đã có test, và bản iOS
-sẽ chạy cùng logic đó.
-
-Viết quy tắc ở cả hai nơi là có hai bản quy tắc phải giữ khớp nhau bằng
-tay, và chúng sẽ lệch.
-
-App làm đúng ba việc:
-
-1. gửi **sự kiện người dùng** lên cầu nối
-2. hiện và đọc lên những gì cầu nối trả về
-3. **giữ** ba sổ của riêng máy này
+Android 7.0 trở lên (`minSdk 24`), `targetSdk 34`.
 
 ---
 
-## Trạng thái
-
-Cập nhật 21/09/2026.
-
-| | |
-|---|---|
-| Giao diện v5 (năm tab, bảng màu đêm viết lại) | ✅ xem [`docs/GIAO_DIEN_V5.md`](../docs/GIAO_DIEN_V5.md) |
-| Biên dịch Kotlin, Android API 34 | ✅ sạch |
-| Test đơn vị Kotlin | ✅ **162 bài qua** |
-| Build APK | ✅ CI xuất APK mỗi lần đẩy code — tải từ tab **Actions** |
-| Sáng / Tối / Theo máy | ✅ `CheDoToi.kt` |
-| Tiếng Việt / English | ✅ cả hai |
-| Chạy trên máy thật | Galaxy Tab S7 FE (bản trước v5). Lỗi: [`BAO_LOI/`](../BAO_LOI/README.md) |
-
-> **Cách nhanh nhất để lấy bản mới lên máy thật:** vào tab **Actions** trên
-> GitHub, mở lần chạy mới nhất, tải artifact `flowyx-debug-apk`. Không cần
-> cài Android Studio, không cần JDK, không cần ai build hộ.
-
-## Chạy thử
+## Build
 
 Cần **JDK 17**. JDK 25 bị AGP 8.5.2 từ chối với một câu báo lỗi khó hiểu
 (`What went wrong: 25.0.2`).
 
 ```bash
 cd android
-JAVA_HOME=/đường/dẫn/tới/jdk-17 ./gradlew :app:testDebugUnitTest
+JAVA_HOME=/đường/dẫn/tới/jdk-17 ./gradlew :app:testDebugUnitTest   # test JVM, không cần máy thật
+JAVA_HOME=/đường/dẫn/tới/jdk-17 ./gradlew :app:assembleDebug       # APK
 ```
 
-Build APK:
+APK ra ở `app/build/outputs/apk/debug/app-debug.apk`. Trên Windows dùng
+`gradlew.bat`. Cách dễ nhất để có JDK 17 là để Android Studio tự tải:
+*Settings → Build Tools → Gradle → Gradle JDK → Download JDK → 17*.
 
-```bash
-JAVA_HOME=/đường/dẫn/tới/jdk-17 ./gradlew :app:assembleDebug
+Không muốn build? CI xuất APK mỗi lần đẩy code — tải artifact
+`flowyx-debug-apk` ở tab **Actions** trên GitHub.
+
+### Khoá Gemini (tuỳ chọn)
+
+Phần chia nhỏ việc gọi Gemini khi có khoá. Thêm vào `android/local.properties`:
+
+```
+GEMINI_API_KEY=...
 ```
 
-Rồi cài, mở app, bấm **Cài đặt**, nhập địa chỉ mà `run_flowy.py` in ra
-lúc khởi động.
+Tệp này nằm trong `.gitignore`, không lên GitHub. Khoá gắn vào APK thì ai
+có APK cũng lấy ra được — nên chỉ dùng khoá riêng cho bản build của mình.
+Không có khoá thì app dùng `MauProvider`, sinh bước mẫu ngay trên máy.
+Chi tiết ở đầu `PhanRaProvider.kt`.
 
 ---
 
 ## Các lớp
 
+Mã nguồn ở `app/src/main/java/vn/adc2026/wayfinding/` (tên gói còn giữ từ
+dự án cũ).
+
 ### Màn hình
 
-| Tệp | Layout |
+| Nhóm | Tệp |
 |---|---|
-| `MainActivity.kt` | `activity_main.xml` (điện thoại), `layout-sw600dp/activity_main.xml` (tablet) — ghép từ `khoi_*.xml` |
-| `LichActivity.kt` | `activity_lich.xml` (+ bản sw600dp) |
-| `KeHoachActivity.kt` | `activity_ke_hoach.xml` — tạo/sửa kế hoạch |
-| `CaiDatActivity.kt` | `activity_settings.xml` — laptop, giao diện, giọng đọc, kiểm tra quyền |
-| `GiaoDien.kt` | sáng/tối và font Lexend cho mọi màn hình |
+| Năm tab | `ViecCanLamActivity` (Kế hoạch), `LichActivity`, `FocusActivity` (Tập trung), `NhatKyActivity` (Sức khỏe), `MeetyActivity` |
+| Khung chung | `TrangCoTab` (lớp cha của mọi tab), `ThanhTab` (thanh tab dưới) |
+| Màn con | `KeHoachActivity`, `GoRoiActivity`, `PhanRaActivity`, `VietNhatKyActivity`, `SucKhoeActivity`, `GhiBienBanActivity`, `BienBanVaoLichActivity`, `NhapLichActivity`, `CaiDatActivity`, `PhapLyActivity` |
+| Vào app | `KhoiDongActivity`, `ChonNgonNguActivity`, `DangNhapActivity`, `DangKyActivity`, `QuenMatKhauActivity`, `HuongDan` (hướng dẫn lần đầu) |
 
-### Cầu nối (chỉ khi test / demo)
+### Dữ liệu — tất cả nằm trên máy
 
 | Tệp | Làm gì |
 |---|---|
-| `Payload.kt` | Dựng và đọc gói tin JSON. Hợp đồng ở `loi_chung/bridge.py` |
-| `BridgeClient.kt` | Gửi trên luồng nền. Gói có thao tác người dùng xếp hàng, không bao giờ bị đè |
+| `KhoDuLieu`, `MaHoa`, `TaiKhoan` | SQLite; nhật ký và sức khoẻ mã hoá AES-256-GCM, khoá trong Android Keystore; mật khẩu băm PBKDF2 |
+| `Lich`, `SoLich`, `LichBao`, `DocIcs` | Logic lịch thuần (test được trên JVM), lưu lịch, đặt chuông, nhập `.ics` |
+| `SoNhac`, `BaoGio`, `NhacCaiDat` | Lời nhắc; chuông báo và receiver khởi động lại máy |
+| `SoThoiLuong`, `SoTienDo` | Ước lượng so với thời gian thật; chuỗi ngày |
+| `SoNhatKy`, `SucKhoe`, `SucKhoeHC`, `SucKhoeBang` | Nhật ký; Health Connect (chỉ đọc, mặc định tắt) |
+| `SoBienBan`, `DocxViet` | Biên bản họp; xuất Word hai bản (tiêu chuẩn và dễ đọc) |
+| `PhanRa`, `PhanRaProvider` | Chia nhỏ việc: đọc JSON của mô hình, chặn cứng 5 bước; nguồn Gemini hoặc bản mẫu |
+| `XuatDuLieu`, `AppSettings` | Xuất dữ liệu; tuỳ chọn |
 
-### Dữ liệu của riêng máy này — không qua cầu nối
-
-| Tệp | Làm gì |
-|---|---|
-| `Lich.kt` | Logic lịch thuần (lặp lại, các lần nhắc, kế hoạch tiếp theo) — test được trên JVM |
-| `SoLich.kt`, `LichBao.kt` | Lưu lịch; đặt chuông cho 48 lần nhắc gần nhất |
-| `SoThoiLuong.kt` | Ước lượng và thời gian thật của từng việc |
-| `SoNhac.kt`, `BaoGio.kt` | Lời nhắc hằng ngày; receiver khởi động lại máy |
-| `SoNhatKy.kt` | Nhật ký |
-
-### Đầu vào / đầu ra
+### Giao diện và vào ra
 
 | Tệp | Làm gì |
 |---|---|
-| `Speaker.kt` | Đọc tiếng Việt, rung, âm ngắn; mở cài đặt giọng đọc |
-| `VoiceInput.kt` | Nhận dạng giọng nói trên máy |
-| `KiemQuyen.kt` | Liệt kê quyền còn thiếu, dẫn tới đúng trang cấp |
-| `DocGio.kt` | Đọc giờ gõ tay: `14:00`, `1400`, `930`, `14h30` |
-| `Accessibility.kt` | TalkBack |
+| `GiaoDien`, `CheDoToi`, `NgonNgu`, `MauDongHo` | Font Lexend, sáng/tối, vi/en, màu đồng hồ |
+| `Speaker`, `Rung` | Đọc tiếng Việt, rung, âm ngắn |
+| `KiemQuyen` | Liệt kê quyền còn thiếu, dẫn tới đúng trang cấp |
 
-Module `frontend/` chỉ còn `TimerTronView` (vòng thời gian). Nhân vật đồng hành đã bỏ.
+Module `../frontend/` giữ ba View vẽ tay: `VongTapTrungView` (đồng hồ
+vòng), `TrongCuonView` (trống cuộn chọn giờ), `PhaoHoaView`.
 
 ---
 
-## Ranh giới dữ liệu — đọc trước khi thêm trường vào gói tin
+## Quyền
 
-Bảng ở đầu `bridge.py`:
-
-| được mang | **KHÔNG BAO GIỜ** được mang |
-|---|---|
-| đang làm việc gì | nhật ký cảm xúc |
-| còn bao nhiêu phút | ghi chú về triệu chứng |
-| lệnh hiển thị | tên các lời nhắc người dùng tự đặt |
-| câu nói, mã rung | sổ thời lượng (lịch sử làm việc) |
-
-Nên **`SoNhac` và `SoNhatKy` không được chạm vào `Payload` hay
-`BridgeClient`.** Chúng sống trọn vẹn trên máy người dùng; bản Python là
-bản gốc để đối chiếu.
-
-Đây là thứ rất dễ vô tình phá — thêm một dòng `import` cho tiện là đủ. Mã
-hỏng kiểu đó không làm test nào đổ, không làm app sập; nó chỉ lặng lẽ đưa
-dữ liệu cá nhân lên đường truyền.
-
-`lich_su` là ngoại lệ **có kiểm soát**: chỉ lịch sử của đúng một công
-việc đang làm, gửi đi rồi thôi. Laptop không ghi gì xuống đĩa.
-
----
+Chỉ `INTERNET` (cho Gemini), rung, thông báo, báo thức chính xác, khởi
+động lại, và hai quyền đọc Health Connect. Không camera, không micro,
+không vị trí, không danh bạ. Lý do từng quyền ghi ngay trong
+`AndroidManifest.xml`.
 
 ## App không bao giờ chủ động bắt chuyện
 
-`docs/luu-tru/NHAN_VAT_BRIEF.md` mục 2.4 — nhân vật đã bỏ, nguyên tắc giữ.
-Nút **Gợi ý** là lời mời **duy nhất** để app đọc lên một câu hỏi. Trường gói tin
-vẫn tên `cham_nhan_vat` để không phá hợp đồng với laptop.
-
-| | |
-|---|---|
-| **hiện chữ trên màn hình** | thụ động. Không đòi hỏi gì |
-| **đọc lên thành tiếng** | app bắt chuyện |
-
+App chỉ đọc lên thành tiếng khi người dùng bấm. Hiện chữ trên màn hình là
+thụ động và không đòi hỏi gì; đọc lên thành tiếng là bắt chuyện.
