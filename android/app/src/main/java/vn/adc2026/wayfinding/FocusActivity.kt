@@ -40,9 +40,6 @@ import vn.adc2026.frontend.VongTapTrungView
  *    lon canh tranh o cung mot cho la hai lua chon phai can nhac - dung
  *    thu nhom nguoi dung nay kho nhat. Nut + la duong PHU, nen o tren; va
  *    co chu vi "+" tron dan khong noi no lam gi.
- *
- * Khong can laptop. Phien co laptop (buoc nho, cau hoi dung luc) van con,
- * vao tu Cai dat -> "Phien co laptop (thu nghiem)".
  */
 class FocusActivity : TrangCoTab() {
 

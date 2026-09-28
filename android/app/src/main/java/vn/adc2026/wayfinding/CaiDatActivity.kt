@@ -685,13 +685,10 @@ class CaiDatActivity : Activity() {
         }
         cot.addView(the5, lp(10))
 
-        // --- quyen va phien laptop ---
+        // --- quyen ---
         val the6 = the()
         the6.addView(dong(getString(R.string.cd_kiem_quyen),
             getString(R.string.cd_kiem_quyen_phu)) { moKiemQuyen() })
-        the6.addView(vach())
-        the6.addView(dong(getString(R.string.cd_phien_laptop),
-            getString(R.string.cd_phien_laptop_phu)) { hopLaptop() })
         cot.addView(the6, lp(10))
 
         cot.addView(TextView(this).apply {
@@ -700,30 +697,6 @@ class CaiDatActivity : Activity() {
             gravity = Gravity.CENTER
             setTextColor(mau(R.color.chu_phu))
         }, lp(24))
-    }
-
-    private fun hopLaptop() {
-        val o = EditText(this).apply {
-            setText(s.serverUrl)
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI
-            setTextColor(mau(R.color.chu)); setHintTextColor(mau(R.color.chu_phu))
-        }
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.cd_phien_laptop))
-            .setMessage(getString(R.string.cd_phien_laptop_giai_thich))
-            .setView(LinearLayout(this).apply {
-                setPadding(dp(24), dp(8), dp(24), 0); addView(o)
-            })
-            .setNegativeButton(R.string.huy, null)
-            .setNeutralButton(getString(R.string.cd_mo_phien)) { _, _ ->
-                s.serverUrl = o.text.toString()
-                startActivity(Intent(this, MainActivity::class.java))
-            }
-            .setPositiveButton(R.string.luu) { _, _ ->
-                s.serverUrl = o.text.toString()
-                bao(getString(R.string.da_luu))
-            }
-            .hien()
     }
 
     private fun viTriNgonNgu(): Int =

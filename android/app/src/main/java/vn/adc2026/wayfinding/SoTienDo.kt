@@ -15,11 +15,7 @@ import java.util.Calendar
  * chi can biet "viec nay thuong mat bao lau", khong can biet lam hom
  * nao. Them ngay vao do la lam mot so hai viec.
  *
- * `dongvien.SoChuoi` ben Python co dem chuoi ngay, nhung no song tren
- * laptop va laptop khong ghi gi xuong dia. Ban iOS chay khong co laptop
- * thi cung khong co no.
- *
- * Nen so nay nam tren may, giong ba so kia.
+ * So nay nam tren may, giong ba so kia.
  *
  * --------------------------------------------------------------------
  * CHUOI NGAY LA CON DAO HAI LUOI

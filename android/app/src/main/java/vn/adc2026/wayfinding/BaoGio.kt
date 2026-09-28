@@ -39,7 +39,7 @@ import java.util.Calendar
  *          co quyen   -> setAlarmClock, dung phut, xuyen Doze
  *          chua co    -> setAndAllowWhileIdle, co the TRE vai phut,
  *                        nhung KHONG SAP va loi nhac van toi
- *     3. MainActivity dan nguoi dung sang man hinh cap quyen, va dat lai
+ *     3. Kiem tra quyen (Cai dat) dan nguoi dung sang man hinh cap quyen, va dat lai
  *        chuong o onResume khi ho quay ve
  *     4. Moi lan goi AlarmManager deu boc try/catch SecurityException -
  *        mot loi nhac khong dat duoc KHONG duoc phep lam sap app
@@ -90,7 +90,7 @@ object BaoGio {
      * va mot chuong sot lai sau khi nguoi dung xoa loi nhac la loi te
      * hon nhieu so voi vai phep goi thua.
      */
-    /** Ket qua dat chuong, de MainActivity biet co can xin quyen khong. */
+    /** Ket qua dat chuong, de noi goi biet co can xin quyen khong. */
     enum class KetQua {
         /** Dat chinh xac tung phut. */
         CHINH_XAC,

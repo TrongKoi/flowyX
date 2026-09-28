@@ -21,11 +21,6 @@ import java.util.Locale
  *     so voi nguoi sang mat tuong. Mac dinh dat cao hon muc thay thoai
  *     mai, va phai cho chinh duoc.
  *   - Cat loi: chi dan khan cap phai cat cau dang doc do, khong xep hang.
- *   - Khong lap: viec chong lap da lam o phia laptop (run_bridge.py chi
- *     gui `say` khi cau THAY DOI), nen o day chi can cat loi dung cach.
- *
- * Tu vung rung phai KHOP voi HAPTIC_PATTERNS trong
- * adc_wayfinding/wayfinding/speech.py.
  */
 class Speaker(context: Context, private val onReady: (Boolean) -> Unit) {
 

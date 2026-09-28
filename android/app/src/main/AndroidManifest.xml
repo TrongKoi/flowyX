@@ -2,30 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
-        SAU QUYEN, VA KHONG HON. (Ban dau la bon - xem hai quyen cuoi.)
+        IT QUYEN NHAT CO THE.
 
-        Moi quyen them vao la mot cau phai tra loi o phan trinh bay, va
-        mot ly do nua de nguoi dung go app ra. Flowy khong can camera,
-        khong can vi tri, khong can danh ba.
-
-        Doi chieu voi ban dieu huong (da cat sang phan_khiem_thi/): ban
-        do can CAMERA cho ARCore va NFC cho the tu. Flowy khong can gi
-        trong so do - no khong nhin ra ngoai.
+        Moi quyen them vao la mot ly do nua de nguoi dung go app ra.
+        Flowy khong can camera, khong can micro, khong can vi tri, khong
+        can danh ba - no khong nhin ra ngoai.
     -->
 
-    <!-- Cau noi toi laptop trong mang LAN. -->
+    <!-- Goi Gemini de phan ra viec (tuy chon, chi khi co khoa API). -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- Rung nhe khi xong mot buoc. Phan hoi khong can am thanh, nen no
          dung duoc ca o cho dong nguoi. -->
     <uses-permission android:name="android.permission.VIBRATE" />
-
-    <!-- Nhan dang giong noi chay TREN MAY. Giong noi la duong nhanh hon
-         de tra loi mot cau hoi, nhung luon co o go ben canh - nhan dang
-         hong o noi on, va mot nguoi dang ket ma phai lap lai ba lan se
-         bo app. -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <!-- Tu API 33 phai xin quyen nay moi hien duoc thong bao. Thieu no
          thi notify() im lang khong lam gi - khong bao loi, khong sap.
@@ -59,13 +48,10 @@
     <uses-permission android:name="android.permission.health.READ_STEPS" />
 
     <!-- Android 11+ an cac app khac voi Flowy. Can khai bao de tim duoc
-         bo doc TTS va trinh nhan dang giong noi tren may. -->
+         bo doc TTS tren may. -->
     <queries>
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
-        </intent>
-        <intent>
-            <action android:name="android.speech.RecognitionService" />
         </intent>
     </queries>
 
@@ -75,24 +61,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Wayfinding"
-        android:usesCleartextTraffic="true">
-
-        <!-- usesCleartextTraffic: laptop chay HTTP tren mang LAN, khong
-             co chung chi TLS. Chap nhan duoc vi day la ban mau chay
-             trong mang noi bo, va goi tin KHONG mang du lieu ca nhan
-             nhay cam - xem bang o dau bridge.py.
-
-             Ban chay hoan toan tren may se khong con phan mang nay. -->
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-            android:windowSoftInputMode="adjustResize" />
-
-        <!-- Khong khoa xoay o day: dien thoai tu khoa doc trong
-             MainActivity.onCreate, may tinh bang (rong tu 600 dp) xoay tu do. -->
+        android:theme="@style/Theme.Wayfinding">
 
         <activity
             android:name=".CaiDatActivity"
@@ -194,8 +163,6 @@
             android:name=".MeetyActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="false" />
-        <!-- v4: tab Focus chay han tren may. MainActivity o tren gio la
-             "Phien co laptop (thu nghiem)", mo tu Cai dat. -->
         <activity
             android:name=".FocusActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"

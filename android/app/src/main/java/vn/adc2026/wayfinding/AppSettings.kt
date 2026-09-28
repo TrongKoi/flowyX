@@ -12,17 +12,6 @@ class AppSettings(context: Context) {
 
     private val prefs = context.getSharedPreferences("wayfinding", Context.MODE_PRIVATE)
 
-    /**
-     * Dia chi laptop, dang http://192.168.x.x:8765
-     *
-     * run_flowy.py in dia chi nay ra man hinh khi khoi dong. Doi moi
-     * lan doi mang WiFi, nen phai luu lai va cho sua de khong phai go
-     * lai tren dien thoai giua luc demo.
-     */
-    var serverUrl: String
-        get() = prefs.getString(KEY_URL, DEFAULT_URL) ?: DEFAULT_URL
-        set(v) = prefs.edit().putString(KEY_URL, v.trim()).apply()
-
     /** Toc do doc. Mac dinh co y dat cao hon binh thuong. */
     var speechRate: Float
         get() = prefs.getFloat(KEY_RATE, Speaker.DEFAULT_RATE)
@@ -165,19 +154,10 @@ class AppSettings(context: Context) {
         get() = kieuChu != CHU_HE_THONG
         set(v) { kieuChu = if (v) CHU_LEXEND else CHU_HE_THONG }
 
-    /**
-     * Muc nhac gio: "it" | "vua" | "nhieu". Luu tren may va gui kem MOI
-     * goi tin - laptop khong ghi gi xuong dia nen khong tu nho duoc.
-     */
-    var mucNhac: String
-        get() = prefs.getString(KEY_MUC_NHAC, Payload.MUC_VUA) ?: Payload.MUC_VUA
-        set(v) = prefs.edit().putString(KEY_MUC_NHAC, v).apply()
-
     val useSpeech: Boolean get() = feedbackMode != MODE_HAPTIC_ONLY
     val useHaptic: Boolean get() = feedbackMode != MODE_SPEECH_ONLY
 
     companion object {
-        private const val KEY_URL = "server_url"
         private const val KEY_RATE = "speech_rate"
         private const val KEY_MODE = "feedback_mode"
         private const val KEY_KIEU_CHU = "kieu_chu"
@@ -192,9 +172,6 @@ class AppSettings(context: Context) {
         private const val KEY_TRUOC_PHIEN = "nhac_truoc_phien"
         private const val KEY_NHAC_LAI = "nhac_lai"
         private const val KEY_AM_KHAN = "am_khan"
-        private const val KEY_MUC_NHAC = "muc_nhac"
-
-        private const val DEFAULT_URL = "http://192.168.1.100:8765"
 
         const val CHU_LEXEND = "lexend"
         const val CHU_ANDIKA = "andika"

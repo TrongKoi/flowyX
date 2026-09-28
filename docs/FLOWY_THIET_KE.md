@@ -8,6 +8,13 @@ nào**. Nó là nguồn chân lý cho đợt làm lại này.
 
 > **Trạng thái**: v2, cập nhật 15/09/2026 sau khi nhận bảng research của
 > nhóm. Bảng đó lật một phần thiết kế ở v1 — xem §2.4.
+>
+> **Ghi chú 28/09/2026.** §2–§4 (bằng chứng, ba tính năng, ranh giới
+> thiết bị y tế) vẫn đúng. Những phần sau đã **không còn khớp mã nguồn**
+> và giữ lại chỉ như lịch sử quyết định: §5 và §7.2 (lõi Python
+> `adc_wayfinding/` và cầu nối laptop — đã gỡ, app giờ chạy trọn trên
+> máy), §7.4 (nhân vật đồng hành — đã bỏ 16/09), mọi chỗ nhắc bản iOS
+> (đã bỏ). Hiện trạng: [`KIEN_TRUC.md`](KIEN_TRUC.md).
 
 ---
 

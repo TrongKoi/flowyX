@@ -31,37 +31,16 @@
     <!-- ================ vong lam viec ================ -->
 
     <string name="bat_dau">Bắt đầu</string>
-    <string name="xong_buoc">Xong bước</string>
-    <string name="ket_thuc">Kết thúc</string>
-    <string name="gui">Gửi</string>
-    <string name="noi_mieng">Nói</string>
-    <string name="hint_tra_loi">Trả lời ở đây</string>
 
     <!-- ================ cai dat ================ -->
 
     <string name="cai_dat">Cài đặt</string>
-    <string name="hint_url" translatable="false">http://192.168.1.100:8765</string>
-    <string name="da_noi">Đã nối với laptop.</string>
-    <string name="loi_mang">Lỗi mạng: %1$s</string>
-
-    <!-- ================ tro nang ================ -->
-
-    <string name="chao_san_sang">Sẵn sàng. Bấm Gợi ý khi bạn bị kẹt.</string>
-    <string name="chao_can_dia_chi">Chưa có địa chỉ laptop. Mở Cài đặt để nhập.</string>
-    <string name="chua_nghe_duoc">Máy chưa nghe được. Bạn gõ vào ô bên cạnh nhé.</string>
-    <string name="khong_co_giong_viet">Máy chưa có giọng tiếng Việt. Cài thêm trong Cài đặt, mục Chuyển văn bản thành giọng nói.</string>
-    <string name="giong_viet_tieu_de">Chưa có giọng tiếng Việt</string>
-    <string name="giong_viet_giai_thich">Không có nó, app vẫn chạy nhưng câu đọc lên sẽ khó nghe. Mở đúng chỗ cài đặt giúp bạn nhé?\n\nNếu máy dùng Samsung TTS, bạn có thể chọn Google làm bộ đọc — Google có sẵn tiếng Việt.</string>
-    <string name="mo_cai_dat">Mở cài đặt</string>
-    <string name="de_sau">Để sau</string>
 
     <!-- ================ kiem tra quyen ================ -->
 
-    <string name="kiem_quyen">Kiểm tra quyền</string>
     <string name="kiem_quyen_tieu_de">App cần gì để chạy đủ</string>
     <string name="kiem_quyen_du">Đã đủ. Không cần làm gì thêm.</string>
     <string name="kiem_quyen_thieu">Chạm vào một dòng có dấu ✗ để bật. Thiếu thì app vẫn chạy, chỉ mất đúng phần đó.</string>
-    <string name="can_micro">Cần quyền micro để nghe bạn nói. Bạn vẫn gõ được ở ô bên cạnh.</string>
 
     <!-- ================ loi nhac ================ -->
 
@@ -70,18 +49,6 @@
         Khong mot chuoi nao o day nhac toi thuoc, lieu, hay viec tuan
         thu. Day la loi nhac theo gio, do nguoi dung tu dat ten, va app
         khong biet ten do nghia la gi. -->
-    <string name="loi_nhac">Lời nhắc</string>
-    <string name="them_loi_nhac">Thêm lời nhắc</string>
-    <string name="hint_ten_loi_nhac">Nhắc tôi về việc gì</string>
-    <string name="hint_gio_loi_nhac">Mấy giờ (ví dụ 08:30)</string>
-    <string name="loi_nhac_sai">Cần một cái tên và một giờ hợp lệ.</string>
-    <string name="thieu_ten_loi_nhac">Viết vài chữ để biết nhắc việc gì</string>
-    <string name="thieu_gio_loi_nhac">Chạm để chọn giờ, hoặc gõ ví dụ 1400</string>
-    <string name="da_dat_loi_nhac">Đã đặt lời nhắc lúc %1$s.</string>
-    <string name="bao_thuc_tieu_de">Cho lời nhắc tới đúng phút?</string>
-    <string name="bao_thuc_giai_thich">Lời nhắc đã được lưu. Hiện máy chưa cho Flowy đặt báo thức chính xác, nên nó có thể tới trễ vài phút.\n\nBật \"Báo thức và lời nhắc\" cho Flowy ở trang sắp mở để lời nhắc tới đúng giờ.</string>
-    <string name="bao_thuc_khong_dat_duoc">Máy không cho đặt lời nhắc. Mở Cài đặt → Kiểm tra quyền.</string>
-    <string name="chua_co_loi_nhac">Chưa có lời nhắc nào.</string>
     <string name="xoa">Xoá</string>
     <string name="xong">Xong</string>
     <string name="huy">Huỷ</string>
@@ -98,76 +65,28 @@
         Khong chuoi nao hoi "muc do", "thang diem", hay "trieu chung".
         O `the_nao` de nguoi dung viet bang CHU cua ho - xem `SoNhatKy`
         ve ly do khong dung thang 1-5. -->
-    <string name="nhat_ky">Nhật ký</string>
-    <string name="them_ghi_chu">Ghi lại</string>
     <string name="hint_ghi_chu">Hôm nay thế nào</string>
     <string name="hint_the_nao">Bạn thấy sao (viết bằng chữ của bạn)</string>
     <string name="chua_co_ghi_chu">Sổ còn trống.</string>
-    <string name="xuat_tep">Xuất ra tệp</string>
     <string name="da_xuat">Đã lưu sổ vào tệp bạn chọn.</string>
     <string name="khong_xuat_duoc">Không ghi được tệp.</string>
-    <string name="so_nay_o_lai_may">Sổ này chỉ nằm trên máy bạn. App không gửi nó đi đâu.</string>
-    <string name="cham_de_xoa">Chạm vào một dòng nếu muốn xoá.</string>
-    <string name="xoa_ghi_chu_hoi">Xoá dòng này khỏi sổ?</string>
 
     <!-- ================ giao dien v2 ================ -->
 
-    <string name="khoi_y_dinh">Việc đang làm</string>
-    <string name="khoi_thoi_gian">Thời gian</string>
-    <string name="khoi_buoc">Bước hiện tại</string>
-    <string name="viec_moi">Việc mới</string>
-    <string name="viec_moi_hoi">Bỏ việc này và bắt đầu gom một việc khác?</string>
-    <string name="chua_co_viec">Chưa có việc nào</string>
-    <string name="khi_nao_o_dau" translatable="false">%1$s · %2$s</string>
-    <string name="gach" translatable="false">—</string>
-    <string name="hint_them_buoc">Thêm một bước nhỏ</string>
-    <string name="cham_ban_de_hoi">Bị kẹt? Bấm Gợi ý, Flowy sẽ hỏi một câu nhỏ.</string>
-    <string name="goi_y">Gợi ý</string>
     <string name="lich">Lịch</string>
 
-    <string name="dat_gio_hen">Đặt giờ hẹn</string>
-    <string name="gio_hen_la">Hẹn %1$s</string>
-    <string name="bo_gio_hen">Bỏ giờ hẹn</string>
-    <string name="uoc_luong">Ước lượng</string>
-    <string name="uoc_luong_la">Ước %1$s phút</string>
-    <string name="uoc_luong_hoi">Việc này bạn nghĩ mất bao lâu?</string>
-    <string name="uoc_luong_giai_thich">Không cần đúng. Lần sau Flowy sẽ cho bạn thấy thực tế mất bao lâu.</string>
-    <string name="uoc_luong_khac">Số khác</string>
-    <string name="hint_so_phut">Số phút</string>
-    <string name="phut_con_lai">còn %1$s phút</string>
-    <string name="chua_co_gio_hen">Chưa có giờ hẹn</string>
-    <string name="goi_y_thuong_mat">Những lần trước: khoảng %1$s phút</string>
-    <string name="da_lam">Đã làm %1$s phút</string>
-
-    <string name="buoc_trong">Chưa có bước nào. Gõ một bước nhỏ ở ô trên, ví dụ: mở tệp lên.</string>
-    <string name="buoc_xong_het">Xong hết các bước.</string>
     <string name="dang_tam_dung">Đang tạm dừng</string>
 
     <string name="tam_dung">Tạm dừng</string>
     <string name="tiep_tuc">Tiếp tục</string>
-    <string name="xong_viec">Xong việc</string>
-    <string name="muc_nhac">Nhắc giờ</string>
-    <string name="muc_it">Ít</string>
-    <string name="muc_vua">Vừa</string>
-    <string name="muc_nhieu">Nhiều</string>
 
     <!-- ================ man hinh cai dat ================ -->
 
     <string name="quay_lai">Quay lại</string>
     <string name="luu">Lưu</string>
-    <string name="da_luu">Đã lưu.</string>
-    <string name="cd_laptop">Laptop (chỉ dùng khi test và demo)</string>
-    <string name="cd_giao_dien">Giao diện</string>
-    <string name="cd_font">Chữ dễ đọc (Lexend)</string>
-    <string name="cd_font_mo_ta">Nét chữ rộng, dễ phân biệt. Có đủ dấu tiếng Việt.</string>
     <string name="cd_phan_hoi">Giọng đọc và rung</string>
-    <string name="ph_ca_hai">Đọc lên và rung</string>
-    <string name="ph_chi_tieng">Chỉ đọc lên</string>
-    <string name="ph_chi_rung">Chỉ rung, không đọc</string>
     <string name="toc_do_doc">Tốc độ đọc: %1$s</string>
-    <string name="thu_giong">Nghe thử</string>
     <string name="cau_thu_giong">Xin chào. Đây là tốc độ đọc hiện tại.</string>
-    <string name="ban_quyen_font">Font Lexend © The Lexend Project Authors, giấy phép SIL Open Font License 1.1.</string>
 
     <!-- ================ lich ================ -->
 
@@ -180,8 +99,6 @@
     <string name="tom_tat_ngay">%1$d kế hoạch · %2$s</string>
     <string name="bay_gio_luc">Bây giờ %1$s</string>
     <string name="trong_phut">Trống %1$s</string>
-    <string name="tiep_theo_luc">Tiếp theo · %1$s</string>
-    <string name="dang_dien_ra_den">Đang diễn ra · đến %1$s</string>
 
     <string name="kh_danh_dau_xong">Đánh dấu đã xong</string>
     <string name="kh_bo_danh_dau">Bỏ dấu đã xong</string>
@@ -209,14 +126,12 @@
     <string name="logo_flowy" translatable="false">flowy</string>
     <string name="logo_x" translatable="false">X</string>
 
-
     <!-- ================ màn hình Tiến độ ================ -->
 
     <!-- Hai cham chi khac nhau o MAU, ma mau thi khong doc len duoc.
          Nen moi cham co nhan rieng cho TalkBack. -->
     <string name="tien_do_ngay_co_lam">%1$s, có làm</string>
     <string name="tien_do_ngay_khong_lam">%1$s, không có việc nào</string>
-
 
     <!-- Ten tab: KHONG hien tren man hinh (thanh tab chi co icon), nhung
          TalkBack doc chung ra. Bo icon-khong-chu la mot danh doi, va day
@@ -233,12 +148,6 @@
     <string name="nk_bay_ngay">Bảy ngày gần nhất</string>
     <string name="nk_cac_muc">Các mục</string>
 
-    <!-- ================ trang Việc cần làm ================ -->
-
-
-    <!-- ================ trang Lời nhắc ================ -->
-
-
     <!-- ================ trang Biên bản ================ -->
 
     <string name="bb_tieu_de">Biên bản</string>
@@ -248,8 +157,6 @@
     <string name="bb_hint_viec">Việc của bạn — mỗi dòng một việc</string>
     <string name="bb_them_vao_lich">Thêm vào lịch</string>
     <string name="bb_da_them">Đã thêm vào lịch hôm nay.</string>
-
-    <string name="muc_nhac_giai_thich">Nhắc trước bao nhiêu lần khi sắp đến giờ.</string>
 
     <!-- ================= v4 (17/09) ================= -->
     <string name="tab_dang_chon">%1$s, đang chọn</string>
@@ -275,7 +182,6 @@
     <string name="kh_chua_co">Hôm nay chưa có kế hoạch nào. Thêm một việc nhỏ thôi cũng được.</string>
     <string name="kh_nhom_uu_tien">Ưu tiên %1$s</string>
     <string name="kh_xem_lich">Xem lịch tuần</string>
-    <string name="kh_meo_vuot">Mẹo: vuốt trái để đánh dấu xong, vuốt phải để xoá.</string>
     <string name="kh_uu_tien">Ưu tiên</string>
     <string name="kh_ngay">Ngày</string>
     <string name="kh_bat_dau_luc">Bắt đầu</string>
@@ -294,7 +200,6 @@
     <string name="focus_dang_nghi">Đang nghỉ</string>
     <string name="focus_buoc_dau">Bước đầu tiên</string>
     <string name="focus_con_lai">còn lại</string>
-    <string name="focus_xong_luc">Hết giờ lúc %1$s</string>
     <string name="focus_dung_lai">Dừng lại</string>
     <string name="focus_da_dung">Đã dừng hẹn giờ</string>
     <string name="focus_het_gio">Hết giờ rồi</string>
@@ -320,7 +225,6 @@
     <string name="nk_chuoi_giai_thich">Mỗi ngày bạn mở Flowy đều được tính.</string>
     <string name="nk_viet_moi">Viết nhật ký</string>
     <string name="nk_sua">Sửa nhật ký</string>
-    <string name="nk_chon_de_xuat">Chọn để xuất</string>
     <string name="nk_da_chon">Đã chọn %1$d mục</string>
     <string name="nk_chon_het">Chọn tất cả</string>
     <string name="nk_bo_chon_het">Bỏ chọn</string>
@@ -353,8 +257,6 @@
     <string name="bb_o_hoi">Câu hỏi còn mở (tuỳ chọn)</string>
     <string name="bb_hint_hoi">Mỗi dòng một câu</string>
     <string name="bb_luu">Lưu biên bản</string>
-    <string name="cd_giao_dien_giai_thich">Flowy theo chế độ Sáng/Tối của máy. Muốn đổi, vào Cài đặt của máy → Màn hình.</string>
-    <string name="cd_phien_laptop">Phiên có laptop (thử nghiệm)</string>
 
     <!-- Go roi, cau 3. Thu tu PHAI khop voi gr_goi_y. -->
     <string-array name="gr_can_tro">
@@ -390,8 +292,6 @@
     <string name="kh_bb_het_viec">Mọi việc đã vào lịch.</string>
     <string name="kh_vung_trong">Trống — kéo một việc vào đây</string>
     <string name="kh_da_doi_uu_tien">“%1$s” chuyển sang ưu tiên %2$s</string>
-    <string name="gio_phut_le">Cần phút lẻ</string>
-    <string name="gio_buoc_5">Về bước 5 phút</string>
     <string name="gio_chon_bat_dau">Bắt đầu lúc mấy giờ?</string>
     <string name="gio_chon_ket_thuc">Kết thúc lúc mấy giờ?</string>
     <!-- v5: bien ban -> lich -->
@@ -408,10 +308,8 @@
     <string name="nl_tieu_de">Nhập lịch</string>
     <string name="nl_mo_dau">Flowy đọc tệp .ics — định dạng chung của Google Calendar, Apple Calendar và Outlook. Tệp được đọc ngay trên máy, không gửi đi đâu.</string>
     <string name="nl_google">Google Calendar</string>
-    <string name="nl_apple">Apple Calendar</string>
     <string name="nl_cach_lay">Cách lấy tệp</string>
     <string name="nl_google_cach">Mở calendar.google.com trên máy tính → bánh răng Cài đặt → Nhập và xuất → Xuất. Bạn sẽ tải về một tệp .zip; giải nén ra là các tệp .ics. Chép sang điện thoại rồi mở ở đây.</string>
-    <string name="nl_apple_cach">Trên máy Mac: mở Lịch → chọn lịch bên trái → Tệp → Xuất → Xuất. Trên iPhone: mở iCloud.com bằng trình duyệt, vào Lịch, chia sẻ lịch dạng công khai rồi tải tệp .ics về.</string>
     <string name="nl_mo_tep">Mở tệp .ics</string>
     <string name="nl_rieng_tu">Flowy không xin quyền truy cập tài khoản Google hay Apple của bạn. Chỉ đọc đúng tệp bạn chọn, đúng một lần.</string>
     <string name="nl_khong_doc_duoc">Không đọc được tệp này.</string>
@@ -430,7 +328,6 @@
     <string name="nl_nhap_n">Nhập %1$d sự kiện</string>
     <string name="nl_chon_tep_khac">Chọn tệp khác</string>
     <string name="nl_da_nhap_n">Đã nhập %1$d sự kiện.</string>
-    <string name="cd_nhap_lich">Nhập lịch từ Google, Apple hoặc tệp .ics</string>
     <!-- v5: go roi mot cau moi man -->
     <string name="go_roi_dong">Đóng</string>
     <string name="go_roi_di_tiep">Chưa rõ, đi tiếp</string>
@@ -563,7 +460,6 @@
     <!-- Cai dat: bao mat va du lieu -->
     <string name="cd_ma_hoa_tot">Nhật ký được mã hoá AES-256 bằng khoá nằm trong kho khoá phần cứng của máy này.</string>
     <string name="cd_ma_hoa_yeu">Máy này không có kho khoá phần cứng. Nhật ký vẫn được mã hoá, nhưng khoá nằm trong bộ nhớ riêng của ứng dụng thay vì vùng phần cứng tách biệt.</string>
-    <string name="cd_nhap_lich_phu">Tệp .ics từ Google Lịch, Apple Lịch, Outlook</string>
     <string name="cd_suc_khoe">Kết nối dữ liệu sức khoẻ</string>
     <string name="cd_dang_bat">Đang bật</string>
     <string name="cd_dang_tat">Đang tắt</string>
@@ -588,13 +484,6 @@
     <string name="cd_co_nho">Nhỏ</string>
     <string name="cd_co_to">To</string>
     <string name="cd_co_phan_tram">%1$d%% so với mặc định</string>
-    <string name="cd_muc_rung">MỨC RUNG</string>
-    <string name="cd_rung_tat">Tắt</string>
-    <string name="cd_rung_manh">Mạnh</string>
-    <string name="cd_rung_0">Tắt hẳn</string>
-    <string name="cd_rung_1">Nhẹ</string>
-    <string name="cd_rung_2">Vừa</string>
-    <string name="cd_rung_3">Mạnh</string>
     <string name="ph_ca_hai_nhan">Cả hai</string>
     <string name="ph_chi_tieng_nhan">Chỉ tiếng</string>
     <string name="ph_chi_rung_nhan">Chỉ rung</string>
@@ -604,9 +493,6 @@
     <string name="cd_thu_giong">Nghe thử giọng đọc</string>
     <string name="cd_kiem_quyen">Kiểm tra quyền</string>
     <string name="cd_kiem_quyen_phu">Thông báo, báo thức, micro</string>
-    <string name="cd_phien_laptop_phu">Nối với máy tính trong cùng mạng</string>
-    <string name="cd_phien_laptop_giai_thich">Gói tin đi thẳng từ máy này tới máy tính của bạn trong mạng nội bộ, không qua máy chủ nào, và không mang nội dung nhật ký.</string>
-    <string name="cd_mo_phien">Mở phiên</string>
     <string name="cd_phien_ban">Flowy %1$s</string>
 
     <!-- Suc khoe -->
@@ -686,8 +572,6 @@
     <string name="motd_task_procrastination">Việc bạn né lâu nhất thường nhỏ hơn bạn nghĩ.</string>
     <string name="motd_endured_harder">Bạn đã đi qua nhiều ngày khó hơn hôm nay.</string>
     <string name="motd_persistence_over_speed">Chậm mà quay lại vẫn hơn nhanh mà bỏ cuộc.</string>
-
-
 
     <!-- Cai dat: che do sang/toi (v5.1) -->
     <string name="cd_theme">Giao diện</string>
@@ -771,10 +655,8 @@
     <string name="dh_mau_bien">Biển</string>
     <string name="dh_mau_rung">Rừng</string>
     <string name="dh_mau_hoang_hon">Hoàng hôn</string>
-    <string name="dh_mau_phu">Chỉ đổi vòng đồng hồ ở tab Tập trung. Bộ nào cũng giữ đủ ba chặng màu, nên tín hiệu “sắp hết giờ” không mất.</string>
 
     <!-- Hau to cho contentDescription cua muc dang duoc chon -->
-    <string name="dang_chon">đang chọn</string>
 
     <!-- ================================================================
          HUONG DAN LAN DAU (spotlight)
@@ -803,9 +685,6 @@
 
     <string name="hd_focus_td">Tập trung: đồng hồ</string>
     <string name="hd_focus_nd">Kéo vòng để đặt giờ, chạm Bắt đầu. Màu đổi dần khi sắp hết — không cần nhìn số.</string>
-
-    <string name="hd_goroi_td">Kẹt thì bấm dấu cộng</string>
-    <string name="hd_goroi_nd">Bốn câu hỏi ngắn, chạm để trả lời. Cuối cùng còn đúng một bước nhỏ để bắt đầu.</string>
 
     <string name="hd_suckhoe_td">Sức khỏe: ghi lại</string>
     <string name="hd_suckhoe_nd">Viết vài dòng về hôm nay. Không ai chấm điểm, và chữ ở lại trong máy này.</string>

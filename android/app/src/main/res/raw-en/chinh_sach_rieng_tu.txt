@@ -1,9 +1,9 @@
-Last updated: 18 September 2026
+Last updated: 28 September 2026
 Version: 5.0
 
 # The short version
 
-- Flowy runs entirely on your device. There is no server account and no cloud sync.
+- Flowy runs on your device. There is no server account and no cloud sync. The one exception is the AI task breakdown — see section 4.
 - We collect none of your personal data, because there is nowhere for it to arrive.
 - Journal entries and moods are encrypted with AES-256 using a key held in the device's hardware-backed keystore.
 - No ads, no behavioural analytics, no third-party tracking libraries.
@@ -53,19 +53,17 @@ Language, typeface, text size, haptic strength. Stored in SharedPreferences.
 - No automatic crash reports sent anywhere, no behavioural analytics.
 - No advertising SDKs, no third-party analytics SDKs.
 
-The permission list is verifiable evidence: internet, network state, vibration, microphone (on-device speech recognition), notifications, exact alarms, restart after boot. Nothing for camera, location or contacts.
+The permission list is verifiable evidence: internet (only for section 4), vibration, notifications, exact alarms, restart after boot. Nothing for camera, microphone, location or contacts.
 
 # 4. Network connections
 
-The app opens a network connection in exactly one case: the experimental "laptop session" mode, when you type your own computer's address on your local network. Those packets travel straight from your phone to your computer, through no server of ours, and carry no journal or mood content.
+The app opens a network connection in exactly one case: when you ask the AI to break a task down, and the installed build carries a Gemini API key. Flowy then sends Google Gemini exactly two things: the task name and any extra description you typed. No journal entries, moods, health data or account details.
 
-If you do not enable that mode, Flowy sends and receives nothing.
+What is sent is processed by Google under Google's Gemini API terms, not under this policy. On the free tier, Google may use that content to improve its products, so do not type sensitive information into the description.
 
-# 5. Speech recognition
+A build without a key generates the suggested steps on the device, and Flowy sends and receives nothing.
 
-When you use the microphone button, the app calls the operating system's speech recogniser and requests on-device processing. If your phone has no offline language pack for the language in use, Android may fall back to the manufacturer's servers — that is operating-system behaviour, outside Flowy's control. The app tells you in Settings when it detects this; to be certain, install the offline pack or type instead of speaking.
-
-# 6. Health data
+# 5. Health data
 
 When you deliberately enable the Health Connect integration, Flowy requests read access to the metrics you choose — sleep and activity, for example — to display them next to your focus figures.
 
@@ -81,7 +79,7 @@ On HIPAA: the US HIPAA rules apply to covered entities (healthcare providers, in
 
 On GDPR: health data is a special category under Article 9. The only legal basis we rely on is your explicit consent, expressed by turning the integration on, and you can withdraw it at any time by turning it off.
 
-# 7. Your rights
+# 6. Your rights
 
 Under the GDPR (European Union), Decree 13/2023/ND-CP (Vietnam) and equivalent laws, you have the right to access, correct, erase, restrict the processing of, and port your data.
 
@@ -94,20 +92,20 @@ In Flowy these need no request form, because the data is already in your hands:
 
 We cannot exercise these rights on your behalf, because we hold no copy.
 
-# 8. Children
+# 7. Children
 
 The app is for people aged 16 and over, or 13 and over with the consent of a parent or guardian. We do not collect children's data — we do not collect anyone's data.
 
-# 9. Risks you should know about
+# 8. Risks you should know about
 
 Flowy's security rests on your device's security. If your phone has no screen lock, or is rooted and running malware with full privileges, the app's protections can be bypassed. Set a screen lock and keep the operating system updated.
 
 Android's automatic backup is DISABLED for this app (allowBackup="false"), so Flowy data does not end up in Google's or your manufacturer's cloud backups.
 
-# 10. Changes to this policy
+# 9. Changes to this policy
 
 When the policy changes, the date at the top is updated and the app shows a notice the next time you open it. For changes that affect how data is handled, we ask for your consent again before applying them.
 
-# 11. Contact
+# 10. Contact
 
 flowy.adc2026@gmail.com — we answer within 30 days.

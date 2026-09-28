@@ -22,9 +22,6 @@ import android.widget.TextView
  * MAN HINH LICH - dai tuan + dong thoi gian cua mot ngay.
  *
  * Xem ghi chu o `res/layout/activity_lich.xml` va phan dau `Lich.kt`.
- *
- * Tra ve MainActivity (qua setResult) khi nguoi dung bam "Bat dau viec
- * nay": MainActivity dien san y dinh thuc thi tu ke hoach.
  */
 class LichActivity : Activity() {
 

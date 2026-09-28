@@ -1,9 +1,9 @@
-Cập nhật lần cuối: 18/09/2026
+Cập nhật lần cuối: 28/09/2026
 Phiên bản: 5.0
 
 # Tóm tắt trong sáu dòng
 
-- Flowy chạy hoàn toàn trên máy bạn. Không có tài khoản trên máy chủ, không có đồng bộ đám mây.
+- Flowy chạy trên máy bạn. Không có tài khoản trên máy chủ, không có đồng bộ đám mây. Ngoại lệ duy nhất là tính năng chia nhỏ việc bằng AI — xem mục 4.
 - Chúng tôi không thu thập dữ liệu cá nhân của bạn, vì không có nơi nào để nhận.
 - Nhật ký và cảm xúc được mã hoá AES-256 bằng khoá nằm trong kho khoá phần cứng của máy.
 - Không có quảng cáo, không có bộ đo lường hành vi, không có thư viện theo dõi của bên thứ ba.
@@ -53,19 +53,17 @@ Ngôn ngữ, phông chữ, cỡ chữ, mức rung. Lưu trong SharedPreferences.
 - Không nhật ký sự cố tự động gửi đi, không bộ đo lường hành vi.
 - Không SDK quảng cáo, không SDK phân tích của bên thứ ba.
 
-Danh sách quyền ứng dụng xin là bằng chứng kiểm chứng được: Internet, trạng thái mạng, rung, ghi âm (nhận dạng giọng nói chạy trên máy), thông báo, báo thức chính xác, khởi động lại. Không có quyền nào cho camera, vị trí hay danh bạ.
+Danh sách quyền ứng dụng xin là bằng chứng kiểm chứng được: Internet (chỉ cho mục 4), rung, thông báo, báo thức chính xác, khởi động lại. Không có quyền nào cho camera, micro, vị trí hay danh bạ.
 
 # 4. Kết nối mạng
 
-Ứng dụng chỉ mở kết nối mạng trong một trường hợp: chế độ "phiên có laptop" thử nghiệm, khi bạn tự nhập địa chỉ máy tính của mình trong mạng LAN nội bộ. Gói tin khi đó đi thẳng từ điện thoại tới máy tính của bạn, không qua máy chủ nào của chúng tôi, và không mang nội dung nhật ký hay cảm xúc.
+Ứng dụng chỉ mở kết nối mạng trong một trường hợp: khi bạn bấm chia nhỏ một việc bằng AI, và bản cài đặt có khoá Gemini API. Lúc đó Flowy gửi tới Google Gemini đúng hai thứ: tên việc và phần mô tả thêm bạn tự gõ (nếu có). Không gửi nhật ký, cảm xúc, dữ liệu sức khoẻ hay thông tin tài khoản.
 
-Nếu bạn không bật chế độ đó, Flowy không gửi và không nhận bất cứ gói tin nào.
+Nội dung gửi đi được Google xử lý theo điều khoản Gemini API của Google, không theo chính sách này. Với gói miễn phí, Google có thể dùng nội dung đó để cải thiện sản phẩm của họ. Vì vậy đừng gõ thông tin nhạy cảm vào ô mô tả.
 
-# 5. Nhận dạng giọng nói
+Bản cài đặt không có khoá thì các bước gợi ý được sinh ngay trên máy, và Flowy không gửi, không nhận bất cứ gói tin nào.
 
-Khi bạn dùng nút micro, ứng dụng gọi bộ nhận dạng giọng nói của hệ điều hành và yêu cầu chế độ chạy trên máy. Nếu máy bạn không có gói ngoại tuyến cho ngôn ngữ đang dùng, Android có thể chuyển sang xử lý trên máy chủ của nhà sản xuất — đó là hành vi của hệ điều hành, nằm ngoài tầm với của Flowy. Ứng dụng báo cho bạn trong Cài đặt khi phát hiện tình trạng này; muốn chắc chắn, hãy tải gói ngoại tuyến hoặc gõ tay thay vì nói.
-
-# 6. Dữ liệu sức khoẻ
+# 5. Dữ liệu sức khoẻ
 
 Khi bạn chủ động bật kết nối Health Connect, Flowy xin quyền đọc một số chỉ số bạn chọn — chẳng hạn giấc ngủ và vận động — để hiển thị bên cạnh số liệu tập trung của bạn.
 
@@ -81,7 +79,7 @@ Về HIPAA: HIPAA của Hoa Kỳ áp dụng cho các đơn vị được điều
 
 Về GDPR: dữ liệu sức khoẻ thuộc nhóm dữ liệu nhạy cảm theo Điều 9. Cơ sở pháp lý duy nhất chúng tôi dựa vào là sự đồng ý rõ ràng của bạn, thể hiện bằng thao tác bật kết nối, và bạn rút lại bất cứ lúc nào bằng cách tắt nó.
 
-# 7. Quyền của bạn
+# 6. Quyền của bạn
 
 Theo GDPR (Liên minh châu Âu), Nghị định 13/2023/NĐ-CP (Việt Nam) và các luật tương đương, bạn có quyền truy cập, sửa, xoá, hạn chế xử lý và mang dữ liệu đi nơi khác.
 
@@ -94,20 +92,20 @@ Trong Flowy, những quyền này không cần đơn từ, vì dữ liệu nằm
 
 Chúng tôi không thể thực hiện các quyền này thay bạn, vì chúng tôi không giữ bản sao nào.
 
-# 8. Trẻ em
+# 7. Trẻ em
 
 Ứng dụng dành cho người từ 16 tuổi trở lên, hoặc từ 13 tuổi khi có sự đồng ý của cha mẹ hoặc người giám hộ. Chúng tôi không thu thập dữ liệu của trẻ em — chúng tôi không thu thập dữ liệu của ai cả.
 
-# 9. Rủi ro bạn nên biết
+# 8. Rủi ro bạn nên biết
 
 Bảo mật của Flowy dựa trên bảo mật của thiết bị. Nếu máy bạn không đặt khoá màn hình, hoặc bị root và có phần mềm độc hại chạy với quyền cao nhất, các lớp bảo vệ của ứng dụng có thể bị vượt qua. Hãy đặt khoá màn hình và cập nhật hệ điều hành.
 
 Bản sao lưu tự động của Android đã được TẮT cho ứng dụng này (allowBackup="false"), nên dữ liệu Flowy không lọt vào bản sao lưu đám mây của Google hay của nhà sản xuất máy.
 
-# 10. Thay đổi chính sách
+# 9. Thay đổi chính sách
 
 Khi chính sách thay đổi, ngày ở đầu tài liệu được cập nhật và ứng dụng hiển thị thông báo ở lần mở kế tiếp. Với thay đổi ảnh hưởng đến cách xử lý dữ liệu, chúng tôi hỏi lại sự đồng ý của bạn trước khi áp dụng.
 
-# 11. Liên hệ
+# 10. Liên hệ
 
 flowy.adc2026@gmail.com — chúng tôi trả lời trong vòng 30 ngày.

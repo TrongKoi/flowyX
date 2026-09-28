@@ -39,23 +39,3 @@ pytest>=8.0
 #  Fuzzy matching uses difflib, date maths uses datetime,
 #  queue and cache use sqlite3 - all standard library.
 # ==========================================================
-
-# --- Web server (added in v2) ----------------------------------------------
-# WARNING: this file must stay pure ASCII.
-#   On Windows, pip reads requirements.txt using the OS code page (cp1252 for
-#   Vietnamese locale), NOT UTF-8. A single accented character makes
-#   `pip install -r requirements.txt` fail with a charmap decode error before
-#   installing anything. Vietnamese notes belong in HUONG_DAN_CHAY.md instead.
-#   Run `python doctor.py` to check this.
-#
-# These four are only needed for `python run_server.py`.
-# The CLI (`python main.py`) still runs on the original 5 dependencies.
-#
-# Trade-off, stated plainly: this project deliberately keeps few dependencies
-# (see core/env.py). Adding FastAPI goes against that. In exchange we get input
-# validation via pydantic v2 (already present), auto-generated API docs, and we
-# do not have to hand-roll an HTTP layer. None of these packages touch API keys.
-fastapi>=0.115
-uvicorn[standard]>=0.30
-python-multipart>=0.0.9
-email-validator>=2.0

@@ -248,8 +248,8 @@ onInterceptTouchEvent / onTouchEvent (cả hai đường):
 Vào tab là bấm **Bắt đầu** được ngay. Không ô nào bắt buộc. Tên việc, bước đầu, lý do
 đều nằm ở màn Gỡ rối và đều tuỳ chọn. Chỉ **đếm ngược**, 1–120 phút.
 
-Tab này **chạy hẳn trên máy**, không cần laptop. Phiên có laptop cũ vẫn còn: Cài đặt →
-"Phiên có laptop (thử nghiệm)".
+Tab này **chạy hẳn trên máy**, không cần laptop. (Màn "Phiên có laptop" cũ đã gỡ hẳn
+ngày 28/09.)
 
 ### 7.2. Đồng hồ — mặt tuyệt đối 60 phút (kiểu Time Timer)
 
@@ -411,7 +411,8 @@ DatePicker do hệ thống vẽ bằng Paint với phông cứng.
 Đường chính vẫn là `cd android && ./gradlew assembleDebug`.
 
 Thêm đường dự phòng `android/tools/build_khong_gradle.sh` — dùng khi Gradle hỏng
-sát giờ thi, hoặc trên máy không vào được `dl.google.com`:
+sát giờ thi, hoặc trên máy không vào được `dl.google.com`. (Đã xoá ngày 28/09 khi
+Gradle chạy ổn định; vẫn còn trong lịch sử git.)
 
 ```
 aapt → R.java → javac → kotlinc (JVM 1.8) → ProGuard (chỉ thu gọn)

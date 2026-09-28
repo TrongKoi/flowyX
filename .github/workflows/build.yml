@@ -1,0 +1,92 @@
+# ====================================================================
+# CI FlowyX — app Android + Meety
+# ====================================================================
+#
+# Vi sao giu CI sau cuoc thi:
+#
+#   1. Nhom khong ai co san JDK 17 + Android SDK tren moi may. Job
+#      Android la noi DUY NHAT chac chan chay du 175 test Kotlin.
+#   2. APK tai tu tab Actions la cach nhanh nhat dua ban moi len may
+#      that ma khong can ai mo Android Studio.
+#
+# Da bo job iOS (ban iOS da go khoi repo) va job `adc_wayfinding`
+# (loi Python cu da go cung man "Phien co laptop").
+
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ------------------------------------------------------------------
+  android:
+    name: Android — test, xuat APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # JDK 17, khong phai 25: AGP 8.5.2 tu choi JDK 25 voi mot cau bao
+      # loi kho hieu (`What went wrong: 25.0.2`).
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # Khong dung android-actions/setup-android: no goi sdkmanager tren
+      # goi 'tools' da bi go khoi kho, va do ngay o buoc cai. Runner
+      # ubuntu da co san Android SDK o ANDROID_HOME - dung thang.
+      - uses: gradle/actions/setup-gradle@v4
+
+      # Bit thuc thi cua gradlew hay roi mat khi commit tu Windows.
+      - name: Cho phep chay gradlew
+        working-directory: android
+        run: chmod +x gradlew
+
+      - name: Test don vi Kotlin
+        working-directory: android
+        run: ./gradlew :app:testDebugUnitTest --console=plain
+
+      - name: Build APK debug
+        working-directory: android
+        run: ./gradlew :app:assembleDebug --console=plain
+
+      - name: Tai APK len artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flowyx-debug-apk
+          path: android/app/build/outputs/apk/debug/*.apk
+
+      - name: Tai bao cao test len artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bao-cao-test-kotlin
+          path: android/app/build/reports/tests/
+
+  # ------------------------------------------------------------------
+  meety:
+    name: Meety — test pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Chi phan bat buoc cua requirements.txt: test chay bang mo hinh gia
+      # lap, khong can google-genai hay groq.
+      - name: Cai thu vien
+        run: pip install "pydantic>=2.9" "typing-extensions>=4.6" pytest
+
+      - name: Chay test
+        working-directory: meety
+        run: python -m pytest tests -q
